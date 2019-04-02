@@ -4,9 +4,9 @@
 		  title="项目"
 		  :visible.sync="visible"
 		  :before-close="Close"
-		  width="30%"
+
 		>
-			<el-form :model="CreateForm" :rules="FormRules" ref="CreateForm">
+			<el-form :model="CreateForm" :rules="FormRules" ref="CreateForm" :inline="true">
 				<el-form-item label="客户名称" :label-width="formLabelWidth" prop="cust_id">
 					<div style="width: 100%;display: flex">
 			      		<el-select
@@ -37,6 +37,7 @@
 						</span>
 					</div>
 				</el-form-item>
+                <br>
 				<el-form-item :label-width="formLabelWidth" label="项目名称" prop="name">
 					<el-input v-model.trim="CreateForm.name"></el-input>
 				</el-form-item>
@@ -59,12 +60,16 @@
 				<el-form-item :label-width="formLabelWidth" label="预计金额">
 					<el-input v-model.trim="CreateForm.estimate" placeholder="项目的预计合作金额"></el-input>
 				</el-form-item>
-				<el-form-item :label-width="formLabelWidth" label="税率">
-					<el-input v-model.trim="CreateForm.tax" placeholder="项目的税率"></el-input>
+				<el-form-item :label-width="formLabelWidth" label="账期" prop="payment_days">
+					<el-input v-model.trim="CreateForm.payment_days" placeholder="项目账期(天数)"></el-input>
 				</el-form-item>
-				<el-form-item :label-width="formLabelWidth" label="账期">
-					<el-input v-model.trim="CreateForm.payment_days" placeholder="项目账期"></el-input>
-				</el-form-item>
+                <el-form-item :label-width="formLabelWidth" label="账单日" prop="statement_date">
+                    <el-date-picker
+                        v-model="CreateForm.statement_date"
+                        type="date"
+                        placeholder="选择账单日">
+                    </el-date-picker>
+                </el-form-item>
 				<el-form-item :label-width="formLabelWidth" label="合同">
 					<el-input v-model.trim="CreateForm.agreement" placeholder="合同信息"></el-input>
 				</el-form-item>
@@ -89,6 +94,10 @@
 						</div>
 					</div>
 				</el-form-item>
+                <br>
+                <el-form-item :label-width="formLabelWidth" label="税率">
+                    <el-input v-model.trim="CreateForm.tax" placeholder="项目的税率"></el-input>
+                </el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
 		   		<el-button @click="Close">取 消</el-button>
@@ -114,7 +123,8 @@ export default {
 				tax: "",
 				tag: "",
 				agreement: "",
-				payment_days: ""
+				payment_days: "",
+                statement_date: ""
 			},
 			FormRules: {
 				cust_id: [
@@ -133,6 +143,13 @@ export default {
 					{required: true, trigger: 'blur', message: "请输入电话号码"},
 					{validator: this.onlyNumber, trigger: 'blur'}
 				],
+                payment_days:[
+                    {required: true, trigger: 'blur', message: "请输入项目的账期"},
+                    {validator: this.onlyNumber, trigger: 'blur'}
+                ],
+                statement_date:[
+                    {required: true, trigger: 'blur', message: "请选择账单日"},
+                ],
 			},
 			CustList: [],
 			fileList: [], //文件列表

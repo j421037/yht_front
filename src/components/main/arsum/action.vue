@@ -14,7 +14,7 @@
 						<el-dropdown-item @click.native="ShowDialog({CreatePotentialProVisible:true})">新建潜在项目</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
-				<!--<el-button type="warning" size="mini" @click.native="Initialization">初始化</el-button>-->
+				<el-button type="warning" size="mini" @click.native="Initialization">初始化</el-button>
 			</div>
 			<div class="fast-query">
 				<el-input placeholder="快速查询你需要的内容"  v-model="form[0].value" class="input-with-select">

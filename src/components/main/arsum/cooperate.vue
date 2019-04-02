@@ -30,7 +30,7 @@
 					
 						<el-tabs type="border-card" v-if="scope.row.rowkey == expands[0]" @tab-click="tabClick" style="transition: all 0.5s;height: 370px;position: relative;">
 							<el-tab-pane v-for="(item, key) in Tabs" :key="key" :label="item.name"  style="height: 300px;position:relative;">
-								<component v-bind:is="item.component" :moduleName="item.moduleName"></component>
+								<component v-bind:is="item.component" :moduleName="item.moduleName" :RowData="scope.row"></component>
 							</el-tab-pane>
 						</el-tabs>
 						
@@ -172,6 +172,7 @@ import ReceivebillList from './tabs/ReceivebillList.vue';
 import DiscountList from './tabs/DiscountList.vue';
 import RefundList from './tabs/RefundList.vue';
 import RecePlanList from './tabs/RecePlanList.vue';
+import  Report from './tabs/Report';
 
 export default{
 	data() {
@@ -190,11 +191,12 @@ export default{
 			
 			expands: [],
 			Tabs: [
-				{name: '销售明细', component: SaleOrderList,moduleName: "SaleOrderList"},
-				{name: '收款明细', component: ReceivebillList, moduleName: "ReceiveBillList"},
+				{name: '销售明细', component: SaleOrderList,moduleName: "SaleOrderList",needInit: true},
+				{name: '收款明细', component: ReceivebillList, moduleName: "ReceiveBillList",needInit: true},
 				// {name: '优惠明细', component: DiscountList, moduleName: ""},
-				{name: '退货明细', component: RefundList, moduleName: "RefundList"},
-				{name: '收款计划', component: RecePlanList,moduleName: "RecePlanList"}
+				{name: '退货明细', component: RefundList, moduleName: "RefundList",needInit: true},
+				{name: '收款计划', component: RecePlanList,moduleName: "RecePlanList",needInit: true},
+                {name: '数据报表', component: Report,moduleName: "Report", needInit: false}
 			],
 			CurrentRow: {},
 			ArrowActiveIndex: false, //展开图标旋转类
@@ -260,7 +262,8 @@ export default{
 		activeRow(row) {
 			this.$store.dispatch('ARSumCurrentRow', row);
  			this.Tabs.forEach((item) => {
-				this.$store.dispatch('Get'+item.moduleName, {pid:row.pid});
+ 			    if (item.needInit)
+				    this.$store.dispatch('Get'+item.moduleName, {pid:row.pid});
 			});
 		},
 		updateFilterQuery() {
@@ -288,7 +291,8 @@ export default{
 		//tab切换时的事件函数
 		tabClick(tab) {
 			this.Tabs.forEach((item) => {
-				if (item.name == tab.label) {
+			    //init
+				if (item.name == tab.label && item.needInit === true) {
 					if (!this.$store.state.user[item.moduleName].ready) {
 						this.$store.dispatch('Get'+item.moduleName, {pid:this.CurrentRow.pid});
 					}
@@ -320,7 +324,6 @@ export default{
 	
 	computed: {
 		tableData: function() {
-			
 			return this.$store.state.user.ARSum;
 		},
 		tableLoading: function() {

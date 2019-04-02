@@ -16,6 +16,7 @@ import DiscountList from './DiscountList.vue';
 import RefundList from './RefundList.vue';
 import RecePlanLsit from './RecePlanLsit.vue';
 
+
 export default {
 	
 	data() {
@@ -34,7 +35,8 @@ export default {
 		'v-receivebill-list': ReceivebillList,
 		'v-discount-list': DiscountList,
 		'v-refund-list': RefundList,
-		'v-receplan-list': RecePlanLsit
+		'v-receplan-list': RecePlanLsit,
+        'v-report': Report
 	}
 }
 </script>
