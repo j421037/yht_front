@@ -28,9 +28,9 @@
 							</el-button-group>
 						</div>
 					
-						<el-tabs type="border-card" v-if="scope.row.rowkey == expands[0]" @tab-click="tabClick" style="transition: all 0.5s;height: 370px;position: relative;">
-							<el-tab-pane v-for="(item, key) in Tabs" :key="key" :label="item.name"  style="height: 300px;position:relative;">
-								<component v-bind:is="item.component" :moduleName="item.moduleName" :RowData="scope.row"></component>
+						<el-tabs type="border-card" v-if="scope.row.rowkey == expands[0] " @tab-click="tabClick" style="transition: all 0.5s;height: 370px;position: relative;">
+							<el-tab-pane v-for="(item, key) in Tabs" :key="key" :label="item.name"   style="height: 300px;position:relative;">
+								<component v-if="tabVisible == true" v-bind:is="item.component" :moduleName="item.moduleName" ></component>
 							</el-tab-pane>
 						</el-tabs>
 						
@@ -188,7 +188,6 @@ export default{
 				initialization: true, 
 				type: 1
 			},
-			
 			expands: [],
 			Tabs: [
 				{name: '销售明细', component: SaleOrderList,moduleName: "SaleOrderList",needInit: true},
@@ -201,24 +200,20 @@ export default{
 			CurrentRow: {},
 			ArrowActiveIndex: false, //展开图标旋转类
 			DomRefresh: true,
+            tabVisible: true
 		}
 	},
 	methods: {
 		init() {
 			this.updateFilterQuery();
-			
 			this.$store.dispatch('ARSum', this.query).then(() => {
-				
 				this.initialization = false;
 			});
 			this.$store.dispatch('InitPagination');
 		},
 		reloadTable() {
-			
 			this.updateFilterQuery();
-				this.$store.dispatch('ARSum', this.query);
-			
-			
+            this.$store.dispatch('ARSum', this.query);
 		},
 		indexMethod(index) {
 
@@ -245,7 +240,6 @@ export default{
 			return row.rowkey;
 		},
 		expandChange(data,expandedRows) {
-
 			//控制只显示当前行
 	    	if (expandedRows.length) {
 	         	this.expands = []; 
@@ -257,14 +251,12 @@ export default{
 			else {
 	        	this.expands = [];
 			}
-			this.CurrentRow = data;  
+			this.CurrentRow = data;
 		},
 		activeRow(row) {
+            this.CurrentRow = row;
 			this.$store.dispatch('ARSumCurrentRow', row);
- 			this.Tabs.forEach((item) => {
- 			    if (item.needInit)
-				    this.$store.dispatch('Get'+item.moduleName, {pid:row.pid});
-			});
+			this.$store.dispatch('Get'+this.Tabs[0].moduleName,{pid:row.pid});
 		},
 		updateFilterQuery() {
 			this.$store.dispatch('updateFilterQuery', this.query);
@@ -288,18 +280,6 @@ export default{
 		OpenChangeCusDialog() {
 			this.$store.dispatch('AlterTableConfig', { ChangeCustVisible: true});
 		},
-		//tab切换时的事件函数
-		tabClick(tab) {
-			this.Tabs.forEach((item) => {
-			    //init
-				if (item.name == tab.label && item.needInit === true) {
-					if (!this.$store.state.user[item.moduleName].ready) {
-						this.$store.dispatch('Get'+item.moduleName, {pid:this.CurrentRow.pid});
-					}
-				}
-			});
-			
-		},
 		pageChange(pageNow) {
 			this.currentPage = pageNow;
 			this.query.offset = (pageNow - 1) * this.query.limit;
@@ -313,7 +293,23 @@ export default{
 		/**预览合同附件 */
 		OpenViewWindow(id) {
 			window.open(AppConst.BACKEND_DOMAIN_VIEW_URL+"?id="+id+"&token="+this.$store.state.user.token, new Date().getTime(),'width=800,height=500');
-		}
+		},
+        //tab切换时的事件函数
+        tabClick(tab) {
+            this.Tabs.forEach((item) => {
+                //init
+                if (item.name == tab.label && item.needInit === true) {
+                    if (!this.$store.state.user[item.moduleName].ready) {
+                       this.$store.dispatch('Get'+item.moduleName, {pid:this.CurrentRow.pid});
+                    }
+                }
+            });
+            // 重绘
+            this.tabVisible = false;
+            this.$nextTick(() => {
+                this.tabVisible = true;
+            });
+        },
 	},
 	created() {
 		this.init();

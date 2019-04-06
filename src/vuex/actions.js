@@ -635,10 +635,17 @@ export const DeleteReceivebill = ({commit}, info) => {
 export const ARSum = ({commit}, query) => {
 	//状态开始
 	commit('AR_SUM_TABLE_LOADING');
-
 	return api.ARSum(query).then((response) => {
 		return commit('AR_SUM_TABLE', response);
 	})
+}
+
+//更新某一个项目的欠款信息
+export const UpdateARSumCurrentRow = ({commit}, pid) => {
+    let info = {conf:[{operator:0,field: 'pid',value:pid}], offset:0,limit: 1,initialization: 1,type:1};
+    return api.ARSum(info).then((response) => {
+       return commit('UPDATE_ARSUMCURRENT_ROW',response);
+    });
 }
 
 export const UpdateReceivebill = ({commit},info) => {
@@ -781,7 +788,6 @@ export const ARSumCurrentRow = ({commit}, info) => {
 }
 //销售明细
 export const GetSaleOrderList = ({commit}, info) => {
-	 
 	return api.GetSaleOrderList(info).then((response) => {
 		return commit('GET_SALE_ORDER_LIST', response);
 	})
@@ -892,6 +898,9 @@ export const ArticleCategoryDelete = ({commit}, info) => {
 	return api.ArticleCategoryDelete(info).then((response) => {
 		commit('ARTICLE_CATEGORY_DELETE',response);
 	})
+}
+export const SetBaseProductConfig = ({commit}, info) => {
+    return commit("SET_BASEPRODUCTCONFIG",info);
 }
 
 

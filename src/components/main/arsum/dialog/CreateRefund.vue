@@ -14,6 +14,9 @@
 		    	<el-form-item label="项目名称" :label-width="formLabelWidth" >
 					<span class="form-item-names">{{Form.project}}</span>
 		    	</el-form-item>
+                <el-form-item label="标签" :label-width="formLabelWidth" >
+                    <el-tag type="success">{{row.tag}}</el-tag>
+                </el-form-item>
 		    	<el-form-item label="退货金额" :label-width="formLabelWidth" prop="refund">
 		    		<el-input  v-model.trim="Form.refund" placeholder="请输入退款金额"></el-input>
 		    	</el-form-item>

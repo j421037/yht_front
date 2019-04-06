@@ -509,7 +509,6 @@ const mutations = {
 	},
 	[types.STATIC_FIELDS] (state, response) {
 		state.FIELDS = response;
-		console.log(response)
 	},
 	[types.UPDATE_FILTER_QUERY] (state, response) {
 		state.filterQuery = response;
@@ -522,6 +521,12 @@ const mutations = {
 	[types.ARSUM_SET_CURRENT_ROW] (state, response) {
 		state.ARSumCurrentRow = response;
 	},
+    [types.UPDATE_ARSUMCURRENT_ROW] (state, response) {
+        if (response.status == 'success')
+        {
+            state.ARSumCurrentRow = response.data[0];
+        }
+    },
 	[types.GET_SALE_ORDER_LIST] (state, response) {
 		state.SaleOrderList.data = response.row;
 		state.SaleOrderList.pagination.total = response.total;
@@ -633,7 +638,12 @@ const mutations = {
 	},
 	[types.ARTICLE_CATEGORY_DELETE] (state, response) {
 		state.ArticleCategoryDelete = response;
-	}
+	},
+    [types.SET_BASEPRODUCTCONFIG] (state, params)
+    {
+        eval('state.BaseProduct.' + params.field +'='+params.value);
+        //state.BaseProduct.Category.CreateDialog.visible = true;
+    }
 }
 
 export default mutations;

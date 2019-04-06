@@ -60,7 +60,10 @@ export default {
 				],
 				tag: [
 					{required: true, trigger: 'blur', message: '请选择客户标签'}
-				]
+				],
+                status:[
+                    {required: true, trigger: 'blur', message: '请选择客户状态'}
+                ]
 			},
 			custype: [
 				{label: "合作客户", value: 1},

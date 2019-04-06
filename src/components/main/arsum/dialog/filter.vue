@@ -322,14 +322,6 @@ export default {
 		},
 		ChooseRow(index) {
 			this.rowIndex = index;
-
-			// let field = this.condition[this.ConditionIndex].conf[index].field;
-
-			// this.FilterField.forEach((item, i) => {
-			// 	if (item.value == field) {
-			// 		// this.CurrentOpIndex = i;
-			// 	}
-			// });
 		},
 		InitFilter() {
 			this.AlreadyInit = false;
@@ -348,15 +340,11 @@ export default {
 		*@param val 当前选择的字段值
 		*/
 		FilterFieldChangeHandle(index, val) {
-			
 			if (this.condition[this.ConditionIndex].conf[index].logic == "") {
-				
 				this.condition[this.ConditionIndex].conf[index].logic = 1;
 			}
-
 			this.condition[this.ConditionIndex].conf[index].value = "";
 			this.condition[this.ConditionIndex].conf[index].type = {name: "", list: []};
-
 			this.FilterField.forEach((item, i) => {
 				if (item.value == this.condition[this.ConditionIndex].conf[index].field) {
 					this.condition[this.ConditionIndex].conf[index].type.name = item.type;
@@ -374,12 +362,7 @@ export default {
 					this.condition[this.ConditionIndex].conf[index].operator = item.opearate[0].value;
 					this.condition[this.ConditionIndex].conf[index].option = item.opearate;
 				}
-				// if (item.value == val) {
-				// 	this.CurrentOpIndex = i;
-				// }
 			});
-
-
 			this.RefreshFieldStatus = false;
 			this.$nextTick(() => {
 				this.RefreshFieldStatus = true;
@@ -390,21 +373,15 @@ export default {
 			if (this.condition[this.ConditionIndex].conf[index].type.name == 'server') {
 				this.condition[this.ConditionIndex].conf[index].value = "";
 			}
-			
 		},
 		SelectVisibleChange(index)  {
 			this.rowIndex = index;
-			
-			//this.condition[this.ConditionIndex].conf[this.rowIndex].remote = []
 		},
 		remoteMethod(query) {
 			this.condition[this.ConditionIndex].conf[this.rowIndex].remote = [];
-
 			if (query) {
-				
 				this.$store.dispatch('FindARSumFilterValue', {field: this.condition[this.ConditionIndex].conf[this.rowIndex].field, keyword: query}).then(() => {
 					let response = this.$store.state.user.FindARSumFilterValue;
-
 					if (response.length > 0) {
 						this.condition[this.ConditionIndex].conf[this.rowIndex].remote = response;
 					}
@@ -517,7 +494,7 @@ export default {
 		},
 		QueryData() {
 			let param = this.condition[this.ConditionIndex].conf;
-			// console.log(param);return;
+			console.log(param);return;
 			this.$store.dispatch('updateFilterQueryParam', {conf: param, initialization: false}).then(() => {
 				this.$store.dispatch('ARSum', this.$store.state.user.filterQuery).then(() => {
 					this.FilterClose();

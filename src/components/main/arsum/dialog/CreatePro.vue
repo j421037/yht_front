@@ -41,7 +41,7 @@
 				<el-form-item :label-width="formLabelWidth" label="项目名称" prop="name">
 					<el-input v-model.trim="CreateForm.name"></el-input>
 				</el-form-item>
-				<el-form-item :label-width="formLabelWidth" label="施工范围" prop="tid">
+				<el-form-item :label-width="formLabelWidth1" label="施工范围" prop="tid">
 					<el-select v-model="CreateForm.tid" class="CreateForm-select">
 						<el-option v-for="(item, key) in FIELD.F_CMK_PROATTR" :label="item.label" :value="item.value" :key = "key"></el-option>
 					</el-select> 
@@ -49,7 +49,7 @@
 				<el-form-item :label-width="formLabelWidth" label="联系电话" prop="phone_num">
 					<el-input v-model.trim="CreateForm.phone_num" placeholder="项目联系电话"></el-input>
 				</el-form-item>
-				<el-form-item :label-width="formLabelWidth" label="标签" prop="tag">
+				<el-form-item :label-width="formLabelWidth1" label="标签" prop="tag">
 					<el-select v-model="CreateForm.tag" class="CreateForm-select">
 						<el-option v-for="(item, key) in FIELD.F_CMK_CUSTAG" :label="item.label" :value="item.value" :key = "key"></el-option>
 					</el-select>
@@ -57,23 +57,24 @@
 				<el-form-item :label-width="formLabelWidth" label="挂靠信息" >
 					<el-input v-model.trim="CreateForm.affiliate" placeholder="如无挂靠信息则可以留空"></el-input>
 				</el-form-item>
-				<el-form-item :label-width="formLabelWidth" label="预计金额">
+				<el-form-item :label-width="formLabelWidth1" label="预计金额">
 					<el-input v-model.trim="CreateForm.estimate" placeholder="项目的预计合作金额"></el-input>
 				</el-form-item>
 				<el-form-item :label-width="formLabelWidth" label="账期" prop="payment_days">
 					<el-input v-model.trim="CreateForm.payment_days" placeholder="项目账期(天数)"></el-input>
 				</el-form-item>
-                <el-form-item :label-width="formLabelWidth" label="账单日" prop="statement_date">
+                <el-form-item :label-width="formLabelWidth1" label="账期初始日期" prop="payment_start_date">
                     <el-date-picker
-                        v-model="CreateForm.statement_date"
+                        v-model="CreateForm.payment_start_date"
                         type="date"
+                        value-format="yyyy-MM-dd"
                         placeholder="选择账单日">
                     </el-date-picker>
                 </el-form-item>
 				<el-form-item :label-width="formLabelWidth" label="合同">
 					<el-input v-model.trim="CreateForm.agreement" placeholder="合同信息"></el-input>
 				</el-form-item>
-				<el-form-item :label-width="formLabelWidth" label="合同附件">
+				<el-form-item :label-width="formLabelWidth1" label="合同附件">
 					<div class="attachment">
 						<span v-show="false">
 							<input type="file"  ref="FileInput" @change="AttachmentChange($event)" />
@@ -113,6 +114,7 @@ export default {
 		return {
 			loadingCust: false,
 			formLabelWidth: '100px',
+            formLabelWidth1: '120px',
 			CreateForm: {
 				name: "",
 				cust_id: "",
@@ -124,7 +126,7 @@ export default {
 				tag: "",
 				agreement: "",
 				payment_days: "",
-                statement_date: ""
+                payment_start_date: ""
 			},
 			FormRules: {
 				cust_id: [
@@ -147,8 +149,8 @@ export default {
                     {required: true, trigger: 'blur', message: "请输入项目的账期"},
                     {validator: this.onlyNumber, trigger: 'blur'}
                 ],
-                statement_date:[
-                    {required: true, trigger: 'blur', message: "请选择账单日"},
+                payment_start_date:[
+                    {required: true, trigger: 'blur', message: "请选择账期初始化的时间"},
                 ],
 			},
 			CustList: [],
@@ -183,7 +185,6 @@ export default {
 	        }
 		},
 		submitForm() {
-
 			this.$refs['CreateForm'].validate((valid) => {
 
 	    		if (valid) {

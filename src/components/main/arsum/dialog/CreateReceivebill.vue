@@ -14,6 +14,9 @@
 		    	<el-form-item label="项目名称" :label-width="formLabelWidth" >
 					<span class="form-item-names">{{Form.project}}</span>
 		    	</el-form-item>
+                <el-form-item label="标签" :label-width="formLabelWidth" >
+                    <el-tag type="success">{{row.tag}}</el-tag>
+                </el-form-item>
 		    	<el-form-item label="收款金额" :label-width="formLabelWidth" prop="amountfor">
 		    		<el-input  v-model.trim="Form.amountfor" placeholder="请输入收款金额"></el-input>
 		    	</el-form-item>
@@ -75,35 +78,6 @@ export default {
 					{validator: this.onlyNumber, trigger: 'blur'}
 				]
 			},
-			pickerOptions: {
-				disabledDate(time) {
-	            	return time.getTime() > Date.now();
-	          	},
-	          	shortcuts: 
-	          	[{
-	          	
-	            	text: '今天',
-	            	onClick(picker) {
-	              		picker.$emit('pick', new Date());
-	            	}
-	          	}, 
-	          	{
-	            	text: '昨天',
-	            	onClick(picker) {
-	              		const date = new Date();
-	              		date.setTime(date.getTime() - 3600 * 1000 * 24);
-	              		picker.$emit('pick', date);
-	            	}
-	          	}, 
-	          	{
-	            	text: '一周前',
-	            	onClick(picker) {
-	              		const date = new Date();
-	              		date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-	              		picker.$emit('pick', date);
-	            	}
-	          	}]
-			},
         } 
     },
     methods: {
@@ -146,6 +120,8 @@ export default {
 							this.$store.dispatch('SetReceiveBillList', {update: false,CurrentRow:{}});
 							this.$store.dispatch('GetReceiveBillList',{pid:this.Form.pid});
 							this.$refs['Form'].resetFields();
+                            //更新当前行项目的信息
+                            this.$store.dispatch('UpdateARSumCurrentRow',this.row.pid);
 						}
 						else {
 							this.$notify.error('操作失败!' + response.errmsg);
@@ -177,7 +153,41 @@ export default {
 		},
 		BillData: function() {
 			return this.$store.state.user.ReceiveBillList;
-		}
+		},
+        pickerOptions: function () {
+            let row = this.$store.state.user.ARSumCurrentRow;
+            if (row) {
+                return {
+                    disabledDate(time) {
+                        return time.getTime() > Date.now() && time.getTime() || time.getTime() <= row.payment_start_date * 1000;
+                    },
+                    shortcuts:
+                        [{
+
+                            text: '今天',
+                            onClick(picker) {
+                                picker.$emit('pick', new Date());
+                            }
+                        },
+                            {
+                                text: '昨天',
+                                onClick(picker) {
+                                    const date = new Date();
+                                    date.setTime(date.getTime() - 3600 * 1000 * 24);
+                                    picker.$emit('pick', date);
+                                }
+                            },
+                            {
+                                text: '一周前',
+                                onClick(picker) {
+                                    const date = new Date();
+                                    date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                                    picker.$emit('pick', date);
+                                }
+                            }]
+                };
+            }
+        },
     }
 }
 </script>

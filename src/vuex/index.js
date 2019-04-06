@@ -224,7 +224,17 @@ const state = {
 	},
 	CreatePotentialPro: {},
 	ARSumInitialization: {},
-	ArticleCategoryDelete: {}
+	ArticleCategoryDelete: {},
+    BaseProduct: {
+	    Category: {
+            CreateCategoryDialog: {
+                visible: false
+            },
+            CreatePriceDialog: {
+                visible: false
+            }
+        }
+    }
 }
 
 export default {

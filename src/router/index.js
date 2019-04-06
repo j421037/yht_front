@@ -78,6 +78,10 @@ let routes = [
 				// component: Permission
 				component: () => import('@/components/main/rbac/permission.vue')
 			},
+            {
+                path: 'products',
+                component: () => import('@/components/main/base/products/index.vue')
+            },
 			{
 				path: 'brand',
 				// component: Brand
@@ -130,16 +134,6 @@ let routes = [
 						component: () => import('@/components/main/forum/list/content.vue')
 					},
 					{
-						// path: 'list/:id',
-						// component: () => import('@/components/main/forum/list/index.vue'),
-						// redirect: '/app/forum/list/index/:id',
-						// children: [
-						//     {
-						//         path: 'index',
-						//         component: () => import('@/components/main/forum/list/list.vue'),
-						//     },
-						//
-						// ]
 						path: 'module/:id/attr/:attr',
 						name: 'forumModule',
 						component: () => import('@/components/main/forum/list/list.vue'),
@@ -189,6 +183,10 @@ let routes = [
 						path: 'cash',
 						component: () => import('@/components/main/offer/cash.vue'),
 					},
+                    {
+                        path: 'cost',
+                        component: () => import('@/components/main/offer/cost.vue'),
+                    },
 					{
 						path: 'history',
 						component: () => import('@/components/main/offer/history.vue'),
