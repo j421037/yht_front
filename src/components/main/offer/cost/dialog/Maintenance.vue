@@ -55,6 +55,7 @@
                             size="mini"
                             title="删除"
                             style="height: 32px;width:32px;display:flex;justify-content: center"
+                            @click.native="RemoveItem(k)"
                         ></el-button>
                     </span>
                 </div>
@@ -95,10 +96,17 @@
         },
 
         methods: {
+            /**
+             * dialog 关闭事件的回调
+             * **/
             handleClose() {
                 this.$store.dispatch("SetBaseProductConfig",{field: "Price.PriceMaintenance.visible",value: false});
                 this.Form.rows = [];
             },
+
+            /**
+             * dialog 显示事件的回调
+             * **/
             handleOpen() {
                 this.table.field.forEach((item) => {
                     this.defaultField[item.field] = "";
@@ -109,21 +117,42 @@
                 this.FieldMap.price = "价格";
                 this.Form.rows.push(JSON.parse(JSON.stringify(this.defaultField)));
             },
+
+            /**
+             * 表单提交
+             * **/
             submit() {
                 console.log(this.Form)
                 this.$refs["form"].validate((valid) => {
 
                 });
             },
+
+            /**
+             * 表单字段验证
+             * @所有价格相关的字段都只能是数字,整数或者小数
+             * **/
             validateField(rule, value, callback) {
-                console.log(value)
-                if (/^[1-9][\d|\.]*[\d]$/.test(value))
+                if (/^[1-9]+(\.?\d+){0,1}$/.test(value))
                     callback();
                 else
                     callback(new Error("请输入数字"));
             },
+
+            /**
+             * 添加一行表单
+             * **/
             AddItem() {
                 this.Form.rows.push(JSON.parse(JSON.stringify(this.defaultField)));
+            },
+
+            /**
+             * 删除一行表单
+             *
+             * @param id Form.rows[id]
+             * **/
+            RemoveItem(id) {
+               this.Form.rows.splice(id,1);
             }
         },
         computed: {

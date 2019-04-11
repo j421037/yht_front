@@ -237,7 +237,13 @@ const state = {
         Price: {
 	        PriceMaintenance: {
 	            visible: false
-            }
+            },
+            FastPriceMaintenance: {
+                visible: false
+            },
+            MakeOffer: {
+                visible: false
+            },
         }
     },
     ProductCategoryStore: {},

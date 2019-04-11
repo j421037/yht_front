@@ -8,9 +8,9 @@
             </div>
             <div class="btn-tool_action">
                 <el-button-group>
-                    <el-button type="info">开始报价</el-button>
-                    <el-button type="info">涨跌幅</el-button>
-                    <el-button type="info" @click.native="OpenPriceDialog">面价维护</el-button>
+                    <el-button type="info" :disabled="btnDisable" @click.native="OpenMakeOffer">开始报价</el-button>
+                    <el-button type="info" @click.native="OpenPriceDialog" :disabled="btnDisable">面价维护</el-button>
+                    <el-button type="info" :disabled="btnDisable" @click.native="OpenFastPriceDialog">一键调价</el-button>
                 </el-button-group>
             </div>
         </div>
@@ -24,6 +24,8 @@
             </el-tab-pane>
         </el-tabs>
         <v-maintenance  :category="categoryName" :table="table"></v-maintenance>
+        <v-fast-maintenance :category="categoryName" :table="table"></v-fast-maintenance>
+        <v-makeoffer :table="table"></v-makeoffer>
 	</div>
 </template>
 
@@ -37,6 +39,7 @@ export default {
             LoadTab: [],
             collects: [],
             refreshVisible: true,
+            btnDisable: false,
         };
     },
     created() {
@@ -59,12 +62,14 @@ export default {
                 });
             }
             else {
+                this.btnDisable = true;
                 this.LoadProductPriceTable(id).then(() => {
                     this.LoadedCategory.push(id);
                     this.refreshVisible = false;
                     this.$nextTick(() => {
                         this.refreshVisible = true;
                     });
+                    this.btnDisable = false;
                 });
             }
         },
@@ -95,11 +100,26 @@ export default {
         },
 
         /**
-         * 价格维护
+         * 面价维护
          * **/
         OpenPriceDialog() {
             this.$store.dispatch("SetBaseProductConfig",{field: "Price.PriceMaintenance.visible",value: true});
+        },
+
+        /**
+         * 一键调价
+         * **/
+        OpenFastPriceDialog() {
+            this.$store.dispatch("SetBaseProductConfig",{field: "Price.FastPriceMaintenance.visible",value: true});
+        },
+
+        /**
+         * 开始报价
+         * **/
+        OpenMakeOffer() {
+            this.$store.dispatch("SetBaseProductConfig",{field: "Price.MakeOffer.visible",value: true});
         }
+
     },
     computed: {
 	    category: function() {
@@ -153,7 +173,7 @@ export default {
             }
         },
         table: function() {
-	        if (this.CurrentTabId > 0) {
+	        if (this.CurrentTabId > 0 && this.TableList) {
                 let row = [];
 
                 this.TableList.forEach((item) => {
@@ -168,7 +188,9 @@ export default {
     components: {
 	    "v-surface": () => import('./cost/tab/SurfacePrice'),
         "v-ton" : () => import('./cost/tab/TonPrice'),
-        "v-maintenance": () => import("./cost/dialog/Maintenance")
+        "v-maintenance": () => import("./cost/dialog/Maintenance"),
+        "v-fast-maintenance": () => import("./cost/dialog/FastMaintenance"),
+        "v-makeoffer": () => import("./cost/dialog/MakeOffer")
     }
 }	
 </script>
