@@ -29,24 +29,25 @@
             </div>
             <div class="products-box_brand">
                 <el-table
-                    :data="brand"
+                    :data="TableList"
                     border
+                    @selection-change="handleSelectionChange"
                 >
+                    <el-table-column type="selection" width="55"></el-table-column>
                     <el-table-column prop="name" label="品牌名称"></el-table-column>
-                    <el-table-column prop="id" label="操作" width="80">
-                        <template slot-scope="scope">
-                            <el-button type="danger" size="mini" >禁用</el-button>
-                        </template>
+                    <el-table-column prop="method_l" label="计算方式">
+
                     </el-table-column>
-                    <el-table-column prop="attribute" label="产品属性">
-                        <el-table-column prop="" label="属性1"></el-table-column>
-                        <el-table-column prop="" label="属性2"></el-table-column>
-                    </el-table-column>
+                    <el-table-column prop="table" label="对应的数据表"></el-table-column>
+                    <el-table-column prop="description" label="字段信息"></el-table-column>
                 </el-table>
+                <p>
+                    <el-button type="info" :disabled="DelBtnDisable" :loading="DelBtnLoading" @click.native="RemoveTables">删除</el-button>
+                </p>
             </div>
         </div>
         <createcategory-dialog></createcategory-dialog>
-        <createprice-dialog></createprice-dialog>
+        <createprice-dialog :CurrentCategoryId="CurrentCid"></createprice-dialog>
     </div>
 </template>
 
@@ -57,10 +58,14 @@
         data() {
             return {
                 CurrentCid: 0,
+                DelBtnDisable: true,
+                DelBtnLoading: false,
+                TableIds: []
             };
         },
         created() {
             this.$store.dispatch("brandList");
+            this.$store.dispatch("LoadProductCategory");
         },
         methods: {
             CategoryRowStyle: function({row, rowIndex}) {
@@ -75,24 +80,78 @@
             },
             CategoryRowClick(row)
             {
-                this.CurrentCid = row.id;
+                if (this.CurrentCid != row.id)
+                {
+                    this.CurrentCid = row.id;
+                    this.LoadProductPriceTable(row.id);
+                }
             },
             OpenCreateCategoryDialog() {
                 this.$store.dispatch('SetBaseProductConfig',{field: 'Category.CreateCategoryDialog.visible',value: true});
             },
             OpenCreatePriceDialog() {
                 this.$store.dispatch('SetBaseProductConfig',{field: 'Category.CreatePriceDialog.visible',value: true});
+            },
+
+            /**读取当前分类下的价格表**/
+            LoadProductPriceTable(id) {
+                this.$store.dispatch("LoadProductPriceTable",{category:id});
+            },
+
+            /**删除价格表**/
+            RemoveTables() {
+                if (this.TableIds.length < 1)
+                    return false;
+
+                this.DelBtnLoading = true;
+
+                this.$store.dispatch("DeleteProductPriceTable",{id:this.TableIds})
+                    .then(() => {
+                        let response = this.$store.state.user.DeleteProductPriceTable;
+
+                        if (response.status == "success")
+                        {
+                            this.$notify.success("删除成功");
+                            this.LoadProductPriceTable(this.CurrentCid);
+                        }
+                        else {
+                            this.$notify.error("删除失败,"+response.errmsg);
+                        }
+                        this.DelBtnLoading = false;
+                });
+            },
+
+            /**价格表checkbox 事件**/
+            handleSelectionChange(rows) {
+                this.TableIds = [];
+                rows.forEach((item) => {
+                    this.TableIds.push(item.id);
+                });
+
+                if (this.TableIds.length > 0)
+                {
+                    this.DelBtnDisable = false;
+                }
+                else {
+                    this.DelBtnDisable = true;
+                }
             }
         },
         computed: {
             category: function() {
-                let data = [{name: "钢管产品",id:1},{name:"阀门产品",id:2},{name:"其他产品",id:3}];
-                this.CurrentCid = data[0].id;
+                let data = this.$store.state.user.ProductCategoryList;
+
+                if (data.length > 0)
+                {
+                    this.CurrentCid = data[0].id;
+                    this.LoadProductPriceTable(data[0].id);
+                }
 
                 return data;
             },
-            brands: function() {
-                return [{name:"泰丰桥",id:1,cid:1},{name:"一通",id:2,cid:1},{name: "TVT",id:3,cid:2},{name:"迈克",id:4,cid:2}];
+            TableList: function() {
+                //return [{name:"泰丰桥",id:1,cid:1},{name:"一通",id:2,cid:1},{name: "TVT",id:3,cid:2},{name:"迈克",id:4,cid:2}];
+                return this.$store.state.user.ProductPriceTableList;
             },
             brand: function() {
                 let data = [];

@@ -232,9 +232,23 @@ const state = {
             },
             CreatePriceDialog: {
                 visible: false
+            },
+        },
+        Price: {
+	        PriceMaintenance: {
+	            visible: false
             }
         }
-    }
+    },
+    ProductCategoryStore: {},
+    ProductCategoryList: [],
+    ProductCreatePriceTable: {},
+    ProductPriceTableList: [],
+    DeleteProductPriceTable: {},
+    ProductSurfacePriceList: {
+	    column:[],
+        rows:[]
+    },
 }
 
 export default {

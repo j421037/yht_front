@@ -13,7 +13,7 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="handleClose">取 消</el-button>
-                <el-button type="primary">确 定</el-button>
+                <el-button type="primary" @click="submit" :loading="submiting">提 交</el-button>
             </span>
         </el-dialog>
     </div>
@@ -30,12 +30,39 @@
                     name: [
                         {required: true, trigger: 'blur', message: "请输入分类名称"}
                     ],
-                }
+                },
+                submiting: false
             };
         },
         methods: {
             handleClose() {
                 this.$store.dispatch('SetBaseProductConfig',{field: 'Category.CreateCategoryDialog.visible',value: false});
+            },
+            LoadProductCategory() {
+                this.$store.dispatch("LoadProductCategory");
+            },
+            submit() {
+                this.$refs["form"].validate((valid) => {
+                    if (valid)
+                    {
+                        this.submiting = true;
+                        this.$store.dispatch("ProductCategoryStore", this.Form).then(() => {
+                            let response = this.$store.state.user.ProductCategoryStore;
+
+                            if (response.status == 'success')
+                            {
+                                this.$notify.success("操作成功");
+                                this.LoadProductCategory();
+                                this.handleClose();
+                                this.$refs["form"].resetFields();
+                            }
+                            else {
+                                this.$notify.error("操作失败");
+                            }
+                            this.submiting = false;
+                        });
+                    }
+                });
             }
         },
         computed: {

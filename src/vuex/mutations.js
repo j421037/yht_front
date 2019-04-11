@@ -643,6 +643,34 @@ const mutations = {
     {
         eval('state.BaseProduct.' + params.field +'='+params.value);
         //state.BaseProduct.Category.CreateDialog.visible = true;
+    },
+    [types.PRODUCT_CATEGORY_STORE] (state,response) {
+	    state.ProductCategoryStore = response;
+    },
+    [types.PRODUCT_CATEGORY_LIST] (state, response) {
+	    state.ProductCategoryList = response.data;
+    },
+    [types.PRODUCT_CREATE_PRICE_TABLE] (state, response) {
+	    state.ProductCreatePriceTable = response;
+    },
+    [types.LOAD_PRODUCT_PRICE_TABLE] (state, response) {
+	    state.ProductPriceTableList = response.data;
+    },
+    [types.DELETE_PRODUCT_PRICE_TABLE] (state, response) {
+        state.DeleteProductPriceTable = response;
+    },
+    [types.PRODUCT_SURFACE_PRICE_LIST] (state, response) {
+	    let data = response.data;
+
+	    if (!state.ProductSurfacePriceList.column.some((item) => {return item.id == data.id}))
+        {
+            state.ProductSurfacePriceList.column.push({id:data.id,"field":data.column});
+        }
+
+        if (!state.ProductSurfacePriceList.rows.some((item) => {return item.id == data.id}))
+        {
+            state.ProductSurfacePriceList.rows.push({id:data.id,"row":data.rows});
+        }
     }
 }
 

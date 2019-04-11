@@ -445,3 +445,21 @@ export const ArticlePersonalModule = () => {
 export const ArticleCategoryDelete = (info)=> {
 	return http.post('article/category/delete', info);
 }
+export const ProductCategoryStore = (info) => {
+    return http.post("products/store", info);
+}
+export const LoadProductCategory = () => {
+    return http.post("products/list");
+}
+export const ProductCreatePriceTable = (info) => {
+    return http.post("products/table/create", info);
+}
+export const LoadProductPriceTable = (info) => {
+    return http.post("products/table/list", info);
+}
+export const DeleteProductPriceTable = (info) => {
+    return http.post("products/table/delete", info);
+}
+export const ProductSurfacePriceList = (info) => {
+    return http.post("products/prices",info);
+}

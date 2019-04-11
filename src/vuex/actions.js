@@ -902,5 +902,34 @@ export const ArticleCategoryDelete = ({commit}, info) => {
 export const SetBaseProductConfig = ({commit}, info) => {
     return commit("SET_BASEPRODUCTCONFIG",info);
 }
-
+export  const ProductCategoryStore = ({commit}, info) => {
+    return api.ProductCategoryStore(info).then((response) => {
+        return commit("PRODUCT_CATEGORY_STORE", response);
+    })
+}
+export const LoadProductCategory = ({commit}) => {
+    return api.LoadProductCategory().then((response) => {
+        return commit("PRODUCT_CATEGORY_LIST", response);
+    });
+}
+export const ProductCreatePriceTable = ({commit}, info) => {
+    return api.ProductCreatePriceTable(info).then((response) => {
+       return commit("PRODUCT_CREATE_PRICE_TABLE",response);
+    });
+}
+export const LoadProductPriceTable = ({commit}, info) => {
+    return api.LoadProductPriceTable(info).then((response) => {
+        return commit("LOAD_PRODUCT_PRICE_TABLE",response);
+    });
+}
+export const DeleteProductPriceTable = ({commit}, info) => {
+    return api.DeleteProductPriceTable(info).then((response) => {
+       return commit("DELETE_PRODUCT_PRICE_TABLE", response);
+    });
+}
+export const ProductSurfacePriceList = ({commit}, info) => {
+    return api.ProductSurfacePriceList(info).then((response) => {
+        return commit("PRODUCT_SURFACE_PRICE_LIST",response);
+    });
+}
 
