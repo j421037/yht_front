@@ -463,3 +463,6 @@ export const DeleteProductPriceTable = (info) => {
 export const ProductSurfacePriceList = (info) => {
     return http.post("products/prices",info);
 }
+export const MakeOfferParams = () => {
+    return http.post("products/params");
+}

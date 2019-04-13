@@ -33,6 +33,15 @@
                     </el-form-item>
                 </div>
                 <p style="height:1px;border-top:1px solid #ebebeb;"></p>
+                    <el-upload
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        multiple
+                        :file-list="fileList"
+                    >
+                        <el-button size="small" type="primary">添加厂家价格文件</el-button>
+                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                <p style="height:1px;border-top:1px solid #ebebeb;"></p>
                 <div class="form-add-item"
                     v-for="(items ,k) in Form.rows"
                      :key="k"
@@ -92,6 +101,7 @@
                 submiting: false,
                 FieldMap: {},
                 defaultField: {},
+                fileList: []
             }
         },
 

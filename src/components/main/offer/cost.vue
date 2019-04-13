@@ -1,19 +1,23 @@
 <template>
 	<div class="cost-wallpaper">
-        <div class="btn-tool">
-            <div class="btn-tool_category">
-                <el-radio-group v-model="CurrentCategory" style="margin-bottom: 30px;" @change="CategoryChange">
-                    <el-radio-button v-for="(item, k) in category" :key="k"  :label="item.id">{{item.name}}</el-radio-button>
-                </el-radio-group>
+        <transition name="el-fade-in-linear">
+            <div class="btn-tool" v-show="category.length > 0">
+                <div class="btn-tool_category">
+                    <el-radio-group v-model="CurrentCategory" style="margin-bottom: 30px;" @change="CategoryChange">
+                        <el-radio-button v-for="(item, k) in category" :key="k"  :label="item.id">{{item.name}}</el-radio-button>
+                    </el-radio-group>
+                </div>
+                <div class="btn-tool_action" >
+
+                        <el-button-group >
+                            <el-button type="info" :disabled="btnDisable" @click.native="OpenMakeOffer">开始报价</el-button>
+                            <el-button type="info" @click.native="OpenPriceDialog" :disabled="btnDisable">面价维护</el-button>
+                            <el-button type="info" :disabled="btnDisable" @click.native="OpenFastPriceDialog">一键调价</el-button>
+                        </el-button-group>
+
+                </div>
             </div>
-            <div class="btn-tool_action">
-                <el-button-group>
-                    <el-button type="info" :disabled="btnDisable" @click.native="OpenMakeOffer">开始报价</el-button>
-                    <el-button type="info" @click.native="OpenPriceDialog" :disabled="btnDisable">面价维护</el-button>
-                    <el-button type="info" :disabled="btnDisable" @click.native="OpenFastPriceDialog">一键调价</el-button>
-                </el-button-group>
-            </div>
-        </div>
+        </transition>
         <el-tabs :tab-position="tabName" lazy  v-if="refreshVisible" @tab-click="tabClick">
             <el-tab-pane v-for="(item, k) in TableList" :key="k" :label="item.name">
                 <transition name="el-fade-in-linear">
@@ -25,7 +29,7 @@
         </el-tabs>
         <v-maintenance  :category="categoryName" :table="table"></v-maintenance>
         <v-fast-maintenance :category="categoryName" :table="table"></v-fast-maintenance>
-        <v-makeoffer :table="table"></v-makeoffer>
+        <v-makeoffer></v-makeoffer>
 	</div>
 </template>
 

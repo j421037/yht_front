@@ -255,6 +255,7 @@ const state = {
 	    column:[],
         rows:[]
     },
+    MakeOfferParams: []
 }
 
 export default {

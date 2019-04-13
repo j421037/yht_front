@@ -190,7 +190,11 @@ let routes = [
 					{
 						path: 'history',
 						component: () => import('@/components/main/offer/history.vue'),
-					}
+					},
+                    {
+                        path: "authorize",
+                        component: () => import("@/components/main/offer/OfferAuthorize.vue")
+                    }
 				]
 			},
 			{

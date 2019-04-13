@@ -932,4 +932,9 @@ export const ProductSurfacePriceList = ({commit}, info) => {
         return commit("PRODUCT_SURFACE_PRICE_LIST",response);
     });
 }
+export const MakeOfferParams = ({commit}) => {
+    return api.MakeOfferParams().then((response) => {
+        return commit("MAKEOFFER_PARAMS", response);
+    });
+}
 

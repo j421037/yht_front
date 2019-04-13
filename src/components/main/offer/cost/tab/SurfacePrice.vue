@@ -33,7 +33,6 @@
         },
         computed: {
             PriceData: function () {
-                //return [{wj: 15,hd:2.5,price:148},{wj:32,hd:2.5,price:313},{wj:32,hd:2.75,price:331},{wj: 15,hd:2.75,price:161},{wj: 20,hd:2.5,price:191},{wj: 20,hd:2.75,price:206}];
                 let data = this.$store.state.user.ProductSurfacePriceList.rows;
 
                 if (data.length > 0)
@@ -46,7 +45,6 @@
                             return true;
                         }
                     });
-
                     return rows;
                 }
             },

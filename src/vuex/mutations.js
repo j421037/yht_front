@@ -671,6 +671,9 @@ const mutations = {
         {
             state.ProductSurfacePriceList.rows.push({id:data.id,"row":data.rows});
         }
+    },
+    [types.MAKEOFFER_PARAMS] (state, response) {
+        state.MakeOfferParams = response.data;
     }
 }
 
