@@ -942,4 +942,8 @@ export const ProductPriceUpdate =({commit}, info) => {
         return commit("PRODUCT_PRICE_UPDATE", response);
     });
 }
-
+export const ProductPriceVersion = ({commit}, info) => {
+    return api.ProductPriceVersion(info).then((response) => {
+        return commit("PRODUCT_PRICE_VERSION", {info,response});
+    })
+}

@@ -10,12 +10,12 @@
 
             <el-form :model="Form" ref="form" :rules="Rules" label-width="120px">
                 <el-form-item label="产品分类" prop="category">
-                    <el-select v-model="Form.category">
+                    <el-select v-model="Form.category" @change="handleCategoryChange">
                         <el-option v-for="(item,key) in categorys" :key="key" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="品牌" prop="brand">
-                    <el-select v-model="Form.brand">
+                    <el-select v-model="Form.brand" @change="handleBrandChange">
                         <el-option v-for="(item,key) in brands" :key="key" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
@@ -38,7 +38,12 @@
                         </el-option-group>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="调价金额/折扣" prop="discount">
+                <el-form-item label="操作" prop="operate">
+                    <el-select v-model="Form.operate">
+                        <el-option v-for="(item,key) in operates" :key="key" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="值" prop="discount">
                     <el-input v-model="Form.discount" placeholder="请输入调价的金额或者折扣"></el-input>
                 </el-form-item>
             </el-form>
@@ -58,7 +63,8 @@
                     version: "",
                     discount: "",
                     category: "",
-                    brand: ""
+                    brand: "",
+                    operate: 1
                 },
                 Rules: {
                     version: [
@@ -72,6 +78,9 @@
                     ],
                     brand: [
                         {required: true, trigger: "blur", message: "请选择品牌"}
+                    ],
+                    operate: [
+                        {required: true, trigger: "blur", message: "请选择调整的方向"}
                     ]
                 },
                 submiting: false,
@@ -91,7 +100,20 @@
             handleClose() {
                 this.$store.dispatch("SetBaseProductConfig",{field: "Price.FastPriceMaintenance.visible",value: false});
             },
-
+            /**
+             * 产品切换
+             * **/
+            handleCategoryChange() {
+                this.Form.brand = "";
+            },
+            /**
+             * 品牌切换
+             * **/
+            handleBrandChange(val) {
+                this.$store.dispatch("ProductPriceVersion",{brand:val}).then(() => {
+                    console.log(this.$store.state.user.ProductPriceVersion)
+                });
+            },
             /**
              * 提交
              * **/
@@ -141,6 +163,9 @@
                         items: [{label: "2019.5.23",value: 6},{label: "2019.5.28",value: 7}]
                     },
                 ];
+            },
+            operates: function() {
+                return [{label:"上浮",value:1},{label:"下跌",value:0}];
             }
         }
     }

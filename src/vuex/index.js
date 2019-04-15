@@ -256,7 +256,8 @@ const state = {
         rows:[]
     },
     MakeOfferParams: [],
-    ProductPriceUpdate: {}
+    ProductPriceUpdate: {},
+    ProductPriceVersion: [],
 }
 
 export default {

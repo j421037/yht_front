@@ -469,3 +469,6 @@ export const MakeOfferParams = () => {
 export const ProductPriceUpdate = (info) => {
     return http.post("products/prices/update", info);
 }
+export const ProductPriceVersion = (info) => {
+    return http.post("products/prices/version", info);
+}

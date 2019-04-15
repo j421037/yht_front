@@ -675,6 +675,13 @@ const mutations = {
     },
     [types.PRODUCT_PRICE_UPDATE] (state,response) {
 	    state.ProductPriceUpdate = response;
+    },
+    [types.PRODUCT_PRICE_VERSION] (state, response) {
+        state.ProductPriceVersion.forEach((item,index) => {
+            if (item.brand == response.info.brand)
+                state.ProductPriceVersion.splice(index,1);
+        });
+        state.ProductPriceVersion.push({brand:response.info.brand,rows:response.response.data});
     }
 }
 
