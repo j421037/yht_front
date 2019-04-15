@@ -17,12 +17,12 @@
         name: "SurfacePrice",
         props: {
             table: {
-                type: Object
+
             }
         },
         data() {
             return {
-                a: []
+
             }
         },
         created() {
@@ -33,20 +33,16 @@
         },
         computed: {
             PriceData: function () {
-                let data = this.$store.state.user.ProductSurfacePriceList.rows;
+                let rows = [],data = this.$store.state.user.ProductSurfacePriceList.rows;
 
-                if (data.length > 0)
-                {
-                    let rows = [];
-                    data.some((item) => {
-                        if (item.id == this.table.id)
-                        {
-                            rows = item.row;
-                            return true;
-                        }
-                    });
-                    return rows;
-                }
+                data.forEach((item) => {
+                    if (item.id == this.table.id)
+                    {
+                        rows = item.row;
+                    }
+                });
+
+                return rows;
             },
             TableColumns: function() {
                 let data = this.$store.state.user.ProductSurfacePriceList.column;

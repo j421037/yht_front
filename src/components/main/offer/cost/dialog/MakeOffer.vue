@@ -201,7 +201,6 @@
              * 产品分类
              * **/
             categorys: function() {
-                console.log(this.$store.state.user.MakeOfferParams);
                 return this.$store.state.user.MakeOfferParams;
             },
 

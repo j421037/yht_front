@@ -7,8 +7,18 @@
             :before-close="handleClose"
             width="30%"
         >
-            <div style="display: flex;justify-content: center;margin-bottom: 15px;"><span>产品分类: {{category}}</span><span v-if="table" style="margin-left:15px;">品牌: {{table.name}}</span></div>
+
             <el-form :model="Form" ref="form" :rules="Rules" label-width="120px">
+                <el-form-item label="产品分类" prop="category">
+                    <el-select v-model="Form.category">
+                        <el-option v-for="(item,key) in categorys" :key="key" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="品牌" prop="brand">
+                    <el-select v-model="Form.brand">
+                        <el-option v-for="(item,key) in brands" :key="key" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="价格版本" prop="version">
                     <el-select
                         v-model="Form.version"
@@ -42,19 +52,13 @@
 
 <script>
     export default {
-        props: {
-            category: {
-                type: String
-            },
-            table: {
-                type: Object
-            }
-        },
         data() {
             return {
                 Form: {
                     version: "",
-                    discount: ""
+                    discount: "",
+                    category: "",
+                    brand: ""
                 },
                 Rules: {
                     version: [
@@ -62,6 +66,12 @@
                     ],
                     discount: [
                         {required: true,trigger: 'blur',message: '请输入调价金额'}
+                    ],
+                    category: [
+                        {required: true,trigger: "blur", message: "请选择产品"}
+                    ],
+                    brand: [
+                        {required: true, trigger: "blur", message: "请选择品牌"}
                     ]
                 },
                 submiting: false,
@@ -90,6 +100,31 @@
         computed: {
             visible: function() {
                 return this.$store.state.user.BaseProduct.Price.FastPriceMaintenance.visible;
+            },
+            categorys: function() {
+                let data = [], rows = this.$store.state.user.ProductCategoryList;
+                rows.forEach((item) => {
+                    data.push({label:item.name,value:item.id});
+                });
+
+                return data;
+
+            },
+            brands: function() {
+                let data = [],
+                    row = [],
+                    rows = this.$store.state.user.ProductCategoryList;
+
+                rows.forEach((item) => {
+                    if (item.id == this.Form.category)
+                        row = item.children;
+                });
+
+                row.forEach((item) => {
+                    data.push({label:item.name,value:item.id,mapping: item.fields.mapping});
+                });
+
+                return data;
             },
             PriceVersions: function() {
                 return [

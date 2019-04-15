@@ -2,14 +2,6 @@
     <div class="base-products-wallpaper">
         <div class="products-box">
             <div class="products-box_category">
-                <!--<el-table-->
-                    <!--:data="category"-->
-                    <!--:row-style="CategoryRowStyle"-->
-                    <!--@row-click="CategoryRowClick"-->
-                    <!--border-->
-                <!--&gt;-->
-                    <!--<el-table-column prop="name" label="产品分类"></el-table-column>-->
-                <!--</el-table>-->
                 <div class="category_header">
                     <el-button type="text" @click.native="OpenCreateCategoryDialog">新增分类</el-button>
                     <el-button type="text">编辑分类</el-button>
@@ -39,7 +31,7 @@
 
                     </el-table-column>
                     <el-table-column prop="table" label="对应的数据表"></el-table-column>
-                    <el-table-column prop="description" label="字段信息"></el-table-column>
+                    <el-table-column prop="fields.description" label="字段信息"></el-table-column>
                 </el-table>
                 <p>
                     <el-button type="info" :disabled="DelBtnDisable" :loading="DelBtnLoading" @click.native="RemoveTables">删除</el-button>
@@ -144,14 +136,22 @@
                 if (data.length > 0)
                 {
                     this.CurrentCid = data[0].id;
-                    this.LoadProductPriceTable(data[0].id);
                 }
-
                 return data;
             },
             TableList: function() {
-                //return [{name:"泰丰桥",id:1,cid:1},{name:"一通",id:2,cid:1},{name: "TVT",id:3,cid:2},{name:"迈克",id:4,cid:2}];
-                return this.$store.state.user.ProductPriceTableList;
+                let data = this.$store.state.user.ProductCategoryList, rows = [];
+
+                if (data.length > 0)
+                {
+                    data.forEach((item) => {
+                        if (item.id == this.CurrentCid)
+                            rows = item.children;
+                    });
+
+                    return rows;
+                }
+
             },
             brand: function() {
                 let data = [];

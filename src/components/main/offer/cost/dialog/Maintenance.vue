@@ -7,8 +7,27 @@
             :before-close="handleClose"
             width="35%"
         >
-            <p style="text-align: center"><span style="margin-right: 15px;">产品分类：{{category}}</span><span>品牌：<template v-if="table">{{table.name}}</template></span></p>
-            <el-form :model="Form" ref="form" label-width="60px" class="price-form">
+            <el-form :model="Form" ref="form" label-width="80px" class="price-form">
+                <div class="form-add-item">
+                    <el-form-item
+                        label="产品分类"
+                        prop="category"
+                        :rules="{required:true,trigger: 'blur',message:'请选择分类'}"
+                    >
+                        <el-select v-model="Form.category" @change="HandleCategoryChange">
+                            <el-option v-for="(item,key) in categorys" :key="key" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item
+                        label="品牌"
+                        prop="brand"
+                        :rules="{required:true,trigger: 'blur',message:'请选择品牌'}"
+                    >
+                        <el-select v-model="Form.brand" @change="HandleBrandChange">
+                            <el-option v-for="(item,key) in brands" :key="key" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
                 <div class="form-add-item">
                     <el-form-item
                         label="日期"
@@ -19,6 +38,8 @@
                             v-model="Form.date"
                             align="right"
                             type="date"
+                            format="yyyy 年 MM 月 dd 日"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择日期"
                         >
                         </el-date-picker>
@@ -26,20 +47,23 @@
                     <el-form-item
                         label="版本号"
                         label-width="80px"
-                        prop="version"
-                        :rules="{required: true,trigger:'blur',message: '请输入版本号'}"
+                        prop="version_str"
+                        :rules="{validator: validateVersion,trigger:'blur'}"
                     >
-                        <el-input v-model="Form.version" placeholder="价格版本"></el-input>
+                        <el-input v-model="Form.version_str" placeholder="价格版本"></el-input>
                     </el-form-item>
                 </div>
                 <p style="height:1px;border-top:1px solid #ebebeb;"></p>
                     <el-upload
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="UploadUrl"
                         multiple
-                        :file-list="fileList"
+                        name="uploadfile"
+                        :on-success="UploadSuccess"
+                        :before-upload="BeforeUpload"
+                        :before-remove="BeforeRemove"
                     >
                         <el-button size="small" type="primary">添加厂家价格文件</el-button>
-                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                        <div slot="tip" class="el-upload__tip">只能上传图片、PDF、和office文件</div>
                     </el-upload>
                 <p style="height:1px;border-top:1px solid #ebebeb;"></p>
                 <div class="form-add-item"
@@ -69,7 +93,7 @@
                     </span>
                 </div>
                 <p style="margin:0;text-align: center">
-                    <el-button type="info" @click.native="AddItem">增加规格</el-button>
+                    <el-button type="info" @click.native="AddItem" :disabled="AddItemStatus">增加规格</el-button>
                 </p>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -83,20 +107,16 @@
 
 <script>
     export default {
-        props: {
-            category: {
-                type: String
-            },
-            table: {
-                type: Object,
-            }
-        },
+
         data() {
             return {
                 Form: {
-                    date: new Date,
-                    version: "",
+                    category: "",
+                    brand: "",
+                    date: "",
+                    version_str: "",
                     rows:[],
+                    fileid: []
                 },
                 submiting: false,
                 FieldMap: {},
@@ -112,29 +132,85 @@
             handleClose() {
                 this.$store.dispatch("SetBaseProductConfig",{field: "Price.PriceMaintenance.visible",value: false});
                 this.Form.rows = [];
+                this.fileList = [];
+                this.$refs["form"].resetFields();
             },
 
             /**
              * dialog 显示事件的回调
              * **/
             handleOpen() {
-                this.table.field.forEach((item) => {
-                    this.defaultField[item.field] = "";
-                    this.FieldMap[item.field] = item.description;
+
+            },
+            /**
+             * 切换分类的时候重置品牌
+             * **/
+            HandleCategoryChange() {
+                this.Form.brand = "";
+            },
+            /**
+             * 切换品牌的时候构建规格字段
+             * **/
+            HandleBrandChange(id) {
+                let mapping = [];
+                this.brands.forEach((item) => {
+                    if (item.value == id)
+                        mapping = item.mapping;
+                })
+
+                mapping.forEach((item) => {
+                    this.defaultField[item.key] = "";
+                    this.FieldMap[item.key] = item.value;
                 });
+
                 this.Form.rows = [];
                 this.defaultField.price = "";
                 this.FieldMap.price = "价格";
                 this.Form.rows.push(JSON.parse(JSON.stringify(this.defaultField)));
             },
+            /**
+             * 价格表上传成功
+             * **/
+            UploadSuccess(response,file) {
+                if (response.status == "success")
+                {
+                   this.Form.fileid.push({id:response.id,uid:file.uid});
+                }
+            },
+            BeforeUpload(file)
+            {
+                this.fileList.push(file);
+            },
+            BeforeRemove(file,fileList)
+            {
+                this.Form.fileid.forEach((item,index) => {
+                    if (item.uid == file.uid)
+                        this.Form.fileid.splice(index,1);
+                });
 
+                return true;
+            },
             /**
              * 表单提交
              * **/
             submit() {
-                console.log(this.Form)
                 this.$refs["form"].validate((valid) => {
+                    if (valid)
+                    {
+                        this.$store.dispatch("ProductPriceUpdate",this.Form).then(() => {
+                            let response = this.$store.state.user.ProductPriceUpdate;
 
+                            if (response.status == "success")
+                            {
+                                this.$notify.success("操作成功");
+                                this.$store.dispatch("ProductSurfacePriceList",{id:this.Form.brand});
+                            }
+                            else {
+                                this.$notify.error("操作失败");
+                            }
+                            console.log(response)
+                        });
+                    }
                 });
             },
 
@@ -148,7 +224,13 @@
                 else
                     callback(new Error("请输入数字"));
             },
-
+            /**只可以输入字母和数字**/
+            validateVersion(rule, value, callback) {
+                if (/^[A-Za-z0-9_\.]*$/.test(value))
+                    callback();
+                else
+                    callback(new Error("只允许输入字母、数字、破折号（ - ）以及下划线（ _ ）"));
+            },
             /**
              * 添加一行表单
              * **/
@@ -169,6 +251,39 @@
             visible: function() {
                 return this.$store.state.user.BaseProduct.Price.PriceMaintenance.visible;
             },
+            UploadUrl: function() {
+                return this.$appConst.FILE_UPLOAD_URL + "?token="+this.$tool.getter("token");
+            },
+            categorys: function() {
+                let data = [], rows = this.$store.state.user.ProductCategoryList;
+                rows.forEach((item) => {
+                    data.push({label:item.name,value:item.id});
+                });
+
+                return data;
+
+            },
+            brands: function() {
+                let data = [],
+                    row = [],
+                    rows = this.$store.state.user.ProductCategoryList;
+
+                rows.forEach((item) => {
+                   if (item.id == this.Form.category)
+                       row = item.children;
+                });
+
+                row.forEach((item) => {
+                   data.push({label:item.name,value:item.id,mapping: item.fields.mapping});
+                });
+
+                return data;
+            },
+            AddItemStatus: function() {
+                if (this.Form.rows.length > 0)
+                    return false;
+                return true;
+            }
         }
     }
 </script>

@@ -919,7 +919,7 @@ export const ProductCreatePriceTable = ({commit}, info) => {
 }
 export const LoadProductPriceTable = ({commit}, info) => {
     return api.LoadProductPriceTable(info).then((response) => {
-        return commit("LOAD_PRODUCT_PRICE_TABLE",response);
+        return commit("LOAD_PRODUCT_PRICE_TABLE",{category:info.category,response:response});
     });
 }
 export const DeleteProductPriceTable = ({commit}, info) => {
@@ -935,6 +935,11 @@ export const ProductSurfacePriceList = ({commit}, info) => {
 export const MakeOfferParams = ({commit}) => {
     return api.MakeOfferParams().then((response) => {
         return commit("MAKEOFFER_PARAMS", response);
+    });
+}
+export const ProductPriceUpdate =({commit}, info) => {
+    return api.ProductPriceUpdate(info).then((response) => {
+        return commit("PRODUCT_PRICE_UPDATE", response);
     });
 }
 

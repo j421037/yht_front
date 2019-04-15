@@ -466,3 +466,6 @@ export const ProductSurfacePriceList = (info) => {
 export const MakeOfferParams = () => {
     return http.post("products/params");
 }
+export const ProductPriceUpdate = (info) => {
+    return http.post("products/prices/update", info);
+}

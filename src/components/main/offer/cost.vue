@@ -18,17 +18,19 @@
                 </div>
             </div>
         </transition>
-        <el-tabs :tab-position="tabName" lazy  v-if="refreshVisible" @tab-click="tabClick">
-            <el-tab-pane v-for="(item, k) in TableList" :key="k" :label="item.name">
-                <transition name="el-fade-in-linear">
-                    <template v-if="item.id == CurrentTabId || LoadTab[item.id]">
-                        <keep-alive><v-surface :table="item"></v-surface></keep-alive>
-                    </template>
-                </transition>
-            </el-tab-pane>
-        </el-tabs>
-        <v-maintenance  :category="categoryName" :table="table"></v-maintenance>
-        <v-fast-maintenance :category="categoryName" :table="table"></v-fast-maintenance>
+        <div v-for="(it,ik) in category" :key="ik">
+            <keep-alive>
+                <el-tabs :tab-position="tabName" lazy  v-if="refreshVisible && it.id == CurrentCategory" @tab-click="tabClick">
+                    <el-tab-pane v-for="(item, k) in it.children" :key="k" :label="item.name">
+                        <transition name="el-fade-in-linear">
+                            <v-surface :table="item"></v-surface>
+                        </transition>
+                    </el-tab-pane>
+                </el-tabs>
+            </keep-alive>
+        </div>
+        <v-maintenance></v-maintenance>
+        <v-fast-maintenance></v-fast-maintenance>
         <v-makeoffer></v-makeoffer>
 	</div>
 </template>
@@ -41,13 +43,15 @@ export default {
             CurrentTabId: 0,
             LoadedCategory: [],
             LoadTab: [],
-            collects: [],
             refreshVisible: true,
-            btnDisable: false,
+            btnDisable: true,
+            tabName: ""
         };
     },
     created() {
-        this.$store.dispatch("LoadProductCategory");
+        this.$store.dispatch("LoadProductCategory").then(() => {
+            this.btnDisable = false;
+        });
     },
     methods: {
 	    /**
@@ -57,36 +61,11 @@ export default {
          * **/
         CategoryChange(id) {
             this.CurrentCategory = id;
+            this.btnDisable = true;
 
-            if (this.LoadedCategory.some((item) => {return item == id;}))
-            {
-                this.refreshVisible = false;
-                this.$nextTick(() => {
-                   this.refreshVisible = true;
-                });
-            }
-            else {
-                this.btnDisable = true;
-                this.LoadProductPriceTable(id).then(() => {
-                    this.LoadedCategory.push(id);
-                    this.refreshVisible = false;
-                    this.$nextTick(() => {
-                        this.refreshVisible = true;
-                    });
-                    this.btnDisable = false;
-                });
-            }
-        },
-
-        /**
-         * 从某个分类读取价格表信息
-         *
-         * @param id category id
-         * **/
-        LoadProductPriceTable(id) {
-            return this.$store.dispatch("LoadProductPriceTable",{category:id}).then(() => {
-                //this.collects[this.CurrentCategory] = this.$store.state.user.ProductPriceTableList;  这个写法有问题，响应式失效
-                this.$set(this.collects,this.CurrentCategory,this.$store.state.user.ProductPriceTableList);//正确的写法, this.$set() 全局方法
+            this.$nextTick(() => {
+                this.refreshVisible = true;
+                this.btnDisable = false;
             });
         },
 
@@ -95,12 +74,12 @@ export default {
          *
          * **/
         tabClick(val) {
-            this.TableList.some((item) => {
-                if (item.name == val.label) {
-                    this.CurrentTabId = item.id;
-                    this.LoadTab[item.id] = true; //价格表已经加载
-                }
-            });
+            // this.TableList.forEach((item) => {
+            //     if (item.name == val.label) {
+            //         this.CurrentTabId = item.id;
+            //         this.LoadTab[item.id] = true; //价格表已经加载
+            //     }
+            // });
         },
 
         /**
@@ -132,62 +111,12 @@ export default {
             if (data.length > 0)
             {
                 this.CurrentCategory = data[0].id;
-                this.LoadProductPriceTable(data[0].id);
             }
 
             return data;
         },
-        TableList: function() {
-	        let data = this.collects[this.CurrentCategory];
 
-	        if (data) {
-                this.CurrentTabId = data[0].id;
-                data.forEach((item) => {
-                   this.LoadTab[item.id] = false;
-                });
-            }
-            return data;
-        },
-        tabName: function() {
-	        if (this.CurrentTabId > 0 && this.TableList)
-            {
-                let name = "";
-                this.TableList.some((item) => {
-                    if (this.CurrentTabId == item.id)
-                    {
-                        name = item.name;
-                        return name;
-                    }
-                });
-                return name;
-            }
-        },
-        categoryName: function() {
-	        if (this.CurrentCategory > 0 && this.category)
-            {
-                let category = "";
-                this.category.some((item) => {
-                    if (item.id == this.CurrentCategory)
-                    {
-                        category = item.name;
-                        return true;
-                    }
-                });
-                return category;
-            }
-        },
-        table: function() {
-	        if (this.CurrentTabId > 0 && this.TableList) {
-                let row = [];
 
-                this.TableList.forEach((item) => {
-                    if (this.CurrentTabId == item.id)
-                        row = item;
-                });
-
-                return row;
-            }
-        }
     },
     components: {
 	    "v-surface": () => import('./cost/tab/SurfacePrice'),

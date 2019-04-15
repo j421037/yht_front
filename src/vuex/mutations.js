@@ -653,8 +653,9 @@ const mutations = {
     [types.PRODUCT_CREATE_PRICE_TABLE] (state, response) {
 	    state.ProductCreatePriceTable = response;
     },
-    [types.LOAD_PRODUCT_PRICE_TABLE] (state, response) {
-	    state.ProductPriceTableList = response.data;
+    [types.LOAD_PRODUCT_PRICE_TABLE] (state, params) {
+	    //state.ProductPriceTableList = response.data;
+        state.ProductPriceTableList.push({category:params.category,collects: params.response.data});
     },
     [types.DELETE_PRODUCT_PRICE_TABLE] (state, response) {
         state.DeleteProductPriceTable = response;
@@ -667,13 +668,13 @@ const mutations = {
             state.ProductSurfacePriceList.column.push({id:data.id,"field":data.column});
         }
 
-        if (!state.ProductSurfacePriceList.rows.some((item) => {return item.id == data.id}))
-        {
-            state.ProductSurfacePriceList.rows.push({id:data.id,"row":data.rows});
-        }
+        state.ProductSurfacePriceList.rows.push({id:data.id,"row":data.rows});
     },
     [types.MAKEOFFER_PARAMS] (state, response) {
         state.MakeOfferParams = response.data;
+    },
+    [types.PRODUCT_PRICE_UPDATE] (state,response) {
+	    state.ProductPriceUpdate = response;
     }
 }
 
