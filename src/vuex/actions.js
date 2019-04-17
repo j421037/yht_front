@@ -947,3 +947,18 @@ export const ProductPriceVersion = ({commit}, info) => {
         return commit("PRODUCT_PRICE_VERSION", {info,response});
     })
 }
+export const ProductPriceFastUpdate = ({commit}, info) => {
+    return api.ProductPriceFastUpdate(info).then((response) => {
+        return commit("PRODUCT_PRICE_FAST_UPDATE", response);
+    });
+}
+export const CreateOffer = ({commit}, info) => {
+    return api.CreateOffer(info).then((response) => {
+        return commit("PRODUCT_CREATE_OFFER", response);
+    });
+}
+export const ProductOffers = ({commit}, info) => {
+    return api.ProductOffers(info).then((response) => {
+        return commit("PRODUCT_OFFERS",response);
+    })
+}

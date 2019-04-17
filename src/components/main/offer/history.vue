@@ -24,7 +24,7 @@
                     <div class="filter__program">
                         <div class="filter-input-list" :class="{isActive: ProgramActive}">
                             <div class="item-container">
-                                <div class="filter-input__item" v-for="(item, index) in FastQuery" :key="index" v-show="index == 0 ? true : ProgramActive">
+                                <div class="filter-input__item" v-for="(item, index) in FastQuery.params" :key="index" v-show="index == 0 ? true : ProgramActive">
                                     <div class="input__items">
                                         <el-select v-model="item.name" @change="QueryFieldSelect">
                                             <el-option v-for="(it, k) in FastQueryFields" :key="k" :label="it.label" :value="it.value" ></el-option>
@@ -72,17 +72,22 @@
                 >
                     <el-table-column type="selection" width="55"></el-table-column>
                     <el-table-column prop="id" label="序号"></el-table-column>
-                    <el-table-column prop="name" label="客户名称"></el-table-column>
+                    <el-table-column prop="customer" label="客户名称"></el-table-column>
                     <el-table-column prop="project" label="项目名称"></el-table-column>
                     <el-table-column prop="date" label="报价日期"></el-table-column>
-                    <el-table-column prop="user" label="业务员"></el-table-column>
+                    <el-table-column prop="serviceor" label="业务员"></el-table-column>
+                    <el-table-column prop="creator" label="创建人"></el-table-column>
                     <el-table-column prop="brand" label="品牌"></el-table-column>
                     <el-table-column prop="dispatch" label="配送"></el-table-column>
                     <el-table-column prop="" label="装卸"></el-table-column>
                     <el-table-column prop="tax" label="税率"></el-table-column>
                     <el-table-column prop="remark" label="备注"></el-table-column>
-                    <el-table-column prop="file" label="面价快照"></el-table-column>
-                    <el-table-column prop="file" label="下载报价"></el-table-column>
+                    <el-table-column prop="opval" label="点数"></el-table-column>
+                    <el-table-column prop="file" label="下载报价">
+                        <template slot-scope="scope">
+                            <el-button size="mini" type="success">下载</el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </section>
         </div>
@@ -97,49 +102,23 @@ export default {
     data() {
         return {
 			Query: "",
-            FastQuery:[
-                {name:1,value:"",operate: 0,field_type: "string",uid: this.makeUid()},
+            FastQuery:{
+			    pagesize: 5,
+                pagenow: 1,
+                params: [{name:1,value:"",operate: 0,field_type: "string",uid: this.makeUid()}],
 				// {name:2,value:"",operate: 0}
-            ],
+            },
 			ProgramListIndex: 0,
             ProgramActive: false,
         };
     },
-    computed: {
-		FastQueryFields: function() {
-		    return [
-		        {label: '业务员',value: 1,field_type: "string"},
-		        {label: '客户名称',value: 2,field_type: "string"},
-		        {label: '客户电话',value: 3,field_type: "string"},
-		        {label: '报价日期',value: 4,field_type: "date"}
-            ];
-		},
-		ProgramList: function() {
-		    return [{name: '缺省方案',id: 0},{name: '张学友',id:1}];
-		},
-		Operates: function() {
-		    return [{label: '等于',value: 1},{label:'不等于',value:0}];
-		},
-		MoreIconTitle() {
-		    if (this.ProgramActive) return "收起";
-		    else return "展开";
-		},
-		TableData: function() {
-		    return [];
-		}
-    },
     created() {
-
+        this.$store.dispatch("ProductOffers",this.FastQuery);
     },
-    mounted() {
 
-    },
-    watch: {
-
-    },
     methods: {
 		AddCondition() {
-		    this.FastQuery.push({name:1,value:"",operate: 0,field_type: "string",uid: this.makeUid()});
+		    this.FastQuery.params.push({name:1,value:"",operate: 0,field_type: "string",uid: this.makeUid()});
 		},
 		ResetProgam() {
 		    this.ProgramActive = false;
@@ -149,14 +128,14 @@ export default {
 		},
 		//过滤字段选择
 		QueryFieldSelect(val) {
-		    let field = this.FastQueryFields.filter(item => item.value == val);
+		    let field = this.FastQuery.paramsFields.filter(item => item.value == val);
 
 		    if (field) {
-		        this.FastQuery.some((item,index) => {
+		        this.FastQuery.params.some((item,index) => {
 
 		            if (item.name == val) {
-		                this.FastQuery[index].field_type = field[0].field_type;
-						this.FastQuery[index].value = "";
+		                this.FastQuery.params[index].field_type = field[0].field_type;
+						this.FastQuery.params[index].value = "";
 		                return true;
 		            }
 		        });
@@ -169,8 +148,8 @@ export default {
 			this.ProgramActive = false;
 		},
 		RemoveCondition(uid) {
-		   let field = this.FastQuery.filter(item => item.uid != uid);
-			this.FastQuery = field;
+		   let field = this.FastQuery.params.filter(item => item.uid != uid);
+			this.FastQuery.params = field;
 		},
 		makeUid(l) {
 		    let len = l || 10;
@@ -184,6 +163,29 @@ export default {
 
 		    return res;
 		}
+    },
+    computed: {
+        FastQueryFields: function() {
+            return [
+                {label: '业务员',value: 1,field_type: "string"},
+                {label: '客户名称',value: 2,field_type: "string"},
+                {label: '客户电话',value: 3,field_type: "string"},
+                {label: '报价日期',value: 4,field_type: "date"}
+            ];
+        },
+        ProgramList: function() {
+            return [{name: '缺省方案',id: 0},{name: '张学友',id:1}];
+        },
+        Operates: function() {
+            return [{label: '等于',value: 1},{label:'不等于',value:0}];
+        },
+        MoreIconTitle() {
+            if (this.ProgramActive) return "收起";
+            else return "展开";
+        },
+        TableData: function() {
+            return this.$store.state.user.ProductOffers;
+        }
     },
     components: {
 

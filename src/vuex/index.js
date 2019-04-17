@@ -244,6 +244,9 @@ const state = {
             MakeOffer: {
                 visible: false
             },
+            History: {
+	            visible: false
+            }
         }
     },
     ProductCategoryStore: {},
@@ -258,6 +261,9 @@ const state = {
     MakeOfferParams: [],
     ProductPriceUpdate: {},
     ProductPriceVersion: [],
+    ProductPriceFastUpdate: {},
+    CreateOffer: {},
+    ProductOffers: []
 }
 
 export default {

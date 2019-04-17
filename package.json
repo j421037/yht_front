@@ -14,7 +14,7 @@
     "axios": "^0.18.0",
     "cssnano": "^3.10.0",
     "echarts": "^4.0.4",
-    "element-ui": "^2.2.2",
+    "element-ui": "^2.7.2",
     "mavon-editor": "^2.6.15",
     "muse-ui": "^3.0.0-rc.1",
     "muse-ui-toast": "^0.3.0",

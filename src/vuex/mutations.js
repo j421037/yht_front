@@ -678,10 +678,19 @@ const mutations = {
     },
     [types.PRODUCT_PRICE_VERSION] (state, response) {
         state.ProductPriceVersion.forEach((item,index) => {
-            if (item.brand == response.info.brand)
+            if (item.brand == response.info.product_brand)
                 state.ProductPriceVersion.splice(index,1);
         });
-        state.ProductPriceVersion.push({brand:response.info.brand,rows:response.response.data});
+        state.ProductPriceVersion.push({product_brand:response.info.product_brand,rows:response.response.data});
+    },
+    [types.PRODUCT_PRICE_FAST_UPDATE] (state, response) {
+        state.ProductPriceFastUpdate = response;
+    },
+    [types.PRODUCT_CREATE_OFFER] (state, response) {
+	    state.CreateOffer = response;
+    },
+    [types.PRODUCT_OFFERS] (state, response) {
+	    state.ProductOffers = response.data
     }
 }
 

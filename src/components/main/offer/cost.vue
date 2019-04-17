@@ -8,11 +8,11 @@
                     </el-radio-group>
                 </div>
                 <div class="btn-tool_action" >
-
                         <el-button-group >
                             <el-button type="info" :disabled="btnDisable" @click.native="OpenMakeOffer">开始报价</el-button>
-                            <el-button type="info" @click.native="OpenPriceDialog" :disabled="btnDisable">面价维护</el-button>
+                            <el-button type="info" :disabled="btnDisable" @click.native="OpenPriceDialog" >面价维护</el-button>
                             <el-button type="info" :disabled="btnDisable" @click.native="OpenFastPriceDialog">一键调价</el-button>
+                            <el-button type="info" :disabled="btnDisable" @click.native="OpenHistory">调价历史</el-button>
                         </el-button-group>
 
                 </div>
@@ -32,6 +32,7 @@
         <v-maintenance></v-maintenance>
         <v-fast-maintenance></v-fast-maintenance>
         <v-makeoffer></v-makeoffer>
+        <v-history></v-history>
 	</div>
 </template>
 
@@ -101,8 +102,13 @@ export default {
          * **/
         OpenMakeOffer() {
             this.$store.dispatch("SetBaseProductConfig",{field: "Price.MakeOffer.visible",value: true});
-        }
-
+        },
+        /**
+         * 调价历史
+         * **/
+        OpenHistory() {
+            this.$store.dispatch("SetBaseProductConfig",{field: "Price.History.visible",value: true});
+        },
     },
     computed: {
 	    category: function() {
@@ -123,7 +129,8 @@ export default {
         "v-ton" : () => import('./cost/tab/TonPrice'),
         "v-maintenance": () => import("./cost/dialog/Maintenance"),
         "v-fast-maintenance": () => import("./cost/dialog/FastMaintenance"),
-        "v-makeoffer": () => import("./cost/dialog/MakeOffer")
+        "v-makeoffer": () => import("./cost/dialog/MakeOffer"),
+        "v-history": () => import("./cost/dialog/History")
     }
 }	
 </script>
@@ -134,4 +141,12 @@ export default {
         justify-content: space-between;
         .btn-tool_action
             padding-right: 15px;
+    .cost-price-history_dialog
+       .el-dialog
+            height: 60% !important;
+            overflow: hidden;
+            position: relative;
+            .el-dialog__body
+                height: calc(100% - 54px );
+                overflow-y: auto;
 </style>

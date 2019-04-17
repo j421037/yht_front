@@ -472,3 +472,12 @@ export const ProductPriceUpdate = (info) => {
 export const ProductPriceVersion = (info) => {
     return http.post("products/prices/version", info);
 }
+export const ProductPriceFastUpdate = (info) => {
+    return http.post("products/prices/fastupdate", info);
+}
+export const CreateOffer = (info) => {
+    return http.post("products/offer/store", info);
+}
+export const ProductOffers = (info) => {
+    return http.post("products/offers", info);
+}

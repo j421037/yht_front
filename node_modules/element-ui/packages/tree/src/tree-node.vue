@@ -16,13 +16,23 @@
     :aria-expanded="expanded"
     :aria-disabled="node.disabled"
     :aria-checked="node.checked"
+    :draggable="tree.draggable"
+    @dragstart.stop="handleDragStart"
+    @dragover.stop="handleDragOver"
+    @dragend.stop="handleDragEnd"
+    @drop.stop="handleDrop"
+    ref="node"
   >
     <div class="el-tree-node__content"
       :style="{ 'padding-left': (node.level - 1) * tree.indent + 'px' }">
       <span
-        class="el-tree-node__expand-icon el-icon-caret-right"
         @click.stop="handleExpandIconClick"
-        :class="{ 'is-leaf': node.isLeaf, expanded: !node.isLeaf && expanded }">
+        :class="[
+          { 'is-leaf': node.isLeaf, expanded: !node.isLeaf && expanded },
+          'el-tree-node__expand-icon',
+          tree.iconClass ? tree.iconClass : 'el-icon-caret-right'
+        ]"
+      >
       </span>
       <el-checkbox
         v-if="showCheckbox"
@@ -51,6 +61,7 @@
           :render-content="renderContent"
           v-for="child in node.childNodes"
           :render-after-expand="renderAfterExpand"
+          :show-checkbox="showCheckbox"
           :key="getNodeKey(child)"
           :node="child"
           @node-expand="handleChildNodeExpand">
@@ -84,6 +95,10 @@
       renderAfterExpand: {
         type: Boolean,
         default: true
+      },
+      showCheckbox: {
+        type: Boolean,
+        default: false
       }
     },
 
@@ -106,7 +121,7 @@
               ? parent.renderContent.call(parent._renderProxy, h, { _self: tree.$vnode.context, node, data, store })
               : tree.$scopedSlots.default
                 ? tree.$scopedSlots.default({ node, data })
-                : <span class="el-tree-node__label">{ this.node.label }</span>
+                : <span class="el-tree-node__label">{ node.label }</span>
           );
         }
       }
@@ -117,7 +132,6 @@
         tree: null,
         expanded: false,
         childNodeRendered: false,
-        showCheckbox: false,
         oldChecked: null,
         oldIndeterminate: null
       };
@@ -161,6 +175,11 @@
         if (this.tree.expandOnClickNode) {
           this.handleExpandIconClick();
         }
+        if (this.tree.checkOnClickNode && !this.node.disabled) {
+          this.handleCheckChange(null, {
+            target: { checked: !this.node.checked }
+          });
+        }
         this.tree.$emit('node-click', this.node.data, this.node, this);
       },
 
@@ -199,6 +218,26 @@
       handleChildNodeExpand(nodeData, node, instance) {
         this.broadcast('ElTreeNode', 'tree-node-expand', node);
         this.tree.$emit('node-expand', nodeData, node, instance);
+      },
+
+      handleDragStart(event) {
+        if (!this.tree.draggable) return;
+        this.tree.$emit('tree-node-drag-start', event, this);
+      },
+
+      handleDragOver(event) {
+        if (!this.tree.draggable) return;
+        this.tree.$emit('tree-node-drag-over', event, this);
+        event.preventDefault();
+      },
+
+      handleDrop(event) {
+        event.preventDefault();
+      },
+
+      handleDragEnd(event) {
+        if (!this.tree.draggable) return;
+        this.tree.$emit('tree-node-drag-end', event, this);
       }
     },
 
@@ -222,8 +261,6 @@
       this.$watch(`node.data.${childrenKey}`, () => {
         this.node.updateChildren();
       });
-
-      this.showCheckbox = tree.showCheckbox;
 
       if (this.node.expanded) {
         this.expanded = true;

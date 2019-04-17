@@ -14,29 +14,27 @@
                         <el-option v-for="(item,key) in categorys" :key="key" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="品牌" prop="brand">
-                    <el-select v-model="Form.brand" @change="handleBrandChange">
-                        <el-option v-for="(item,key) in brands" :key="key" :label="item.label" :value="item.value"></el-option>
+                <el-form-item label="品牌" prop="product_brand">
+                    <el-select v-model="Form.product_brand" @change="handleBrandChange">
+                        <el-option v-for="(item,key) in product_brands" :key="key" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="价格版本" prop="version">
+                <el-form-item label="价格版本" prop="version_id">
                     <el-select
-                        v-model="Form.version"
+                        v-model="Form.version_id"
+                        :loading="remoteLoading"
                     >
-                        <el-option-group
+                        <el-option
                             v-for="(i,ik) in PriceVersions"
                             :key="ik"
                             :label="i.label"
+                            :value="i.value"
                         >
-                            <el-option
-                                v-for="(item,k) in i.items"
-                                :key="k"
-                                :label="item.label"
-                                :value="item.value"
-                            >
-                            </el-option>
-                        </el-option-group>
+                        </el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item label="新版本号" prop="new_version" :rules="[{validator: validateVersion, trigger: 'blur'},{required:true,trigger:'blur',message:'请输入版本号'}]">
+                    <el-input v-model="Form.new_version" placeholder="请输入新的版本号"></el-input>
                 </el-form-item>
                 <el-form-item label="操作" prop="operate">
                     <el-select v-model="Form.operate">
@@ -44,7 +42,13 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="值" prop="discount">
-                    <el-input v-model="Form.discount" placeholder="请输入调价的金额或者折扣"></el-input>
+                    <el-input v-model="Form.discount" placeholder="请输入调价的金额或者折扣幅度,整数">
+                        <template slot="append" v-if="mode == 1">元</template>
+                        <template slot="append" v-if="mode == 0">百分点</template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="备注" prop="remark">
+                    <el-input v-model="Form.remark" placeholder="请输入调价的信息"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -58,32 +62,40 @@
 <script>
     export default {
         data() {
+
             return {
                 Form: {
-                    version: "",
+                    version_id: "",
                     discount: "",
                     category: "",
-                    brand: "",
-                    operate: 1
+                    product_brand: "",
+                    operate: 1,
+                    new_version: "",
+                    remark: ""
                 },
                 Rules: {
-                    version: [
+                    version_id: [
                         {required: true,trigger: 'blur',message: '请选择价格版本'}
                     ],
                     discount: [
-                        {required: true,trigger: 'blur',message: '请输入调价金额'}
+                        {required: true,trigger: 'blur',message: '请输入调价幅度'}
                     ],
                     category: [
                         {required: true,trigger: "blur", message: "请选择产品"}
                     ],
-                    brand: [
+                    product_brand: [
                         {required: true, trigger: "blur", message: "请选择品牌"}
                     ],
                     operate: [
                         {required: true, trigger: "blur", message: "请选择调整的方向"}
-                    ]
+                    ],
+                    remark: [
+                        {required: true, trigger: "blur", message: "请输入调价信息"}
+                    ],
                 },
                 submiting: false,
+                remoteLoading: false,
+                mode: 0,
             }
         },
         methods: {
@@ -99,25 +111,57 @@
              * **/
             handleClose() {
                 this.$store.dispatch("SetBaseProductConfig",{field: "Price.FastPriceMaintenance.visible",value: false});
+                this.$refs["form"].resetFields();
             },
             /**
              * 产品切换
              * **/
             handleCategoryChange() {
-                this.Form.brand = "";
+                this.Form.product_brand = "";
             },
             /**
              * 品牌切换
              * **/
             handleBrandChange(val) {
-                this.$store.dispatch("ProductPriceVersion",{brand:val}).then(() => {
-                    console.log(this.$store.state.user.ProductPriceVersion)
+                this.remoteLoading = true;
+                this.$store.dispatch("ProductPriceVersion",{product_brand:val}).then(() => {
+                    this.remoteLoading = false;
+                });
+                this.product_brands.forEach((item) => {
+                    if (item.value == val)
+                        this.mode = item.mode;
                 });
             },
             /**
              * 提交
              * **/
-            submit() {}
+            submit() {
+                this.$refs["form"].validate((valid) => {
+                    if (valid)
+                    {
+                        this.submiting = true;
+                        this.$store.dispatch("ProductPriceFastUpdate", this.Form).then(() => {
+                            let response = this.$store.state.user.ProductPriceFastUpdate;
+
+                            if (response.status == "success")
+                            {
+                                this.$notify.success("操作成功");
+                                this.$store.dispatch("ProductSurfacePriceList",{id:this.Form.product_brand});
+                            }
+                            else {
+                                this.$notify.error("操作失败,请检查");
+                            }
+                            this.submiting = false;
+                        });
+                    }
+                });
+            },
+            validateVersion (rule, value, callback) {
+                if (/^[A-Za-z0-9_\.]*$/.test(value))
+                    callback();
+                else
+                    callback(new Error("只允许输入字母、数字、破折号（ - ）以及下划线（ _ ）"));
+            },
         },
         computed: {
             visible: function() {
@@ -132,7 +176,7 @@
                 return data;
 
             },
-            brands: function() {
+            product_brands: function() {
                 let data = [],
                     row = [],
                     rows = this.$store.state.user.ProductCategoryList;
@@ -143,26 +187,21 @@
                 });
 
                 row.forEach((item) => {
-                    data.push({label:item.name,value:item.id,mapping: item.fields.mapping});
+                    data.push({label:item.name,value:item.id,mapping: item.fields.mapping,mode:item.method});
                 });
 
                 return data;
             },
             PriceVersions: function() {
-                return [
+                let list = this.$store.state.user.ProductPriceVersion, rows = [];
+
+                list.forEach((item) => {
+                    if (item.product_brand == this.Form.product_brand)
                     {
-                        label:"2019年1月",
-                        items:[{label: "2019.1.2",value: 1},{label: "2019.1.3",value: 2}]
-                    },
-                    {
-                        label: "2019年2月",
-                        items: [{label: "2019.2.3",value: 3},{label: "2019.2.13",value: 4}]
-                    },
-                    {
-                        label: "2019年5月",
-                        items: [{label: "2019.5.23",value: 6},{label: "2019.5.28",value: 7}]
-                    },
-                ];
+                        rows = item.rows;
+                    }
+                });
+                return rows;
             },
             operates: function() {
                 return [{label:"上浮",value:1},{label:"下跌",value:0}];

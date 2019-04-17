@@ -1,5 +1,12 @@
 <template>
     <div class="surface-wallpaper">
+        <el-alert
+            :title="table.notice"
+            type="error"
+            style="margin-bottom:10px"
+            :closable="false"
+        >
+        </el-alert>
         <el-table
             :data="PriceData"
             border
@@ -27,6 +34,7 @@
         },
         created() {
             this.$store.dispatch("ProductSurfacePriceList",{id:this.table.id});
+
         },
         methods: {
 

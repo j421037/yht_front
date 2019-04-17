@@ -27,13 +27,12 @@
         <path class="el-progress-circle__path" :d="trackPath" stroke-linecap="round" :stroke="stroke" :stroke-width="relativeStrokeWidth" fill="none" :style="circlePathStyle"></path>
       </svg>
     </div>
-    <div
-      class="el-progress__text"
-      v-if="showText && !textInside"
-      :style="{fontSize: progressTextSize + 'px'}"
-    >
+    <div class="el-progress__text" v-if="showText && !textInside" :style="{fontSize: progressTextSize + 'px'}">
       <template v-if="!status">{{percentage}}%</template>
-      <i v-else :class="iconClass"></i>
+      <template v-else>
+        <slot v-if="status === 'text'"></slot>
+        <i v-else :class="iconClass"></i>
+      </template>
     </div>
   </div>
 </template>
@@ -53,7 +52,8 @@
         validator: val => val >= 0 && val <= 100
       },
       status: {
-        type: String
+        type: String,
+        validator: val => ['text', 'success', 'exception'].indexOf(val) > -1
       },
       strokeWidth: {
         type: Number,
@@ -70,12 +70,17 @@
       showText: {
         type: Boolean,
         default: true
+      },
+      color: {
+        type: String,
+        default: ''
       }
     },
     computed: {
       barStyle() {
         const style = {};
         style.width = this.percentage + '%';
+        style.backgroundColor = this.color;
         return style;
       },
       relativeStrokeWidth() {
@@ -100,21 +105,25 @@
       },
       stroke() {
         let ret;
-        switch (this.status) {
-          case 'success':
-            ret = '#13ce66';
-            break;
-          case 'exception':
-            ret = '#ff4949';
-            break;
-          default:
-            ret = '#20a0ff';
+        if (this.color) {
+          ret = this.color;
+        } else {
+          switch (this.status) {
+            case 'success':
+              ret = '#13ce66';
+              break;
+            case 'exception':
+              ret = '#ff4949';
+              break;
+            default:
+              ret = '#20a0ff';
+          }
         }
         return ret;
       },
       iconClass() {
         if (this.type === 'line') {
-          return this.status === 'success' ? 'el-icon-circle-check' : 'el-icon-circle-cross';
+          return this.status === 'success' ? 'el-icon-circle-check' : 'el-icon-circle-close';
         } else {
           return this.status === 'success' ? 'el-icon-check' : 'el-icon-close';
         }

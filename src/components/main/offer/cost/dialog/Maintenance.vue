@@ -53,6 +53,9 @@
                         <el-input v-model="Form.version_str" placeholder="价格版本"></el-input>
                     </el-form-item>
                 </div>
+                <el-form-item label="备注信息" prop="remark" :rules="{required: 'true',trigger:'blur',message:'请输入调价备注'}">
+                    <el-input v-model="Form.remark" placeholder="请输入备注信息"></el-input>
+                </el-form-item>
                 <p style="height:1px;border-top:1px solid #ebebeb;"></p>
                     <el-upload
                         :action="UploadUrl"
@@ -116,7 +119,8 @@
                     date: "",
                     version_str: "",
                     rows:[],
-                    fileid: []
+                    fileid: [],
+                    remark: ""
                 },
                 submiting: false,
                 FieldMap: {},
@@ -208,7 +212,7 @@
                             else {
                                 this.$notify.error("操作失败");
                             }
-                            console.log(response)
+
                         });
                     }
                 });

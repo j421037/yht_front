@@ -8,12 +8,14 @@
         <sv-panel ref="sl" :color="color"></sv-panel>
       </div>
       <alpha-slider v-if="showAlpha" ref="alpha" :color="color"></alpha-slider>
+      <predefine v-if="predefine" :color="color" :colors="predefine"></predefine>
       <div class="el-color-dropdown__btns">
         <span class="el-color-dropdown__value">
           <el-input
             v-model="customInput"
             @keyup.native.enter="handleConfirm"
             @blur="handleConfirm"
+            :validate-event="false"
             size="mini">
           </el-input>
         </span>
@@ -40,6 +42,7 @@
   import SvPanel from './sv-panel';
   import HueSlider from './hue-slider';
   import AlphaSlider from './alpha-slider';
+  import Predefine from './predefine';
   import Popper from 'element-ui/src/utils/vue-popper';
   import Locale from 'element-ui/src/mixins/locale';
   import ElInput from 'element-ui/packages/input';
@@ -55,14 +58,16 @@
       HueSlider,
       AlphaSlider,
       ElInput,
-      ElButton
+      ElButton,
+      Predefine
     },
 
     props: {
       color: {
         required: true
       },
-      showAlpha: Boolean
+      showAlpha: Boolean,
+      predefine: Array
     },
 
     data() {
@@ -105,8 +110,11 @@
         }
       },
 
-      currentColor(val) {
-        this.customInput = val;
+      currentColor: {
+        immediate: true,
+        handler(val) {
+          this.customInput = val;
+        }
       }
     }
   };
