@@ -1,7 +1,7 @@
 let BASEURL = "https://e.yhtjc.com/v2/public/index.php/";
 
 if (process.env.NODE_ENV === 'development') {
-    BASEURL= 'http://127.0.0.1/yhtsys/public/index.php/';
+    BASEURL= "http://192.168.0.250/yhtsys/public/index.php/";
     // BASEURL = "http://421037.f3322.net:8090/yhtsys/public/index.php/";
    	//BACKEND_DOMAIN = 'http://421037.f3322.net:8090/index.php/api/';
     //  BACKEND_DOMAIN = 'http://dev.miaoyi09.com/index.php/api/';

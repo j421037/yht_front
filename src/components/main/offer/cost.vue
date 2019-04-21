@@ -10,8 +10,8 @@
                 <div class="btn-tool_action" >
                         <el-button-group >
                             <el-button type="info" :disabled="btnDisable" @click.native="OpenMakeOffer">开始报价</el-button>
-                            <el-button type="info" :disabled="btnDisable" @click.native="OpenPriceDialog" >面价维护</el-button>
-                            <el-button type="info" :disabled="btnDisable" @click.native="OpenFastPriceDialog">一键调价</el-button>
+                            <el-button type="info" :disabled="btnDisable" @click.native="OpenPriceDialog" v-if="authorize">面价维护</el-button>
+                            <el-button type="info" :disabled="btnDisable" @click.native="OpenFastPriceDialog" v-if="authorize">一键调价</el-button>
                             <el-button type="info" :disabled="btnDisable" @click.native="OpenHistory">调价历史</el-button>
                         </el-button-group>
 
@@ -53,6 +53,7 @@ export default {
         this.$store.dispatch("LoadProductCategory").then(() => {
             this.btnDisable = false;
         });
+        this.$store.dispatch("LoadCostRole");
     },
     methods: {
 	    /**
@@ -121,8 +122,12 @@ export default {
 
             return data;
         },
-
-
+        users: function() {
+            return this.$store.state.user.CostRole.users;
+        },
+        authorize: function () {
+            return this.$store.state.user.CostRole.authorize;
+        }
     },
     components: {
 	    "v-surface": () => import('./cost/tab/SurfacePrice'),

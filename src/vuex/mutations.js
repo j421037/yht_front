@@ -4,7 +4,11 @@ import tool from '../util/tool.js';
 const mutations = {
 	[types.LOGIN] (state, data) {
 		state.login = data;
-		state.token = data.token;
+		if (data.status == "success")
+        {
+            state.token = data.token;
+            tool.setter("token",data.token);
+        }
 	},
 
 	[types.SET_ERROR_INFO] (state, data) {
@@ -691,6 +695,13 @@ const mutations = {
     },
     [types.PRODUCT_OFFERS] (state, response) {
 	    state.ProductOffers = response.data
+    },
+    [types.DEPARTMENT_SET_ASSISTANT] (state, response) {
+	    state.departmentSetAssistant = response;
+    },
+    [types.LOAD_COST_ROLE] (state,response) {
+        state.CostRole.users = response.users;
+        state.CostRole.authorize = response.authorize;
     }
 }
 

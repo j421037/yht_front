@@ -59,6 +59,13 @@
                                 <a href="javascript:void(0)" @click="ResetProgam">重置</a>
                             </div>
                         </div>
+                        <div class="right-btns">
+                            <!--<el-button-group>-->
+                                <!--<el-button type="info" @click.native="DownloadPDF">下载</el-button>-->
+                                <!--<el-button type="info" @click.native="ViewPDF">预览</el-button>-->
+                                <!--<el-button type="info">修改</el-button>-->
+                            <!--</el-button-group>-->
+                        </div>
                     </div>
                     <!--快速过滤 end-->
                 </div>
@@ -70,27 +77,41 @@
                     border
                     highlight-current-row
                 >
-                    <el-table-column type="selection" width="55"></el-table-column>
-                    <el-table-column prop="id" label="序号"></el-table-column>
-                    <el-table-column prop="customer" label="客户名称"></el-table-column>
-                    <el-table-column prop="project" label="项目名称"></el-table-column>
-                    <el-table-column prop="date" label="报价日期"></el-table-column>
+                    <el-table-column prop="id" label="序号" width="55"></el-table-column>
+                    <el-table-column prop="customer" label="客户名称" width="200"></el-table-column>
+                    <el-table-column prop="project" label="项目名称" width="200"></el-table-column>
+                    <el-table-column prop="date" label="报价日期" width="100"></el-table-column>
                     <el-table-column prop="serviceor" label="业务员"></el-table-column>
                     <el-table-column prop="creator" label="创建人"></el-table-column>
-                    <el-table-column prop="brand" label="品牌"></el-table-column>
+                    <el-table-column prop="manager.brand" label="品牌"></el-table-column>
                     <el-table-column prop="dispatch" label="配送"></el-table-column>
                     <el-table-column prop="" label="装卸"></el-table-column>
                     <el-table-column prop="tax" label="税率"></el-table-column>
                     <el-table-column prop="remark" label="备注"></el-table-column>
-                    <el-table-column prop="opval" label="点数"></el-table-column>
-                    <el-table-column prop="file" label="下载报价">
+                    <el-table-column prop="tax" label="价格版本"></el-table-column>
+                    <el-table-column prop="manager.method.label" label="类别"></el-table-column>
+                    <el-table-column prop="opval" label="折扣"></el-table-column>
+                    <el-table-column prop="operate.label" label="计算方式" width="150">
                         <template slot-scope="scope">
-                            <el-button size="mini" type="success">下载</el-button>
+                            <div v-if="scope.row.manager.method.value == 0">
+                                面价 {{scope.row.operate.label}} {{scope.row.opval}}%
+                            </div>
+                            <div v-else>
+                                面价 {{scope.row.operate.label}} {{scope.row.opval}}元
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="file" label="下载报价" width="250">
+                        <template slot-scope="scope">
+                            <el-button size="mini" type="success" @click.native="DownloadPDF(scope.row.id)">下载</el-button>
+                            <el-button size="mini" type="info" @click.native="ViewPDF(scope.row.id)">预览</el-button>
+                            <el-button size="mini" type="warning" @click.native="EditRow(scope.row)">修改</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </section>
         </div>
+        <v-modifyOffer :row="CurrentRow"></v-modifyOffer>
     </div>
 </template>
 
@@ -110,6 +131,7 @@ export default {
             },
 			ProgramListIndex: 0,
             ProgramActive: false,
+            CurrentRow: {}
         };
     },
     created() {
@@ -162,7 +184,28 @@ export default {
 		    }
 
 		    return res;
-		}
+		},
+        /**
+         * 下载pdf
+         * **/
+        DownloadPDF(id) {
+            let url = this.$appConst.BASEURL + "makeoffer/download/pdf?offer_id=" + id + "&token=" + this.$store.state.user.token;
+            window.open(url);
+        },
+        /**
+         * 预览报价
+         * **/
+        ViewPDF(id) {
+            let url = this.$appConst.BASEURL + "makeoffer/view/pdf?offer_id=" + id + "&token=" + this.$store.state.user.token;
+            window.open(url);
+        },
+        /**
+         * 修改报价
+         * **/
+        EditRow(row) {
+            this.CurrentRow = row;
+            this.$store.dispatch("SetBaseProductConfig",{field: "Price.ModifyOffer.visible",value: true});
+        }
     },
     computed: {
         FastQueryFields: function() {
@@ -174,7 +217,10 @@ export default {
             ];
         },
         ProgramList: function() {
-            return [{name: '缺省方案',id: 0},{name: '张学友',id:1}];
+            return [
+                {name: '缺省方案',id: 0},
+                // {name: '张学友',id:1}
+            ];
         },
         Operates: function() {
             return [{label: '等于',value: 1},{label:'不等于',value:0}];
@@ -188,7 +234,7 @@ export default {
         }
     },
     components: {
-
+        "v-modifyOffer": () => import("./history/ModifyOffer.vue"),
     },
 };
 </script>
@@ -207,6 +253,7 @@ export default {
         border: 1px solid #ebebeb;
         border-radius: 5px;
         transition: all 0.5s;
+        position: relative;
         .filter
             width: 100%;
             padding: 15px 15px 0px 15px;
@@ -303,9 +350,14 @@ export default {
                             &:hover
                                 text-decoration: underline;
                                 color: #2196f3;
+                .right-btns
+                    margin: 15px 5px;
+                    position: absolute;
+                    right: 20px;
         .table-data
             padding: 0px 15px;
             text-align: center;
             position: absolute;
             top: 115px;
+            width: 100%;
 </style>

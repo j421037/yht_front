@@ -23,8 +23,18 @@
 			     	prop="user_name"
 			      	label="负责人">
 			     >
-			     	
 			     </el-table-column>
+                <el-table-column
+                    prop="assistants"
+                    label="助理"
+                >
+                    <template slot-scope="scope">
+                        <template v-for="(item,key) in scope.row.assistants">
+                            <span v-if="key > 0">、</span>
+                            <span>{{item.name}}</span>
+                        </template>
+                    </template>
+                </el-table-column>
 			    <el-table-column
 			      prop=""
 			      label="操作">
@@ -35,7 +45,6 @@
 					          icon="el-icon-edit"
 					          type="success"
 					          @click="handleEdit(scope.row)">
-					          	
 					        </el-button>
 					    </el-tooltip>
 					    <el-tooltip class="item" effect="dark" content="设置成员" placement="top" >
@@ -44,7 +53,6 @@
 					          icon="el-icon-setting"
 					          type="warning"
 					          @click="handleSet(scope.row)">
-					          	
 					        </el-button>
 					    </el-tooltip>
 					    <el-tooltip class="item" effect="dark" content="设置管理" placement="top" >
@@ -55,6 +63,14 @@
 					          <i class="iconfont icon-jingli" style="font-size: 12px;"></i>
 					        </el-button>
 					    </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="设置助理" placement="top" >
+                            <el-button
+                                size="mini"
+                                type="info"
+                                @click="handleSetAssistant(scope.row)">
+                                <i class="iconfont icon-jingli" style="font-size: 12px;"></i>
+                            </el-button>
+                        </el-tooltip>
 				    </template>
 			    </el-table-column>
 			</el-table>
@@ -95,6 +111,20 @@
 			</div>
 		</el-dialog>
 
+        <el-dialog title="设置部门助理" :visible.sync="showSetAssistantDialog"  center class="department-dialog">
+            <div class="department-dialog-content" >
+                <!--<mu-flex class="select-control-row" :key="item.id" v-for="item in departmentStaff">-->
+                    <!--<mu-radio :value="item.id" v-model="manager" :label="item.name"></mu-radio>-->
+                <!--</mu-flex>-->
+                <el-checkbox-group v-model="AssistantLabels">
+                    <el-checkbox v-for="(item,key) in departmentStaff" :label="item.name" :disabled="item.name == currentManager" :key="key"></el-checkbox>
+                </el-checkbox-group>
+            </div>
+            <div class="foot">
+                <el-button type="primary" @click="saveAssistant">保存</el-button>
+            </div>
+        </el-dialog>
+
 	</div>
 </template>
 <script type="text/javascript">
@@ -104,12 +134,14 @@ export default {
 			showAddDialog: false,
 			showSetStaffDialog: false,
 			showSetManagerDialog: false,
+            showSetAssistantDialog: false,
 			edit: false,
 			tableLoading: true,
 			form: {
 				id: '',
 				name: ''
 			},
+            AssistantLabels: [],
 			rules: {
 				name: [
 					{required: true, trigger: 'blur', message: '名称不能为空'}
@@ -117,6 +149,7 @@ export default {
 			},
 			staffCheckbox: [],
 			currentDepartmentId: 0,
+            currentManager: 0,
 			manager: 0,
 		}
 	},
@@ -157,6 +190,17 @@ export default {
 			this.showSetManagerDialog = true;
 			this.initStaff(row.id);
 		},
+        /**设置助理 **/
+        handleSetAssistant(row) {
+            this.showSetAssistantDialog = true;
+            this.currentDepartmentId = row.id;
+            this.initStaff(row.id);
+            this.currentManager = row.user_name;
+            this.AssistantLabels = [];
+            row.assistants.forEach((item) => {
+                this.AssistantLabels.push(item.name);
+            });
+        },
 		saveStaff() {
 			this.$store.dispatch('departmentSetStaff', {departmentId: this.currentDepartmentId, list: this.staffCheckbox})
 				.then(() => {
@@ -189,6 +233,33 @@ export default {
 			});
 
 		},
+        saveAssistant() {
+            let users = [];
+            this.AssistantLabels.forEach((item) => {
+               this.departmentStaff.forEach((it) => {
+                   if (item == it.name)
+                       users.push(it.id);
+               });
+            });
+
+            if (users.length)
+            {
+                this.$store.dispatch("departmentSetAssistant",{users:users,department_id: this.currentDepartmentId}).then(() => {
+                    let response = this.$store.state.user.departmentSetAssistant;
+
+                    if (response.status == "success")
+                    {
+                        this.$notify.success("操作成功");
+                        this.initTable();
+                    }
+                    else {
+                        this.$notify.success("操作失败");
+                    }
+
+                    this.showSetAssistantDialog = false;
+                });
+            }
+        },
 		initTable() {
 			this.$store.dispatch('departmentList').then(() => {
 				this.tableLoading = false;

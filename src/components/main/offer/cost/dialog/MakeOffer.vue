@@ -53,7 +53,7 @@
                 </el-form-item>
                 <el-form-item label="服务人员" prop="serviceor_id">
                     <el-select v-model="Form.serviceor_id">
-                        <el-option v-for="(item,key) in users" :key="key" :label="item.label" :value="item.value"></el-option>
+                        <el-option v-for="(item,key) in users" :key="key" :label="item" :value="key"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="价格版本" prop="version_id">
@@ -67,8 +67,8 @@
                         <el-select v-model="Form.operate" style="margin: 0 5px;flex:1">
                             <el-option v-for="(item, key) in operates" :key="key" :label="item.label" :value="item.value"></el-option>
                         </el-select>
-                        <el-form-item prop="operate_var" style="margin: 0;flex:2">
-                            <el-input v-model="Form.operate_var" placeholder="请输入数字">
+                        <el-form-item prop="operate_val" style="margin: 0;flex:2">
+                            <el-input v-model="Form.operate_val" placeholder="请输入数字">
                                 <template slot="append" v-if="mode == 1">元</template>
                                 <template slot="append" v-if="mode == 0">百分点</template>
                             </el-input>
@@ -107,7 +107,7 @@
                     product_brand_id: "",
                     operate: 1,
                     serviceor_id: "",
-                    operate_var: "",
+                    operate_val: "",
                     version_id: ""
                 },
                 Rules: {
@@ -126,7 +126,7 @@
                     operate: [
                         {required: true, trigger: "blur"}
                     ],
-                    operate_var: [
+                    operate_val: [
                         {validator: this.validateField,trigger:'blur'}
                     ],
                     serviceor_id: [
@@ -234,7 +234,6 @@
                         else
                             this.AuthorizeMsg = "";
                     }
-
                 });
             }
         },
@@ -307,7 +306,7 @@
              * 报价人
              * **/
             users: function() {
-                return [{label: "桥本有菜",value: 1},{label:"铃木佐佐希",value: 2},{label: "陈乔恩",value: 3},{label:"王丽坤",value:4}];
+                return this.$store.state.user.CostRole.users;
             },
 
             /**
@@ -321,7 +320,7 @@
                         rows = item.versions;
                 });
                 return rows;
-            }
+            },
         }
     }
 </script>

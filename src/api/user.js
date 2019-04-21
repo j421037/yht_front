@@ -154,6 +154,9 @@ export const departmentSetStaff = (info) => {
 export const departmentSetManager = (info) => {
 	return http.post('department/put/manager', info);
 }
+export const departmentSetAssistant = (info) => {
+    return http.post("department/put/assistant", info);
+}
 export const initCustomer = (info) => {
 	return http.post('customer/get/init', info);
 }
@@ -480,4 +483,7 @@ export const CreateOffer = (info) => {
 }
 export const ProductOffers = (info) => {
     return http.post("products/offers", info);
+}
+export const LoadCostRole = () => {
+    return http.post("cost/role");
 }

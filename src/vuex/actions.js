@@ -962,3 +962,13 @@ export const ProductOffers = ({commit}, info) => {
         return commit("PRODUCT_OFFERS",response);
     })
 }
+export const departmentSetAssistant = ({commit}, info) => {
+    return api.departmentSetAssistant(info).then((response) => {
+        return commit("DEPARTMENT_SET_ASSISTANT", response);
+    });
+}
+export const LoadCostRole = ({commit}) => {
+    return api.LoadCostRole().then((response) => {
+        return commit("LOAD_COST_ROLE", response);
+    });
+}

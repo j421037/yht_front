@@ -9,7 +9,7 @@ export const post = (url, query) => {
 	//设置请求头
 	const token = 'Bearer ' + tool.getter('token');
 	let _url = `${appConst.BACKEND_DOMAIN}${url}`;
-	// console.log(token); 
+	// console.log(token);
 	return Axios.post( _url, query, 
 			{ 
 				headers: { authorization: token ,'X-Requested-With': 'XMLHttpRequest'}
@@ -17,11 +17,10 @@ export const post = (url, query) => {
 		   )
 			.then( (response) => {
 				if (response.status >= 200 && response.status < 300) {
-
 					if (response.headers.authorization !== '' && typeof(response.headers.authorization) != 'undefined') {
 						tool.setter('token', response.headers.authorization);
 					}
-					// console.log(response);
+
 					return response.data;
 				}
 			})

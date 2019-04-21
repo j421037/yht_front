@@ -50,6 +50,7 @@ const state = {
 	departmentStaff: [],
 	departmentSetStaff: [],
 	departmentSetManager: [],
+    departmentSetAssistant: {},
 	customerInit: [],
 	syncUser: [],
 	initUserList: [],
@@ -246,6 +247,9 @@ const state = {
             },
             History: {
 	            visible: false
+            },
+            ModifyOffer: {
+	            visible: false
             }
         }
     },
@@ -263,7 +267,11 @@ const state = {
     ProductPriceVersion: [],
     ProductPriceFastUpdate: {},
     CreateOffer: {},
-    ProductOffers: []
+    ProductOffers: [],
+    CostRole: {
+	    users: [],
+        authorize: false
+    }
 }
 
 export default {
