@@ -111,7 +111,7 @@
                 </el-table>
             </section>
         </div>
-        <v-modifyOffer :row="CurrentRow"></v-modifyOffer>
+        <v-modifyOffer :row="CurrentRow" @Reload="ReloadData"></v-modifyOffer>
     </div>
 </template>
 
@@ -148,6 +148,9 @@ export default {
 		ChangeProgramHandle(index) {
 		    this.ProgramListIndex = index;
 		},
+        ReloadData() {
+            this.$store.dispatch("ProductOffers",this.FastQuery);
+        },
 		//过滤字段选择
 		QueryFieldSelect(val) {
 		    let field = this.FastQuery.paramsFields.filter(item => item.value == val);

@@ -702,6 +702,9 @@ const mutations = {
     [types.LOAD_COST_ROLE] (state,response) {
         state.CostRole.users = response.users;
         state.CostRole.authorize = response.authorize;
+    },
+    [types.MODIFY_OFFER] (state,response) {
+	    state.ModifyOffer = response;
     }
 }
 

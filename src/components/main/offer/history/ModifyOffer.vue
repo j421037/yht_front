@@ -49,7 +49,8 @@
             return {
                 Form: {
                     operate_val: 0,
-                    operate: 1
+                    operate: 1,
+                    id: 0,
                 },
                 submiting: false,
             }
@@ -60,6 +61,8 @@
              * **/
             handleOpen() {
                 this.Form.operate_val = Number(this.row.opval);
+                this.Form.operate = Number(this.row.operate.value);
+                this.Form.id = this.row.id;
             },
             /**
              * dialog close
@@ -75,7 +78,14 @@
                     if (valid)
                     {
                         this.$store.dispatch("ModifyOffer",this.Form).then(() => {
-                            
+                            let response = this.$store.state.user.ModifyOffer;
+
+                            if (response.status == "success")
+                            {
+                                this.$notify.success("修改成功");
+                                this.$emit("Reload");
+                                this.handleClose();
+                            }
                         });
                     }
                 });

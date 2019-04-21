@@ -972,3 +972,8 @@ export const LoadCostRole = ({commit}) => {
         return commit("LOAD_COST_ROLE", response);
     });
 }
+export const ModifyOffer = ({commit}, info) => {
+    return api.ModifyOffer(info).then((response) => {
+        return commit("MODIFY_OFFER", response);
+    });
+}

@@ -487,3 +487,6 @@ export const ProductOffers = (info) => {
 export const LoadCostRole = () => {
     return http.post("cost/role");
 }
+export const ModifyOffer = (info) => {
+    return http.post("products/offer/modify",info);
+}

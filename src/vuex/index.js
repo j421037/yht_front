@@ -271,7 +271,8 @@ const state = {
     CostRole: {
 	    users: [],
         authorize: false
-    }
+    },
+    ModifyOffer: {}
 }
 
 export default {
