@@ -70,6 +70,6 @@ const errorProcess = (err) => {
   }
 
   if (err.response.status == 404) {
-  	window.location.href = '#/app/404';
+  	//window.location.href = '#/app/404';
   }
 }

@@ -1,0 +1,15 @@
+export default [{
+    level: '目标客户',
+    customerName: '张三',
+    itsProjects: '神州电脑科技',
+    scopeOfConstruction:'消防',
+    projectType:'政府项目',
+    anchored:'是',
+    salesman:'王二',
+    label:'同行',
+    contract:'有',
+    accountPeriod:'45天',
+    taxRate:'0.1%',
+    cooperativeProducts:'品牌名称',
+    trackingDynamics:'东边来了个喇嘛，西边来了个呵呵',
+}]

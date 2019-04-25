@@ -1,0 +1,149 @@
+@import "../../qing/common.less";
+
+.el-main {
+    background: #f0f2f5!important;
+    position: relative;
+    top: -10px!important;
+}
+
+.indexBox {
+
+    .top {
+        .line {
+            padding: 0;
+            position: relative;
+
+            .txt {
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: #000;
+                line-height: 30px;
+                font-weight: bold;
+                padding-left: 20px;
+                height: 30px;
+                text-align: center;
+            }
+        }
+    }
+
+    .dashboard {
+        background: #fff;
+        margin-top: 20px;
+        border-radius: 3px;
+
+        .title {
+            font-size: 16px;
+            padding: 0 10px;
+            border-bottom: 1px solid #e8e8e8;
+            height: 57px;
+            line-height: 57px;
+        }
+
+        .group {
+            .L,
+            .R {
+                padding: 20px;
+            }
+
+            .L {
+                .item {
+                    text-align: center;
+
+                    .num {
+                        font-weight: bold;
+                        font-size: 32px;
+                    }
+                }
+            }
+
+            .R {
+                align-items: flex-start;
+                color: #666666;
+
+                .bt {
+                    font-size: 16px;
+                    padding-bottom: 12px;
+                }
+
+                .ny {
+                    font-size: 12px;
+
+                    .val {
+                        font-weight: bold;
+                        margin-left: 10px;
+                        color: #4c4c4c;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+
+    .chartWrap {
+        background: #fff;
+        margin-top: 20px;
+        border-radius: 3px;
+        position: relative;
+
+        .el-tabs__nav-scroll {
+            border-bottom: 1px solid #e8e8e8;
+            padding: 0 20px;
+
+            .el-tabs__item {
+                height: 52px;
+                line-height: 52px;
+                border-bottom: 2px solid #1890ff;
+                color: #1890ff;
+                font-size: 16px;
+            }
+        }
+
+        .filter {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 52px;
+            padding-top: 10px;
+            padding-right: 20px;
+        }
+
+        .chart {
+            padding: 0 20px;
+
+            .el-dropdown {
+                .el-dropdown-link {
+                    border: 1px solid #d9d9d9;
+                    border-radius: 3px;
+                    padding: 6px 12px;
+                    display: inline-block;
+                    cursor: pointer;
+                    user-select: none;
+                }
+            }
+
+            .el-checkbox__label {
+
+            }
+
+            .bar{
+                background: #8ac6ff; height: 3px;
+                border-radius: 10px;
+                width: 20px;
+                margin-left: 10px;
+                &.xs{
+                    background: #8ac6ff;
+                }
+                &.hk{
+                    background: #a1e5cf;
+                }
+                &.ljqk{
+                    background: #ffb2ba;
+                }
+            }
+            .main{
+                height: 350px;
+            }
+        }
+    }
+}

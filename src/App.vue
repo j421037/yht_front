@@ -194,7 +194,7 @@
                 bottom: 0px;
                 height: 100%;
                 // flex: 5;
-                overflow: hidden;
+                //overflow: hidden;
                 background: #fff;
 
             .aside-mobile-show

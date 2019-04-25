@@ -219,8 +219,9 @@ export default{
 
 			return ++index;
 		},
-		rowClick(row, event, column) {
+		rowClick(row, column, event) {
 			if (column.label == '展开') {
+                console.log(row)
 				let temp = this.expands;
 				this.expands = [];
 
@@ -232,6 +233,7 @@ export default{
 				else {
 					this.ArrowActiveIndex = false;
 				}
+
 			} 
 			
 		},

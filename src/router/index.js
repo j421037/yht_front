@@ -68,6 +68,10 @@ let routes = [
 				// component: userList
 				component: () => import('@/components/main/rbac/userList.vue')
 			},
+            {
+                path: "projectManagement",
+                component: () => import("@/components/main/projectManagement/index.vue"),
+            },
 			{
 				path: 'role',
 				// component: Role
