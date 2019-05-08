@@ -1,0 +1,119 @@
+@import "../../qing/common.less";
+
+.el-main {
+    background: #f0f2f5!important;
+    position: relative;
+    top: -10px!important;
+}
+
+.projectManagementBox {
+    background: #fff;
+    padding: 16px 20px;
+    .top{
+        .fast-query{
+            margin-left: 20px;
+        }
+        .el-select{
+            .el-input{
+                width: 100px;
+            }
+        }
+
+    }
+    .tableWrap{
+        margin-top: 20px;
+        th{
+            background: #f7f7f7;
+        }
+        button{
+            border: 0;
+            background: none;
+            &:hover{
+                background: none;
+            }
+        }
+        .el-table__expanded-cell{
+            padding: 0!important;
+        }
+        .projectInfo{
+            padding: 20px;
+            background: #fbf8e7;
+            .proTop{
+                table{
+                    border-collapse: collapse;
+                }
+                td{
+                    padding: 10px;
+                    border: 1px solid #e7e7e7;
+                }
+                table,td,tr{
+                    background: none;
+                }
+            }
+            .proBot{
+                margin-top: -1px;
+                table{
+                    th{
+                        background: #ffffc2; font-weight: normal;
+                    }
+                    td{
+                        background: #fff8d1;
+                    }
+                }
+
+            }
+
+        }
+    }
+}
+
+
+.dongtai,.biaoqian{
+    th{
+        background: #f9f9f9;
+    }
+    td,th{
+        .cell{
+            text-align: left!important;
+        }
+    }
+}
+
+.line.fx{
+    .el-form-item:nth-child(2n){
+        margin-left: 20px;
+    }
+}
+.el-table__expand-icon {
+    display: none;
+}
+.el-icon-arrow-rotate-leave {
+    transition: all 0.3s ;
+    transform: rotate(0deg);
+    cursor:pointer;
+}
+.el-icon-arrow-rotate-active {
+    transition: all 0.3s ;
+    transform: rotate(90deg);
+}
+
+.el-button+.el-button{
+    margin-left: 0;
+}
+
+
+.addPeitaojiqi,
+.addSongjianjilu,
+.addDongtai {
+    .fx{
+        padding: 10px 0;
+        .txt{
+            width: 50px;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+        
+    }
+}
+
+

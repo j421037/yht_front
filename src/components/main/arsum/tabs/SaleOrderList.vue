@@ -74,7 +74,7 @@ export default {
 	         		else {
 	         			this.$notify.error('操作失败! ' + response.errmsg);
 	         		}
-	         		this.$store.dispatch('ARSaleOrderList', {pid: this.pid});
+	         		this.$store.dispatch('GetSaleOrderList', {pid: this.pid});
 	         	});
 
 	        }).catch(() => {

@@ -1,7 +1,7 @@
 <!--合作客户-->
 <template>
 	<div class="cooperate-wallper">
-		<el-table 
+		<el-table
 			border
 			class="ar-table"
 			:style="{'margin-top': '15px','font-size': fontSize}"
@@ -27,13 +27,13 @@
 								<el-button type="info" size="mini" icon="el-icon-service" @click.native="OpenChangeCusDialog" v-if="user.id == scope.row.user_id">设置状态</el-button>
 							</el-button-group>
 						</div>
-					
+
 						<el-tabs type="border-card" v-if="scope.row.rowkey == expands[0] " @tab-click="tabClick" style="transition: all 0.5s;height: 370px;position: relative;">
 							<el-tab-pane v-for="(item, key) in Tabs" :key="key" :label="item.name"   style="height: 300px;position:relative;">
 								<component v-if="tabVisible == true" v-bind:is="item.component" :moduleName="item.moduleName" ></component>
 							</el-tab-pane>
 						</el-tabs>
-						
+
 					</div>
 				</template>
 			</el-table-column>
@@ -50,7 +50,7 @@
 					<el-tag type="success" v-if="scope.row.nameshow == true && scope.row.status_name == '平稳'">平稳</el-tag>
 					<el-tag type="warning" v-if="scope.row.nameshow == true && scope.row.status_name == '衰减'">衰减</el-tag>
 					<el-tag type="info" v-if="scope.row.nameshow == true && scope.row.status_name == '流失'">流失</el-tag>
-				</template>	
+				</template>
 			</el-table-column>
 			<el-table-column prop="department" label="部门名称" fixed="left" width="80" v-if="ColumnVisible.department.value"></el-table-column>
 			<el-table-column prop="name" label="客户名称" fixed="left" min-width="250" >
@@ -60,7 +60,7 @@
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="project" label="旗下项目" fixed="left" min-width="250" >
+			<el-table-column prop="project" label="项目名称" fixed="left" min-width="250" >
 				<template slot-scope="scope" v-if="scope.row.project != '' && scope.row.projectshow == true">
 					<el-tooltip effect="dark" :content="scope.row.project" placement="top">
 						<span  class="tip " :style="{'font-size': fontSize}">{{scope.row.project}}</span>
@@ -125,7 +125,7 @@
 			</el-table-column>
 			<el-table-column prop="tax" label="税率"   width="80" v-if="ColumnVisible.tax.value"></el-table-column>
 			<el-table-column prop="payment_days" label="账期"     width="180" v-if="ColumnVisible.payment_days.value"></el-table-column>
-			
+
 			<el-table-column prop="init_data" label="期初" width="180" v-if="ColumnVisible.init_data.value"></el-table-column>
 			<el-table-column prop="id" label="">
 				<template slot-scope="scope">
@@ -142,7 +142,7 @@
 							<div class="month-td" :class="{stripe: scope.row.id % 2 == 0 && key <3}" v-if="initAmount">{{it.initAmount}}</div>
 							<div class="month-td" :class="{stripe: scope.row.id % 2 == 0 && key < 5}" v-if="sale">{{it.amountfor}}</div>
 							<div class="month-td" :class="{stripe: scope.row.id % 2 == 0 && key < 5}" v-if="receive">{{it.real_amountfor}}</div>
-							<div class="month-td" :class="{stripe: scope.row.id % 2 == 0 && key <3}" v-if="balance">{{it.arrears}}</div>	
+							<div class="month-td" :class="{stripe: scope.row.id % 2 == 0 && key <3}" v-if="balance">{{it.arrears}}</div>
 						</span>
 					</template>
 				</el-table-column>
@@ -185,7 +185,7 @@ export default{
 				conf: [],
 				offset: 0,
 				limit: 10,
-				initialization: true, 
+				initialization: true,
 				type: 1
 			},
 			expands: [],
@@ -234,8 +234,8 @@ export default{
 					this.ArrowActiveIndex = false;
 				}
 
-			} 
-			
+			}
+
 		},
 		getRowKeys(row) {
 
@@ -244,11 +244,11 @@ export default{
 		expandChange(data,expandedRows) {
 			//控制只显示当前行
 	    	if (expandedRows.length) {
-	         	this.expands = []; 
+	         	this.expands = [];
 	        	if (data) {
 	          		this.expands.push(data.rowkey);
 	          		this.activeRow(data);
-	        	} 
+	        	}
 			}
 			else {
 	        	this.expands = [];
@@ -285,7 +285,7 @@ export default{
 		pageChange(pageNow) {
 			this.currentPage = pageNow;
 			this.query.offset = (pageNow - 1) * this.query.limit;
-			this.reloadTable();	
+			this.reloadTable();
 		},
 		sizeChange(pageSize) {
 			this.query.limit = pageSize;
@@ -319,7 +319,7 @@ export default{
 	activated() {
 		this.updateFilterQueryParam();
 	},
-	
+
 	computed: {
 		tableData: function() {
 			return this.$store.state.user.ARSum;
@@ -346,7 +346,7 @@ export default{
 			return this.$store.state.user.userInfo;
 		},
 		pagination: function() {
-			
+
 			return this.$store.state.user.BasePagination;
 		},
 		total: function() {
@@ -358,18 +358,18 @@ export default{
 		fontSize: function() {
 			this.DomRefresh = false;
 			let FontSize = this.$store.state.user.ARTableConfig.FontSize;
-			
+
 			if (FontSize && typeof(FontSize) != 'undefined' ) {
-				
+
 				this.$nextTick(() => {
 					this.DomRefresh = true;
 				});
 			}
-			
+
 			return FontSize + 'px';
 		}
 	},
-	
+
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped="scoped">
@@ -385,10 +385,10 @@ export default{
 			width: 100%;
 			box-sizing: border-box;
 			border-bottom: 1px solid #ddd;
-		td .month-td:nth-child(2) 
+		td .month-td:nth-child(2)
 			padding: 2px 0px;
 		td .month-td:nth-last-child(1)
-			border: 0px; 
+			border: 0px;
 		td .stripe
 			background: #ccc;
 		.tip
@@ -399,7 +399,7 @@ export default{
 			white-space: nowrap;
 		.row-expand
 			padding: 15px;
-			max-width: 800px;
+			max-width: 850px;
 			position:relative;
 			.expand-button
 				margin-bottom: 15px;

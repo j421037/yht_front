@@ -4,7 +4,10 @@
         <div class="top" v-if="progress.completed !== false">
             <div class="line progress one">
                 <el-progress :show-text="false" :stroke-width="30" :percentage="100"></el-progress>
-                <div class="txt" :style="proStyle('target')">年度目标业绩：{{progress.target}}元</div>
+                <div
+                    class="txt"
+                    :style="{width:'100%'}"
+                >年度目标业绩：{{progress.target}}元</div>
             </div>
             <div class="line progress two">
                 <el-progress
@@ -14,8 +17,8 @@
                 ></el-progress>
                 <div
                     class="txt"
-                    :style="proStyle('completed')"
-                >已完成业绩（{{progress.target > 0 ? progress.completed/progress.target*100 : 0}}%）：{{progress.completed}}元 </div>
+                    :style="{width: (progress.target > 0 ? progress.completed/progress.target*100 : 'auto') + '%'}"
+                >已完成业绩（{{progress.target > 0 ? NumberPercent(progress.completed/progress.target*100) : 0}}%）：{{progress.completed}}元 </div>
             </div>
             <div class="line progress three">
                 <el-progress
@@ -25,12 +28,12 @@
                 ></el-progress>
                 <div
                     class="txt"
-                    :style="proStyle('arrears')"
+                    :style="{width: progress.debt_percent > 0 ?  progress.debt_percent + '%' : 'auto'}"
                 >欠款{{progress.debt_percent}}%：{{progress.debt}}元</div>
             </div>
         </div>
         <div class="dashboard" v-if="progress.completed !== false">
-            <div class="title">工作仪表盘</div>
+            <div class="title fx"><span>工作仪表盘</span></div>
             <div class="group fx">
                 <div class="fx5 fx L">
                     <div class="fx1 item">
@@ -94,6 +97,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -192,7 +196,8 @@ export default {
             checkList: [],
             chartData: {},
             curYear: $.getCurYear() + '',
-            chartLoading: true
+            chartLoading: true,
+            syncing: false
         }
     },
     created() {
@@ -210,7 +215,7 @@ export default {
             this.updateChart()
         })
 
-        
+
 
 
 
@@ -225,6 +230,7 @@ export default {
         },
         proStyle(e) {
             let val = this.progress[e]
+            console.log(e+' width:'+val);
             if (val < 30) {
                 val = 30
             }
@@ -312,6 +318,17 @@ export default {
             }
 
             parallel()
+        },
+        NumberPercent(num) {
+            let n = String(parseFloat(num).toFixed(3));
+
+            return Number(n.substring(0,n.length - 1));
+        },
+        /**同步仪表盘**/
+        syncDashboardata() {
+            http.post("index/sync").then(res => {
+                console.log(res);
+            });
         }
     },
     components: {

@@ -75,9 +75,10 @@
                     :data="TableData"
                     stripe
                     border
+                    height="100%"
                     highlight-current-row
                 >
-                    <el-table-column prop="id" label="序号" width="55"></el-table-column>
+                    <el-table-column type="index" :index="indexMethod" width="55"></el-table-column>
                     <el-table-column prop="customer" label="客户名称" width="200"></el-table-column>
                     <el-table-column prop="project" label="项目名称" width="200"></el-table-column>
                     <el-table-column prop="date" label="报价日期" width="100"></el-table-column>
@@ -188,6 +189,9 @@ export default {
 
 		    return res;
 		},
+        indexMethod(index) {
+		    return ++index;
+        },
         /**
          * 下载pdf
          * **/
@@ -363,4 +367,6 @@ export default {
             position: absolute;
             top: 115px;
             width: 100%;
+            height: calc(100% - 115px);
+            overflow-y: auto;
 </style>

@@ -3,18 +3,18 @@
 		<section>
 			<div class="button-group">
 				<el-button type="primary" size="mini" @click.native="ShowDialog({FilterVisible:true})">过滤</el-button>
-				<el-dropdown>
-					<el-button type="success" size="mini">
-						新建<i class="el-icon-arrow-down el-icon--right"></i>
-					</el-button>
-					<el-dropdown-menu slot="dropdown" >
-						<el-dropdown-item @click.native="ShowDialog({CreateCustVisible:true})">新建客户</el-dropdown-item>
-						<el-dropdown-item @click.native="ShowDialog({CreateProVisible:true})">新建项目</el-dropdown-item>
-						<el-dropdown-item @click.native="ShowDialog({ImportVisible:true})">批量导入客户</el-dropdown-item>
-						<el-dropdown-item @click.native="ShowDialog({CreatePotentialProVisible:true})">新建潜在项目</el-dropdown-item>
-					</el-dropdown-menu>
-				</el-dropdown>
-				<el-button type="warning" size="mini" @click.native="Initialization">初始化</el-button>
+				<!--<el-dropdown>-->
+					<!--<el-button type="success" size="mini">-->
+						<!--新建<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+					<!--</el-button>-->
+					<!--<el-dropdown-menu slot="dropdown" >-->
+						<!--<el-dropdown-item @click.native="ShowDialog({CreateCustVisible:true})">新建客户</el-dropdown-item>-->
+						<!--<el-dropdown-item @click.native="ShowDialog({CreateProVisible:true})">新建项目</el-dropdown-item>-->
+						<!--<el-dropdown-item @click.native="ShowDialog({ImportVisible:true})">批量导入客户</el-dropdown-item>-->
+						<!--<el-dropdown-item @click.native="ShowDialog({CreatePotentialProVisible:true})">新建潜在项目</el-dropdown-item>-->
+					<!--</el-dropdown-menu>-->
+				<!--</el-dropdown>-->
+				<!--<el-button type="warning" size="mini" @click.native="Initialization">初始化</el-button>-->
 			</div>
 			<div class="fast-query">
 				<el-input placeholder="快速查询你需要的内容"  v-model="form[0].value" class="input-with-select">
@@ -97,7 +97,7 @@ export default{
 					this.$store.dispatch('ARSum', this.$store.state.user.filterQuery);
 				});
 			}).catch(() => {
-				
+
 			});
 		},
 		querySearch() {
@@ -132,5 +132,5 @@ export default{
 		.checkbox-group
 			display: flex;
 			align-items: center;
-	
+
 </style>

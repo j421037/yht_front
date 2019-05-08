@@ -179,7 +179,12 @@
              * 远程搜索客户
              * **/
             remoteMethod(query) {
-                console.log(query)
+                if (query) {
+                    this.RemoteLoading = true;
+                    this.$store.dispatch("QueryCustomer",{keyword:query}).then(() => {
+                        this.RemoteLoading = false;
+                    });
+                }
             },
 
             /**
@@ -229,10 +234,10 @@
                 this.customers.forEach((item) => {
                     if (item.value == val)
                     {
-                        if (!item.authorize)
-                            this.AuthorizeMsg = "你没有对该客户报价的权限，请申请授权";
-                        else
-                            this.AuthorizeMsg = "";
+                        // if (!item.authorize)
+                        //     this.AuthorizeMsg = "你没有对该客户报价的权限，请申请授权";
+                        // else
+                        //     this.AuthorizeMsg = "";
                     }
                 });
             }
@@ -242,7 +247,12 @@
                 return this.$store.state.user.BaseProduct.Price.MakeOffer.visible;
             },
             customers: function() {
-                return [{label:"江苏华建", value: 1,authorize: true},{label: "北京建工",value: 2,authorize:false}];
+                let customers = this.$store.state.user.QueryCustomer, items = [];
+                customers.forEach(item => {
+                   items.push({label:item.name,value:item.id});
+                });
+
+                return items;
             },
 
             /**

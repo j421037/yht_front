@@ -272,7 +272,9 @@ const state = {
 	    users: [],
         authorize: false
     },
-    ModifyOffer: {}
+    ModifyOffer: {},
+    priceInfo: [],
+    QueryCustomer:[]
 }
 
 export default {

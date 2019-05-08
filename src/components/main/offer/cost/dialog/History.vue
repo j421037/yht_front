@@ -4,6 +4,7 @@
             title="调价历史"
             :visible.sync="visible"
             :before-close="handleClose"
+            @open="handleOpen"
             width="40%"
             class="cost-price-history_dialog"
         >
@@ -15,37 +16,22 @@
                     <el-select v-model="Form.product_brand"></el-select>
                 </el-form-item>
             </el-form>
-            <el-timeline>
-                <el-timeline-item timestamp="2018/4/12" placement="top" icon="el-icon-more" color="rgb(11, 189, 135)">
+            <el-timeline
+                v-for="(item,key) in priceInfo"
+                :key="key"
+            >
+                <el-timeline-item :timestamp="item.date" placement="top" icon="el-icon-more" color="rgb(11, 189, 135)">
                     <el-card>
                         <div>
                             <section>
-                                <h4>更新 Github 模板</h4>
-                                <p>王小虎 提交于 2018/4/12 20:46</p>
+                                <h4>{{item.category_name}} - {{item.brand_name}}</h4>
+                                <p>{{item.remark}}</p>
                             </section>
                             <section>
                                 <el-button>查看价格</el-button>
-                                <el-button>浏览价格表</el-button>
+                                <el-button>厂家价格表</el-button>
                             </section>
                         </div>
-                    </el-card>
-                </el-timeline-item>
-                <el-timeline-item timestamp="2018/4/3" placement="top">
-                    <el-card>
-                        <h4>更新 Github 模板</h4>
-                        <p>王小虎 提交于 2018/4/3 20:46</p>
-                    </el-card>
-                </el-timeline-item>
-                <el-timeline-item timestamp="2018/4/2" placement="top">
-                    <el-card>
-                        <h4>更新 Github 模板</h4>
-                        <p>王小虎 提交于 2018/4/2 20:46</p>
-                    </el-card>
-                </el-timeline-item>
-                <el-timeline-item timestamp="2018/4/2" placement="top">
-                    <el-card>
-                        <h4>更新 Github 模板</h4>
-                        <p>王小虎 提交于 2018/4/2 20:46</p>
                     </el-card>
                 </el-timeline-item>
             </el-timeline>
@@ -70,11 +56,20 @@
             handleClose() {
                 this.$store.dispatch("SetBaseProductConfig",{field: "Price.History.visible",value: false});
             },
+            handleOpen() {
+                this.LoadPriceInfo();
+            },
+            LoadPriceInfo() {
+                this.$store.dispatch("LoadPriceInfo",this.Form);
+            }
         },
         computed: {
             visible: function() {
                 return this.$store.state.user.BaseProduct.Price.History.visible;
             },
+            priceInfo: function () {
+                return this.$store.state.user.priceInfo;
+            }
         }
     }
 </script>

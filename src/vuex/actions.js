@@ -83,7 +83,7 @@ export const DeletePermission = ({commit}, info) => {
 }
 
 export const getFunctionTable = ({commit}) => {
-	
+
 	return api.getFunctionTable().then((response) => {
 		commit('GET_FUNCTION_TABLE_DATA', response);
 	})
@@ -108,7 +108,7 @@ export const getRoleList = ( {commit}) => {
 }
 
 /**
-* 获取权限列表选中项 
+* 获取权限列表选中项
 */
 export const getRoleTreeSelectNode = ({commit}, id) => {
 	return api.getRoleTreeSelectNode(id).then( (response ) => {
@@ -226,7 +226,7 @@ export const customerManagerList = ({commit}, info) => {
 export const getCustomer = ( {commit}, info ) => {
 	return api.getCustomer(info).then( (response) => {
 		commit('CUSTOMER_LIST', response);
-	} ); 
+	} );
 }
 
 /**领取一个客户**/
@@ -260,7 +260,7 @@ export const freeCustomer = ({commit}, info) => {
 	return api.freeCustomer(info).then( (response) => {
 		commit('FREE_CUSTOMER', response);
 	} )
-} 
+}
 /**验收客户**/
 export const acceptCustomer = ({commit}, info) => {
 	return api.acceptCustomer(info).then( (response) => {
@@ -289,7 +289,7 @@ export const departmentCreate = ({commit}, info) => {
 }
 /**修改部门**/
 export const departmentModify = ({commit}, info) => {
-	 
+
 	return api.departmentModify(info).then((response) => {
 		commit('DEPARTMENT_MODIFY',response);
 	});
@@ -685,7 +685,7 @@ export const ARSumUserRole = ({commit}) => {
 	return api.ARSumUserRole().then((response) => {
 		return commit('ARSUM_USER_ROLE', response);
 	})
-} 
+}
 /**初始化分页配置**/
 export const InitPagination = ({commit}) => {
 	return api.InitPagination().then((response) => {
@@ -827,7 +827,7 @@ export const UpdateCustStatus = ({commit}, info) => {
 	return api.UpdateCustStatus(info).then((response) => {
 		return commit('UPDATE_CUST_STATUS', response);
 	});
-	
+
 }
 export const GetARSumFilterTable = ({commit}) => {
 	return api.GetARSumFilterTable().then((response) => {
@@ -976,4 +976,14 @@ export const ModifyOffer = ({commit}, info) => {
     return api.ModifyOffer(info).then((response) => {
         return commit("MODIFY_OFFER", response);
     });
+}
+export const LoadPriceInfo = ({commit}, info) => {
+    return api.LoadPriceInfo(info).then((response) => {
+        return commit("LOAD_PRICE_INFO", response);
+    })
+}
+export const QueryCustomer = ({commit}, info) => {
+    return api.QueryCustomer(info).then((response) => {
+        return commit("QUERY_CUSTOMER", response);
+    })
 }

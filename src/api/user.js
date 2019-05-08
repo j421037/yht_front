@@ -119,7 +119,7 @@ export const getPersonalCustomer = (info) => {
 }
 export const appendComments = (info) => {
 	return http.post('customer/post/comments', info);
-}	
+}
 export const getComments = (info) => {
 
 	return http.post('customer/get/comments', info);
@@ -376,7 +376,7 @@ export const DeleteReceivable = (info) => {
 	return http.post('receivable/delete', info);
 }
 export const GetReceiveBillList = (info) => {
-	
+
 	return http.post('receivebill/all', info);
 }
 export const GetRefundList = (info) => {
@@ -489,4 +489,10 @@ export const LoadCostRole = () => {
 }
 export const ModifyOffer = (info) => {
     return http.post("products/offer/modify",info);
+}
+export const LoadPriceInfo = (info) => {
+    return http.post("products/prices/info", info);
+}
+export const QueryCustomer = (info) => {
+    return http.post("realcustomer/searchcust",info);
 }

@@ -17,11 +17,11 @@
 					</el-popover>
 				</template>
 			</el-table-column>
-			<el-table-column prop="id" label="操作">
+			<el-table-column prop="id" label="操作" width="300">
 				<template slot-scope="scope">
-					<el-button type="success" size="mini" @click.native="update(scope.row)">编辑</el-button>
+					<el-button type="success" size="mini" @click.native="update(scope.row)" style="margin-right:10px">编辑</el-button>
 					<el-button type="danger" size="mini" @click.native="remove(scope.row)">删除</el-button>
-				</template>	
+				</template>
 			</el-table-column>
 		</el-table>
 		<div class="table-pagination">
@@ -36,7 +36,7 @@ export default {
 		moduleName: {
 			type: String
 		},
-		
+
 	},
 	data() {
 		return {
@@ -58,7 +58,7 @@ export default {
 	          	cancelButtonText: '取消',
 	          	type: 'warning'
 	        }).then(() => {
-	         		
+
 	         	this.$store.dispatch('deleteReceivablePlan', {id:row.id}).then(() => {
 	         		let response = this.$store.state.user.AddReceivablePlan;
 
@@ -72,7 +72,7 @@ export default {
 	         	});
 
 	        }).catch(() => {
-	            
+
 	        });
 		}
 	},

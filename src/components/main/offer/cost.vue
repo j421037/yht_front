@@ -46,7 +46,8 @@ export default {
             LoadTab: [],
             refreshVisible: true,
             btnDisable: true,
-            tabName: ""
+            tabName: "",
+            str: "守得云开见月明"
         };
     },
     created() {

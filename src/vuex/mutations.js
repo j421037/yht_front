@@ -45,7 +45,7 @@ const mutations = {
 		state.add_group = data;
 	},
 	[types.GET_GROUP_LIST] (state, data) {
-		state.groups = data; 
+		state.groups = data;
 	},
 
 	[types.UPDATE_PERMISSION_STATUS] (state,data) {
@@ -62,7 +62,7 @@ const mutations = {
 	},
 
 	[types.GET_FUNCTION_TABLE_DATA] (state, data) {
-		
+
 		state.functionTableData = data.list;
 		state.functionTablePageCount = data.count;
 	},
@@ -267,7 +267,7 @@ const mutations = {
 	},
 	[types.ARTICLE_PORTAL_SHOW] (state, response) {
 		state.PortalArticleData.loaded = response.loaded;
-		
+
 		if (response.data.length > 0) {
 			response.data.forEach((item) => {
 				state.PortalArticleData.data.push(item);
@@ -344,7 +344,7 @@ const mutations = {
 		state.ArticleDelete = data;
 	},
 	[types.FORM_PHOTOS_ADD] (state, response) {
-		
+
 		state.ForumPhotosAdd = response;
 	},
 	[types.ARTICLE_AGREE_NOTIFY] (state, data) {
@@ -356,21 +356,21 @@ const mutations = {
 		state.ArticleAnswerNotify = data;
 	},
 	[types.ARTICLE_AGREE_LIST] (state, data) {
-		 
+
 		state.ArticleAgreeList = data;
 	},
 	[types.AGREE_EVERY_MONTH] (state, data) {
-		 
+
 		state.AgreeEveryMonth = data;
 	},
 	[types.MY_ARTICLE_NOTIFY] (state, data) {
-		 
+
 		state.MyArticleNotify = data;
 	},
 	[types.SET_HISTORY] (state, history) {
 
 		let status = state.historyMenu.some((item) => {
-			
+
 			return item.path == history.path;
 		})
 
@@ -408,14 +408,14 @@ const mutations = {
 	[types.BREAD_PATH] (state, path) {
 		//console.log(path)
 		let navigation = state.navigation;
-		
+
 		state.Breadcrumb = [];
 
 		for (var i in navigation) {
-        
+
 	        let children = navigation[i].children;
 
-	        if (navigation[i].front_path == path) { 
+	        if (navigation[i].front_path == path) {
 	        	state.Breadcrumb.push(navigation[i].name);
 	        }
 
@@ -440,7 +440,7 @@ const mutations = {
 		state.SearchProject = response.data;
 	},
 	[types.ADD_RECEIVABLE] (state, response) {
-		 
+
 		state.AddReceivable = response;
 	},
 	[types.ADD_RECEIVEBILL] (state, response) {
@@ -472,7 +472,7 @@ const mutations = {
 		state.ARSumUserRole = response;
 	},
 	[types.BASE_PAGINATION] (state, response) {
-		 
+
 		state.BasePagination = response.data;
 	},
 	[types.ADD_RECEIVABLE_PLAN] (state,response) {
@@ -482,7 +482,7 @@ const mutations = {
 		state.RefundAdd = response;
 	},
 	[types.REFUND_UPDATE] (state, response) {
-		 
+
 		state.UpdateRefund = response;
 	},
 	[types.SET_AR_TAB] (state, tab) {
@@ -549,7 +549,7 @@ const mutations = {
 	[types.GET_RECEIVEBILL_LIST] (state, response) {
 		state.ReceiveBillList.data = response.row;
 		state.ReceiveBillList.pagination.total = response.total;
-		 
+
 	},
 	[types.GET_REFUND_LIST] (state, response) {
 		state.RefundList.data = response.row;
@@ -616,7 +616,7 @@ const mutations = {
 		state.ARTableConfig.FontSize = FontSize;
 	},
 	[types.FORUM_MODULE_TABLE_DATA] (state, response) {
-		// 
+		//
 		if (response.data.length > 0) {
 			state.ForumModuleTableData = response.data;
 		}
@@ -705,6 +705,12 @@ const mutations = {
     },
     [types.MODIFY_OFFER] (state,response) {
 	    state.ModifyOffer = response;
+    },
+    [types.LOAD_PRICE_INFO] (state, response) {
+	    state.priceInfo = response.data;
+    },
+    [types.QUERY_CUSTOMER] (state, response) {
+	    state.QueryCustomer = response.data;
     }
 }
 
