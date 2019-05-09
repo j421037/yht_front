@@ -6,21 +6,21 @@
 		  :before-close="SaleOrderClose"
 		  @open="OpenSaleOrder"
 		  width="30%"
-		  >	
+		  >
 		  	<el-form :model="Form" :rules="Rules" style="width: 100%" ref="Form">
 		  		<el-form-item label="客户名称" :label-width="formLabelWidth" >
-					<span class="form-item-names">{{Form.name}}</span>
+					<span class="form-item-names">{{Form.customer_name}}</span>
 		    	</el-form-item>
 		    	<el-form-item label="项目名称" :label-width="formLabelWidth" >
-					<span class="form-item-names">{{Form.project}}</span>
+					<span class="form-item-names">{{Form.project_name}}</span>
 		    	</el-form-item>
                 <el-form-item label="标签" :label-width="formLabelWidth" >
-                    <el-tag type="success">{{row.tag}}</el-tag>
+                    <el-tag type="success">{{row.tag}} {{Form.id}}</el-tag>
                 </el-form-item>
 		    	<el-form-item label="应收款金额" :label-width="formLabelWidth" prop="amountfor">
 		    		<el-input  v-model.trim="Form.amountfor" placeholder="请输入应收款金额"></el-input>
 		    	</el-form-item>
-		    	
+
 		    	<el-form-item label="业务日期" :label-width="formLabelWidth" prop="date">
 					<el-date-picker
 				      	v-model="Form.date"
@@ -42,7 +42,7 @@
 					  inactive-color="#ff4949">
 					</el-switch>
 		    	</el-form-item>
-		    	
+
 		  	</el-form>
 		  	<p class="errmsg" v-if="error.status">{{error.msg}}</p>
 		  	<span slot="footer" class="dialog-footer">
@@ -54,17 +54,15 @@
 </template>
 <script>
 export default {
-	
+
 	data() {
 		return {
 			ShowInit: true,
 			formLabelWidth: '120px',
 			Form: {
-				id: '',
-				cust_id: '',
-				name: "",
-				pid: '',
-				project: "",
+				rid: '',
+				customer_name: "",
+				project_name: "",
 				date: '',
 				is_init: true,
 				amountfor: '',
@@ -114,10 +112,8 @@ export default {
 				this.Form.remark = row.remark;
 				this.Form.date = row.date;
 				this.Form.is_init = Boolean(row.is_init);
-				this.Form.cust_id = this.row.cust_id;
-				this.Form.project = this.row.project;
-				this.Form.pid = this.row.pid;
-				this.Form.name = this.row.name;
+				this.Form.project_name = this.row.project_name;
+				this.Form.customer_name = this.row.customer_name;
 			}
 			else {
 				//新增
@@ -125,12 +121,14 @@ export default {
 					if (typeof(this.row[i]) != 'undefined') {
 						this.Form[i] = this.row[i];
 					}
-				} 
+				}
 			}
+
+            this.Form.rid = this.row.id;
 		},
 		submitForm() {
-			if (!this.Form.cust_id || !this.Form.pid) {
-				this.error.msg = '项目或者客户不能为空！没有项目则请先创建项目';
+			if (!this.Form.rid) {
+				this.error.msg = '参数不完整';
 				this.error.status = true;
 
 				return false;
@@ -140,7 +138,7 @@ export default {
 				if (valid) {
 
 					let action = 'AddReceivable';
-					
+
 					if (this.SaleData.update) {
 						action = 'UpdateReceivable';
 					}
@@ -155,14 +153,14 @@ export default {
 							this.Form.amountfor = "";
 							this.Form.remark = "";
 							this.SaleOrderClose();
-							this.$store.dispatch('GetSaleOrderList', {pid: this.Form.pid});
+							this.$store.dispatch('GetSaleOrderList', {rid: this.Form.rid});
 							//清空当前选择的行数据
 							this.$store.dispatch('SetSaleOrderList', {CurrentRow:{}, update: false});
 							//清空验证状态
 							this.$refs['Form'].resetFields();
                             //更新当前行项目的信息
-                            this.$store.dispatch('UpdateARSumCurrentRow',this.row.pid);
-						} 
+                            this.$store.dispatch('UpdateARSumCurrentRow',this.row.rid);
+						}
 						else {
 							this.$notify.error('操作失败!' + response.errmsg);
 						}

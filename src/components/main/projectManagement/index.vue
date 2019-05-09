@@ -533,7 +533,7 @@
                             <el-input v-model="customer.name"></el-input>
                         </el-form-item>
                         <div class="line fx">
-                            <el-form-item label="客户类型">
+                            <el-form-item label="客户类型" prop="type" :rules="{required: true,trigger: 'blur',message: '请选择客户类型'}">
                                 <el-select v-model="customer.type" placeholder="请选择">
                                     <el-option
                                         v-for="item in cusTypes"
@@ -565,7 +565,7 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="施工范围">
+                        <el-form-item label="施工范围" prop="work_scope" :rules="{required: true,trigger: 'blur', message: '请选择施工范围'}">
                             <el-select v-model="customer.work_scope" placeholder="请选择">
                                 <el-option
                                     v-for="item in workScopeOptions"
@@ -881,7 +881,7 @@ export default {
                        }
                        else {
                            this.$message({
-                               message: '添加失败'+res.errmsg,
+                               message: '添加失败: '+res.errmsg,
                                type: 'error',
                                center: true
                            });

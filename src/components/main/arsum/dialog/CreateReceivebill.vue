@@ -9,10 +9,10 @@
 		>
 			<el-form :model="Form" :rules="Rules" style="width: 100%" ref="Form">
 		  		<el-form-item label="客户名称" :label-width="formLabelWidth" >
-					<span class="form-item-names">{{Form.name}}</span>
+					<span class="form-item-names">{{Form.customer_name}}</span>
 		    	</el-form-item>
 		    	<el-form-item label="项目名称" :label-width="formLabelWidth" >
-					<span class="form-item-names">{{Form.project}}</span>
+					<span class="form-item-names">{{Form.project_name}}</span>
 		    	</el-form-item>
                 <el-form-item label="标签" :label-width="formLabelWidth" >
                     <el-tag type="success">{{row.tag}}</el-tag>
@@ -37,7 +37,7 @@
 		    	<el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
 		    		<el-input  v-model.trim="Form.remark" placeholder="备注内容"></el-input>
 		    	</el-form-item>
-		    	
+
 		  	</el-form>
 			<span slot="footer" class="dialog-footer">
 		   		<el-button @click="Close">取 消</el-button>
@@ -53,13 +53,12 @@ export default {
             formLabelWidth: '120px',
             Form: {
 				id: "",
-                name: "",
-                project: "",
+                rid: "",
+                customer_name: "",
+                project_name: "",
                 amountfor: "",
                 date: "",
                 remark: "",
-                pid: "",
-				cust_id: "",
 				discount: 0
             },
             Rules: {
@@ -78,19 +77,18 @@ export default {
 					{validator: this.onlyNumber, trigger: 'blur'}
 				]
 			},
-        } 
+        }
     },
     methods: {
         /**关闭**/
 		Close() {
 			this.$store.dispatch('AlterTableConfig', {ReceivebillVisible: false});
 		},
-	
+
 		Open() {
-			this.Form.name = this.row.name;
-			this.Form.project = this.row.project;
-			this.Form.cust_id = this.row.cust_id;
-			this.Form.pid = this.row.pid;
+			this.Form.customer_name = this.row.customer_name;
+			this.Form.project_name = this.row.project_name;
+			this.Form.rid = this.row.id;
 
 			if (this.BillData.update) {
 				this.Form.id = this.BillData.CurrentRow.id;
@@ -104,7 +102,7 @@ export default {
 			this.$refs['Form'].validate((valid) => {
 				if (valid) {
 					let action = 'AddReceivebill';
-					
+
 					if (this.BillData.update) {
 						action = 'UpdateReceivebill';
 					}
@@ -118,10 +116,10 @@ export default {
 							this.Form.remark = "";
 							this.Form.discount = 0;
 							this.$store.dispatch('SetReceiveBillList', {update: false,CurrentRow:{}});
-							this.$store.dispatch('GetReceiveBillList',{pid:this.Form.pid});
+							this.$store.dispatch('GetReceiveBillList',{rid:this.Form.rid});
 							this.$refs['Form'].resetFields();
                             //更新当前行项目的信息
-                            this.$store.dispatch('UpdateARSumCurrentRow',this.row.pid);
+                            this.$store.dispatch('UpdateARSumCurrentRow',this.row.id);
 						}
 						else {
 							this.$notify.error('操作失败!' + response.errmsg);
@@ -132,7 +130,7 @@ export default {
 				}
 			});
 		},
-		
+
 		/**数字验证规则**/
 		onlyNumber(rule, value, callback) {
 			let patt = /^[0-9\.\-]+$/;

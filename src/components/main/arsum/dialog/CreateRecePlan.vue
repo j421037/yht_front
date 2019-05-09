@@ -17,7 +17,7 @@
 		    	<el-form-item label="收款计划" :label-width="formLabelWidth" prop="content">
 		    		<el-input type="textarea" :rows="3"  v-model.trim="Form.content" placeholder="请输入计划内容"></el-input>
 		    	</el-form-item>
-		    	
+
 		    	<el-form-item label="周期" :label-width="formLabelWidth" prop="date">
 					<el-date-picker
 				      	v-model="Form.date"
@@ -25,12 +25,12 @@
 					    format="yyyy 第 WW 周"
 					    placeholder="选择周"
                         :picker-options="{firstDayOfWeek: 1}"
-                        
+
 				    >
 				    </el-date-picker>
 		    	</el-form-item>
-		    	
-		    	
+
+
 		  	</el-form>
 			<span slot="footer" class="dialog-footer">
 		   		<el-button @click="Close">取 消</el-button>
@@ -68,7 +68,7 @@ export default {
 					{required: true, message: '请输入计划内容', trigger: 'blur'},
 				]
 			},
-            
+
         };
     },
     computed: {
@@ -99,7 +99,7 @@ export default {
 			this.Form.pid = this.row.pid;
 
 			if (this.RecePlanData.update) {
-            
+
 				this.Form.id = this.RecePlanData.CurrentRow.id;
 				// this.Form.date = this.RecePlanData.CurrentRow.week_src;
 				this.Form.content = this.RecePlanData.CurrentRow.content;
@@ -126,7 +126,7 @@ export default {
                             this.Form.content = "";
                             this.$refs['Form'].resetFields();
                             this.$store.dispatch('SetRecePlanList', {update: false, CurrentRow: {}});
-                            this.$store.dispatch('GetRecePlanList', {pid:this.Form.pid});
+                            this.$store.dispatch('GetRecePlanList', {id:this.Form.rid});
                             this.Close();
                         }
                         else {

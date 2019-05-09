@@ -38,8 +38,7 @@ export default {
 		// // },
 		//读取分页数据
 		LoadTableData() {
-		    console.log(this.actionName);
-			this.$store.dispatch(this.actionName, {pid: this.pid,limit: this.limit, offset: this.offset});
+			this.$store.dispatch(this.actionName, {rid: this.pid,limit: this.limit, offset: this.offset});
 		},
 		//当前分页切换
 		handleCurrentChange(val) {

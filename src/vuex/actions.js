@@ -636,13 +636,14 @@ export const ARSum = ({commit}, query) => {
 	//状态开始
 	commit('AR_SUM_TABLE_LOADING');
 	return api.ARSum(query).then((response) => {
+	    console.log(response);
 		return commit('AR_SUM_TABLE', response);
 	})
 }
 
 //更新某一个项目的欠款信息
 export const UpdateARSumCurrentRow = ({commit}, pid) => {
-    let info = {conf:[{operator:0,field: 'pid',value:pid}], offset:0,limit: 1,initialization: 1,type:1};
+    let info = {conf:[{operator:0,field: 'id',value:pid}], offset:0,limit: 1,initialization: 1,type:1};
     return api.ARSum(info).then((response) => {
        return commit('UPDATE_ARSUMCURRENT_ROW',response);
     });
@@ -788,6 +789,7 @@ export const ARSumCurrentRow = ({commit}, info) => {
 }
 //销售明细
 export const GetSaleOrderList = ({commit}, info) => {
+    console.log(info)
 	return api.GetSaleOrderList(info).then((response) => {
 		return commit('GET_SALE_ORDER_LIST', response);
 	})

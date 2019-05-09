@@ -21,13 +21,13 @@
 					</div>
 					<div class="program-list">
 						<ul>
-							<li class="program-item" 
-								v-for="(item, key) in list" :key="key" 
+							<li class="program-item"
+								v-for="(item, key) in list" :key="key"
 								:class="{'program-active': CurrentProgramIndex == item.id}"
 								@click="ChangeProgram(item.id)"
 							>
 								<span class="item-name">· {{item.name}}</span>
-							</li>	
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -75,19 +75,19 @@
 														<el-option  v-for="(opt, key) in condition[ConditionIndex].conf[index].type.list" :key="key" :label="opt.label" :value="opt.value"></el-option>
 													</el-select>
 												</span>
-												
+
 												<span  ref="elSelect" v-if="DOMRefresh">
 													<span v-if="condition[ConditionIndex].conf[index].type.name == 'server' && condition[ConditionIndex].conf[index].operator == 0">
-														<el-select 
-															v-model="condition[ConditionIndex].conf[index].value" 
-															
+														<el-select
+															v-model="condition[ConditionIndex].conf[index].value"
+
 															filterable
 															remote
 															reserve-keyword
 															placeholder="请输入关键词"
 															:remote-method="remoteMethod"
 															:loading="remoteLoading"
-															class="remote-select"	
+															class="remote-select"
 														>
 															<el-option v-for="(opt, key) in condition[ConditionIndex].conf[index].remote" :key="key" :label="opt.label" :value="opt.value"></el-option>
 														</el-select>
@@ -142,7 +142,7 @@
 			<div class="footer" >
 				<div class="filter-foot">
 					<span class="filter-choose-default">
-						<el-checkbox v-model="defaultProgram">下次以此方案自动进入</el-checkbox>	
+						<el-checkbox v-model="defaultProgram">下次以此方案自动进入</el-checkbox>
 					</span>
 					<span class="foot-btn-group">
 						<el-button type="success" size="mini" @click.native="saveProgram">保存当前方案</el-button>
@@ -172,7 +172,7 @@
 </template>
 <script>
 export default {
-	
+
 	data() {
 		return {
 			programmeVisible: false,
@@ -193,7 +193,7 @@ export default {
 			conditionRows: [],
 			rowIndex: 0,
 			rowEditStatus: false,
-			remoteLoading: false,	
+			remoteLoading: false,
 			Form: {
 				id: "",
 				name: "",
@@ -212,7 +212,7 @@ export default {
 			ConditionIndex: 0,
 			DOMRefresh: true,
 			RefreshFieldStatus: true,
-			AlreadyInit: false, 
+			AlreadyInit: false,
 			ColumnVisibleTemp: {},
 			CurrentOpIndex: 0,
 			//condition:[],
@@ -242,7 +242,7 @@ export default {
 					}
 				}
 			});
-			
+
 			if (index == 0) {
 				this.btnDisable = true;
 			}
@@ -254,7 +254,7 @@ export default {
 				if (item.id == index) {
 					this.CurrentCondition = item.conf;
 					this.ConditionIndex = i;
-				} 
+				}
 			});
 
 			this.rowIndex = 0;
@@ -266,7 +266,7 @@ export default {
 		},
 		CreateRow() {
 			let row = JSON.parse(JSON.stringify(this.defaultRowParams));
-			
+
 			this.condition[this.ConditionIndex].conf.push(row);
 			// this.CurrentCondition.push(row);
 			this.rowIndex = this.condition[this.ConditionIndex].conf.length - 1;
@@ -280,7 +280,7 @@ export default {
 		},
 		RemoveRow() {
 			let newArr = [];
-			
+
 			this.condition[this.ConditionIndex].conf.forEach((item, index) => {
 				if (index != this.rowIndex) {
 					newArr.push(item);
@@ -330,7 +330,7 @@ export default {
 			let ColConfig = JSON.parse(this.$tool.getter('arsum_column_visible')) || {};
 			//Object.keys(obj) 获取对象的key集合  array类型
 			if (Object.keys(ColConfig).length > 0 ) {
-				
+
 				this.$store.dispatch('SetARSumColumnVisible', ColConfig);
 			}
 		},
@@ -348,7 +348,7 @@ export default {
 			this.FilterField.forEach((item, i) => {
 				if (item.value == this.condition[this.ConditionIndex].conf[index].field) {
 					this.condition[this.ConditionIndex].conf[index].type.name = item.type;
-					 
+
 					if (typeof(item.list) != 'undefined') {
 						this.condition[this.ConditionIndex].conf[index].type.list = item.list;
 
@@ -392,7 +392,7 @@ export default {
 			this.$refs['Form'].validate((valid) => {
 				if (valid) {
 					let action = "CreateProgram";
-					
+
 					if (this.programmeUpdate) {
 						action = "UpdateProgram";
 					}
@@ -446,7 +446,7 @@ export default {
 				this.CurrentCondition = [];
 				this.$store.dispatch('DeleteProgram', {id: this.CurrentProgramIndex}).then(() => {
 					let response = this.$store.state.user.CreateProgram;
-					
+
 					if (response.status == 'success') {
 						this.$store.dispatch('FilterProgram');
 						this.$notify.success('删除成功!');
@@ -456,29 +456,29 @@ export default {
 					}
 				});
 			}).catch(() => {
-			         
+
 			});
 		},
 		//保存过滤方案
 		saveProgram() {
 			let data = this.condition[this.ConditionIndex];
 			data.default = this.defaultProgram;
-			
+
 			if (typeof(data.conf) == 'object' && data.conf != null) {
 				data.conf.forEach((item, index) => {
 					data.conf[index].remote = [];
 					data.conf[index].type.list= [];
 				});
 			}
-			
+
 			data.fontSize = this.FontSize;
 			data.colVisible = this.ColumnVisibleTemp;
-			
+
 			if (this.ConditionIndex > 0) {
 				//修改方案
 				this.$store.dispatch('UpdateFilterConfig', data).then(() => {
 					let response = this.$store.state.user.UpdateFilterConfig;
-					
+
 					if (response.status == 'success') {
 						this.$notify.success('保存方案成功');
 					}
@@ -494,39 +494,39 @@ export default {
 		},
 		QueryData() {
 			let param = this.condition[this.ConditionIndex].conf;
-			console.log(param);return;
+
 			this.$store.dispatch('updateFilterQueryParam', {conf: param, initialization: false}).then(() => {
 				this.$store.dispatch('ARSum', this.$store.state.user.filterQuery).then(() => {
-					this.FilterClose();
+					//this.FilterClose();
 				});
 			});
 		},
-	
+
 	},
 	computed: {
 		visible: function() {
-			
+
 			return this.$store.state.user.ARTableConfig.FilterVisible;
 		},
 		list: function() {
 			let data = [
 				{name: "缺省方案", id: 0}
-			], 
+			],
 			list = this.$store.state.user.FilterProgram,
 			row = JSON.parse(JSON.stringify(this.defaultRowParams));
 			this.condition = [{id: 0, conf: [row]}];
 			this.CurrentCondition =  this.condition[0].conf;
 
 			list.forEach((item) => {
-				
+
 				if (!item.conf) {
 					item.conf = [JSON.parse(JSON.stringify(this.defaultRowParams))];
 				}
 
 				data.push(item);
-				
+
 				this.condition.push({id: item.id, name: item.name, conf: item.conf});
-				
+
 				//如果是初次读取并且获取默认方案
 				if (Boolean(item.default) && this.AlreadyInit == false) {
 					this.defaultProgram = true;
@@ -535,11 +535,11 @@ export default {
 					this.ConditionIndex = this.condition.length - 1;
 				}
 			});
-			
+
 			if (list.length > 0) {
 				this.AlreadyInit = true; //完成初次读取
-			} 
-			
+			}
+
 			return data;
 		},
 		FilterField: function() {
@@ -549,13 +549,13 @@ export default {
 			//console.log( this.$store.state.user.ARSumFilterTable.operator)
 			let field = this.$store.state.user.ARSumFilterTable.field;
 			let op = [];
-			
+
 			if (typeof(field) == 'object') {
 				field.forEach((item) => {
 					op.push(item.opearate);
 				});
 			}
-			
+
 			return  op;
 		},
 		logic: function() {
@@ -569,9 +569,9 @@ export default {
 		},
 		FontSize: {
 			get() {
-				// return 
+				// return
 				let FontSize =  this.$tool.getter('FontSize');
-				
+
 				if (typeof(FontSize) == 'undefined' || !FontSize) {
 					FontSize = this.$store.state.user.ARTableConfig.FontSize;
 				}
@@ -588,22 +588,22 @@ export default {
 	created() {
 		// this.CreateRow();
 		this.InitFilter();
-		
+
 	},
-	
+
 	//vue 指令
 	directives: {
 		//dialog拖动指令
 		dialogDrag: {
 			bind: function(el, binding, vnode,oldVnode){
-				
+
 				const dialogHeader = el.querySelector('.el-dialog__header');
 				const dialogDom = el.querySelector('.el-dialog');
 				const winHeight = window.innerHeight;
 				const winWidth = window.innerWidth;
 				dialogHeader.style.cursor = 'move';
 				dialogHeader.style['user-select'] = 'none';
-				
+
 				//当鼠标按下时  记录当前位置
 				dialogHeader.onmousedown = (de) => {
 					const style = window.getComputedStyle(dialogDom);
@@ -614,34 +614,34 @@ export default {
 					let styT = parseInt(dialogDom.style.top.replace(/\px/,"")) || 0;
 					let disX = dialogDom.offsetLeft - styL;//记录当前点击位置X轴的偏移量
 					let disY = dialogDom.offsetTop - styT;
-					
-					
+
+
 					// 当鼠标按下并且拖动时  调整位置  完成拖动效果
 					document.onmousemove = (mv) => {
-						 
+
 						let newX = mv.clientX - oldX + styL;
 						let newY = mv.clientY - oldY + styT;
-						 
+
 						//处理边界问题
 						if ((dialogDomWidth+newX+disX) >= winWidth - 10) {
 							newX = winWidth - dialogDomWidth - disX - 10; //最大的left
-						}	
+						}
 
 						if (newX < disX * -1) {
 							newX = disX * -1; //最小的left
-						}	
-						
+						}
+
 						if ((dialogDomHeight+newY+disY) >= winHeight - 55) {
 							newY = winHeight - dialogDomHeight - disY - 55; //最大的top
-						}	
+						}
 
 						if (newY < disY * -1) {
 							newY = disY * -1 + 5; //最小的top
-						}	
+						}
 
 						dialogDom.style.left = newX+'px';
 						dialogDom.style.top = newY+'px';
-						
+
 					};
 
 					document.onmouseup = function (e) {
@@ -649,7 +649,7 @@ export default {
 						document.onmouseup = null;
 					};
 				}
-				
+
 			}
 		}
 	},
@@ -670,7 +670,7 @@ export default {
 		// flex-basis : 25%;
 		flex-grow: 0;
 		width: 25%;
-		
+
 		position: relative;
 		.filter-action
 			width: 100%;
@@ -748,7 +748,7 @@ export default {
 						&:first-child,&:last-child
 							flex: 0;
 							flex-basis: 20px;
-				section 
+				section
 					width: 100%;
 					height: calc(100% - 22px);
 					overflow-y: auto;
@@ -766,7 +766,7 @@ export default {
 								flex: 0;
 								flex-basis: 20px;
 							.remote-select
-								height: 22px;	
+								height: 22px;
 			.column-list
 				height: 100%;
 				overflow-y: auto;
@@ -789,6 +789,6 @@ export default {
 		.filter-choose-default
 			font-size: 12px;
 		.filter-btn-group
-			button 
+			button
 				margin-left: 15px;
 </style>

@@ -20,7 +20,7 @@
 		    	<el-form-item label="退货金额" :label-width="formLabelWidth" prop="refund">
 		    		<el-input  v-model.trim="Form.refund" placeholder="请输入退款金额"></el-input>
 		    	</el-form-item>
-		    	
+
 		    	<el-form-item label="退货日期" :label-width="formLabelWidth" prop="date">
 					<el-date-picker
 				      	v-model="Form.date"
@@ -35,7 +35,7 @@
 		    	<el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
 		    		<el-input  v-model.trim="Form.remark" placeholder="备注内容"></el-input>
 		    	</el-form-item>
-		    	
+
 		  	</el-form>
 			<span slot="footer" class="dialog-footer">
 		   		<el-button @click="Close">取 消</el-button>
@@ -79,14 +79,14 @@ export default {
 				disabledDate(time) {
 	            	return time.getTime() > Date.now();
 	          	},
-	          	shortcuts: 
+	          	shortcuts:
 	          	[{
-	          	
+
 	            	text: '今天',
 	            	onClick(picker) {
 	              		picker.$emit('pick', new Date());
 	            	}
-	          	}, 
+	          	},
 	          	{
 	            	text: '昨天',
 	            	onClick(picker) {
@@ -94,7 +94,7 @@ export default {
 	              		date.setTime(date.getTime() - 3600 * 1000 * 24);
 	              		picker.$emit('pick', date);
 	            	}
-	          	}, 
+	          	},
 	          	{
 	            	text: '一周前',
 	            	onClick(picker) {
@@ -130,7 +130,7 @@ export default {
         Close() {
             this.$store.dispatch('AlterTableConfig', {RefundVisible: false});
         },
-       
+
 		Open() {
 			this.Form.name = this.row.name;
 			this.Form.project = this.row.project;
@@ -155,25 +155,25 @@ export default {
 		},
         submitForm() {
             this.$refs['Form'].validate((valid) => {
-               
+
                 if (valid) {
                     let action = 'RefundAdd';
 
                     if (this.RefundData.update) {
                         action = 'RefundUpdate';
                     }
-                    
+
                     this.$store.dispatch(action, this.Form).then(() => {
                         let response = this.$store.state.user.RefundAdd;
 
                         if (response.status == 'success') {
                             this.$notify.success('操作成功');
                             this.$refs['Form'].resetFields();
-                            
+
                             this.Form.refund = "";
                             this.Form.remark = "";
 
-                            this.$store.dispatch('GetRefundList',{pid:this.Form.pid});
+                            this.$store.dispatch('GetRefundList',{rid:this.Form.rid});
                             this.$store.dispatch('SetRefundList', {update: false, CurrentRow:{}});
                         }
                         else {

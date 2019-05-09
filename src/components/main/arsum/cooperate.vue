@@ -53,21 +53,21 @@
 				</template>
 			</el-table-column>
 			<el-table-column prop="department" label="部门名称" fixed="left" width="80" v-if="ColumnVisible.department.value"></el-table-column>
-			<el-table-column prop="name" label="客户名称" fixed="left" min-width="250" >
+			<el-table-column prop="customer_name" label="客户名称" fixed="left" min-width="250" >
 				<template slot-scope="scope" v-if="scope.row.nameshow==true">
-					<el-tooltip effect="dark" :content="scope.row.name" placement="top">
-						<a class="tip" style="color:#ff4081" :style="{'font-size': fontSize}">{{scope.row.name}}</a>
+					<el-tooltip effect="dark" :content="scope.row.customer_name" placement="top">
+						<a class="tip" style="color:#ff4081" :style="{'font-size': fontSize}">{{scope.row.customer_name}}</a>
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="project" label="项目名称" fixed="left" min-width="250" >
-				<template slot-scope="scope" v-if="scope.row.project != '' && scope.row.projectshow == true">
-					<el-tooltip effect="dark" :content="scope.row.project" placement="top">
-						<span  class="tip " :style="{'font-size': fontSize}">{{scope.row.project}}</span>
+			<el-table-column prop="project_name" label="项目名称" fixed="left" min-width="250" >
+				<template slot-scope="scope" >
+					<el-tooltip effect="dark" :content="scope.row.project_name" placement="top">
+						<span  class="tip " :style="{'font-size': fontSize}">{{scope.row.project_name}}</span>
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="protype" label="施工范围" fixed="left"  v-if="ColumnVisible.protype.value"></el-table-column>
+			<el-table-column prop="work_scope_name" label="施工范围" fixed="left"  v-if="ColumnVisible.protype.value"></el-table-column>
 			<el-table-column prop="affiliate" label="挂靠" fixed="left" width="50" v-if="ColumnVisible.affiliate.value">
 				<template slot-scope="scope" v-if="scope.row.affiliate != null && scope.row.affiliate != ''">
 					<el-tooltip effect="dark" :content="scope.row.affiliate" placement="top" >
@@ -87,7 +87,7 @@
 					{{scope.row.cooperation_amountfor}}
 				</template>
 			</el-table-column>
-			<el-table-column prop="estimate" label="预计金额"  width="150" v-if="ColumnVisible.estimate.value" ></el-table-column>
+			<!--<el-table-column prop="estimate" label="预计金额"  width="150" v-if="ColumnVisible.estimate.value" ></el-table-column>-->
 			<el-table-column prop="agreement" label="合同"   width="100" v-if="ColumnVisible.agreement.value">
 				<template slot-scope="scope">
 					<template v-if="scope.row.agreement">
@@ -135,7 +135,7 @@
 					<div class="month-td" v-if="balance">欠款</div>
 				</template>
 			</el-table-column>
-			<el-table-column label="每月销量" >
+			<el-table-column label="金额" >
 				<el-table-column  v-for="(item, key) in month" :key="key" :label="item" width="120">
 					<template slot-scope="scope">
 						<span v-for="(it, mk) in scope.row.monthly_sales" :key="mk" v-if="item == it.name">
@@ -221,7 +221,7 @@ export default{
 		},
 		rowClick(row, column, event) {
 			if (column.label == '展开') {
-                console.log(row)
+                //console.log(row)
 				let temp = this.expands;
 				this.expands = [];
 
@@ -258,7 +258,7 @@ export default{
 		activeRow(row) {
             this.CurrentRow = row;
 			this.$store.dispatch('ARSumCurrentRow', row);
-			this.$store.dispatch('Get'+this.Tabs[0].moduleName,{pid:row.pid});
+			this.$store.dispatch('Get'+this.Tabs[0].moduleName,{rid:row.id});
 		},
 		updateFilterQuery() {
 			this.$store.dispatch('updateFilterQuery', this.query);
@@ -302,7 +302,7 @@ export default{
                 //init
                 if (item.name == tab.label && item.needInit === true) {
                     if (!this.$store.state.user[item.moduleName].ready) {
-                       this.$store.dispatch('Get'+item.moduleName, {pid:this.CurrentRow.pid});
+                       this.$store.dispatch('Get'+item.moduleName, {rid:this.CurrentRow.id});
                     }
                 }
             });
