@@ -9,7 +9,7 @@
 		>
 			<el-form :model="form" :rules="FormRules" ref="Form">
 				<el-form-item label="客户名称" prop="name" :label-width="formLabelWidth">
-					<span class="form-item-names">{{row.name}}</span>    
+					<span class="form-item-names">{{row.customer_name}}</span>
 				</el-form-item>
 				<el-form-item label="客户状态" prop="status" :label-width="formLabelWidth" >
 					<el-select v-model="form.status">
@@ -57,7 +57,7 @@ export default {
             return this.$store.state.user.ARTableConfig.ChangeCustVisible;
         },
         FormField: function() {
-            
+
 			return  this.$store.state.user.FIELDS;
 		},
          row: function() {
@@ -78,11 +78,15 @@ export default {
             this.$store.dispatch('AlterTableConfig', {ChangeCustVisible: false});
         },
         Open() {
-            this.form.id = this.row.cust_id;
-            this.form.status = Number(this.row.status);
+            this.form.id = this.row.id;
+            let n = Number(this.row.status);
+
+            if (n > 0) {
+                this.form.status = n;
+            }
         },
         submitForm() {
-           
+
             this.$refs['Form'].validate((valid) => {
 
                 if (valid) {

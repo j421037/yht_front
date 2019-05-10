@@ -863,8 +863,7 @@ export default {
                 this.customer = temCustomer
             }
             let data = Object.assign({}, this.customer)
-            // $.log(data)
-            // return false;
+
             this.$refs.customerF.validate(valid => {
                if (valid)
                {
@@ -886,7 +885,8 @@ export default {
                                center: true
                            });
                        }
-
+                       console.log(data);
+                        console.log(res)
                    })
                }
             });
@@ -1029,7 +1029,7 @@ export default {
 
             http.post(url, data).then(res => {
                 this.cusAttached = res
-                //$.log(res)
+                $.log(res)
             })
         },
 

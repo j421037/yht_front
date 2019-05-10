@@ -989,3 +989,7 @@ export const QueryCustomer = ({commit}, info) => {
         return commit("QUERY_CUSTOMER", response);
     })
 }
+export const queryArrear = ({commit}, info) => {
+    return api.queryArrear(info);
+}
+

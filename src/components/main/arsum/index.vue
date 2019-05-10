@@ -1,5 +1,5 @@
 <template>
-	<div class="ar-wapper">
+	<div class="ar-wapper" style="overflow: hidden">
 		<v-action />
 		<v-filter-dialog />
 		<v-create-cust-dialog />

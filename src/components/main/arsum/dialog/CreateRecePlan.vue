@@ -9,10 +9,10 @@
         >
             <el-form :model="Form" :rules="Rules" style="width: 100%" ref="Form">
 		  		<el-form-item label="客户名称" :label-width="formLabelWidth" >
-					<span class="form-item-names">{{Form.name}}</span>
+					<span class="form-item-names">{{Form.customer_name}}</span>
 		    	</el-form-item>
 		    	<el-form-item label="项目名称" :label-width="formLabelWidth" >
-					<span class="form-item-names">{{Form.project}}</span>
+					<span class="form-item-names">{{Form.project_name}}</span>
 		    	</el-form-item>
 		    	<el-form-item label="收款计划" :label-width="formLabelWidth" prop="content">
 		    		<el-input type="textarea" :rows="3"  v-model.trim="Form.content" placeholder="请输入计划内容"></el-input>
@@ -50,10 +50,9 @@ export default {
             formLabelWidth: '120px',
             Form: {
                 id: "",
-                name: "",
-                project: "",
-                cust_id: "",
-                pid: "",
+                customer_name: "",
+                project_name: "",
+                rid: "",
                 content: "",
                 date: ""
             },
@@ -93,15 +92,12 @@ export default {
     },
     methods: {
         Open() {
-            this.Form.name = this.row.name;
-			this.Form.project = this.row.project;
-			this.Form.cust_id = this.row.cust_id;
-			this.Form.pid = this.row.pid;
+            this.Form.customer_name = this.row.customer_name;
+			this.Form.project_name = this.row.project_name;
+			this.Form.rid = this.row.id;
 
 			if (this.RecePlanData.update) {
-
 				this.Form.id = this.RecePlanData.CurrentRow.id;
-				// this.Form.date = this.RecePlanData.CurrentRow.week_src;
 				this.Form.content = this.RecePlanData.CurrentRow.content;
 			}
         },
@@ -126,7 +122,7 @@ export default {
                             this.Form.content = "";
                             this.$refs['Form'].resetFields();
                             this.$store.dispatch('SetRecePlanList', {update: false, CurrentRow: {}});
-                            this.$store.dispatch('GetRecePlanList', {id:this.Form.rid});
+                            this.$store.dispatch('GetRecePlanList', {rid:this.Form.rid});
                             this.Close();
                         }
                         else {

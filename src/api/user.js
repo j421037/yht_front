@@ -386,7 +386,7 @@ export const GetRecePlanList = (info) => {
 	return http.post('ReceivablePlan/all', info);
 }
 export const UpdateCustStatus = (info) => {
-	return http.post('realcustomer/update/status', info);
+	return http.post('Arrears/update/status', info);
 }
 export const GetARSumFilterTable = () => {
 	return http.post('arsum/filter');
@@ -495,4 +495,7 @@ export const LoadPriceInfo = (info) => {
 }
 export const QueryCustomer = (info) => {
     return http.post("realcustomer/searchcust",info);
+}
+export const queryArrear = (info) => {
+    return http.post("arrear/search", info);
 }

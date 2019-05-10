@@ -36,11 +36,11 @@ export default {
 		moduleName: {
 			type: String
 		},
-		
+
 	},
 	data() {
 		return {
-			
+
 		}
 	},
 	methods: {
@@ -48,7 +48,7 @@ export default {
 			return ++index;
 		},
 		update(row) {
-			
+
 			this.$store.dispatch(this.setActionName, {CurrentRow: row, update: true}).then(() => {
 				this.$store.dispatch('AlterTableConfig', {RefundVisible: true});
 			});
@@ -59,7 +59,7 @@ export default {
 	          	cancelButtonText: '取消',
 	          	type: 'warning'
 	        }).then(() => {
-	         		
+
 	         	this.$store.dispatch('RefundDelete', {id:row.id}).then(() => {
 	         		let response = this.$store.state.user.RefundAdd;
 
@@ -73,7 +73,7 @@ export default {
 	         	});
 
 	        }).catch(() => {
-	            
+
 	        });
 		}
 	},

@@ -39,7 +39,7 @@
 			</el-table-column>
 			<el-table-column prop="id" fixed="left" label="展开" width="50">
 				<template slot-scope="scope">
-					<i class="el-icon-arrow-right el-icon-arrow-rotate-leave" :class="{'el-icon-arrow-rotate-active': scope.row.index == ArrowActiveIndex}"></i>
+					<i class="el-icon-arrow-right el-icon-arrow-rotate-leave" :class="{'el-icon-arrow-rotate-active': scope.row.id == ActiveId}"></i>
 				</template>
 			</el-table-column>
 			<el-table-column prop="rowkey" label="rowKey" v-if="false">
@@ -68,11 +68,9 @@
 				</template>
 			</el-table-column>
 			<el-table-column prop="work_scope_name" label="施工范围" fixed="left"  v-if="ColumnVisible.protype.value"></el-table-column>
-			<el-table-column prop="affiliate" label="挂靠" fixed="left" width="50" v-if="ColumnVisible.affiliate.value">
-				<template slot-scope="scope" v-if="scope.row.affiliate != null && scope.row.affiliate != ''">
-					<el-tooltip effect="dark" :content="scope.row.affiliate" placement="top" >
-						<span class="tip " :style="{'font-size': fontSize}">有</span>
-					</el-tooltip>
+			<el-table-column prop="attached" label="挂靠" fixed="left" width="50" v-if="ColumnVisible.affiliate.value">
+				<template slot-scope="scope" v-if="scope.row.attached > 0">
+					是
 				</template>
 			</el-table-column>
 			<el-table-column prop="user_name" label="业务员"  fixed="left"   width="120" v-if="ColumnVisible.user_name.value">
@@ -82,51 +80,29 @@
 					<el-tag type="success" v-if="scope.row.tag">{{scope.row.tag}}</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column prop="cooperation_amountfor" label="合作金额" fixed="left" width="200" v-if="ColumnVisible.cooperation_amountfor.value" >
+			<el-table-column prop="coop_amount" label="合作金额" fixed="left" width="200" v-if="ColumnVisible.cooperation_amountfor.value" >
 				<template slot-scope="scope">
-					{{scope.row.cooperation_amountfor}}
+					{{scope.row.coop_amount}}
 				</template>
 			</el-table-column>
-			<!--<el-table-column prop="estimate" label="预计金额"  width="150" v-if="ColumnVisible.estimate.value" ></el-table-column>-->
-			<el-table-column prop="agreement" label="合同"   width="100" v-if="ColumnVisible.agreement.value">
-				<template slot-scope="scope">
-					<template v-if="scope.row.agreement">
-						<template v-if="scope.row.attachment">
-							<el-popover
-								placement="top"
-								title="合同附件"
-								width="200"
-								trigger="hover"
-							>
-								<el-button type="success" @click.native="OpenViewWindow(scope.row.attachment)">点击查看</el-button>
-								<el-button type="text" slot="reference">{{scope.row.agreement}}</el-button>
-							</el-popover>
-						</template>
-						<span v-else>
-							<!-- {{scope.row.agreement}} -->
-							<el-tooltip effect="dark" :content="scope.row.agreement" placement="top">
-								<a class="tip" style="color:#606266" :style="{'font-size': fontSize}">{{scope.row.agreement}}</a>
-							</el-tooltip>
-						</span>
-					</template>
-					<template v-else>
-						<template v-if="scope.row.attachment">
-							<el-popover
-								placement="top"
-								title="合同附件"
-								width="200"
-								trigger="hover"
-								:content="String(scope.row.attachment)">
-								<el-button type="text" slot="reference">查看附件</el-button>
-							</el-popover>
-						</template>
-					</template>
-				</template>
+            <el-table-column prop="arrears" label="欠款" fixed="left" width="180"></el-table-column>
+			<el-table-column prop="contract" label="合同"   width="100" v-if="ColumnVisible.agreement.value">
+                <template slot-scope="scope">
+                    <a
+                        v-if="scope.row.contract"
+                        :href="$appConst.BACKEND_DOMAIN_VIEW_URL + '?id=' + scope.row.contract +'&token='+$store.state.user.token"
+                        target="_blank"
+                    >查看</a>
+                </template>
 			</el-table-column>
 			<el-table-column prop="tax" label="税率"   width="80" v-if="ColumnVisible.tax.value"></el-table-column>
-			<el-table-column prop="payment_days" label="账期"     width="180" v-if="ColumnVisible.payment_days.value"></el-table-column>
+			<el-table-column prop="account_period" label="账期"     width="80" v-if="ColumnVisible.payment_days.value">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.account_period">{{scope.row.account_period}}</span>
+                </template>
+            </el-table-column>
 
-			<el-table-column prop="init_data" label="期初" width="180" v-if="ColumnVisible.init_data.value"></el-table-column>
+			<el-table-column prop="begin" label="期初" width="180" v-if="ColumnVisible.init_data.value"></el-table-column>
 			<el-table-column prop="id" label="">
 				<template slot-scope="scope">
 					<div class="month-td" v-if="initAmount">期初</div>
@@ -135,14 +111,14 @@
 					<div class="month-td" v-if="balance">欠款</div>
 				</template>
 			</el-table-column>
-			<el-table-column label="金额" >
+			<el-table-column label="明细" >
 				<el-table-column  v-for="(item, key) in month" :key="key" :label="item" width="120">
 					<template slot-scope="scope">
-						<span v-for="(it, mk) in scope.row.monthly_sales" :key="mk" v-if="item == it.name">
-							<div class="month-td" :class="{stripe: scope.row.id % 2 == 0 && key <3}" v-if="initAmount">{{it.initAmount}}</div>
-							<div class="month-td" :class="{stripe: scope.row.id % 2 == 0 && key < 5}" v-if="sale">{{it.amountfor}}</div>
-							<div class="month-td" :class="{stripe: scope.row.id % 2 == 0 && key < 5}" v-if="receive">{{it.real_amountfor}}</div>
-							<div class="month-td" :class="{stripe: scope.row.id % 2 == 0 && key <3}" v-if="balance">{{it.arrears}}</div>
+						<span v-for="(it, mk) in scope.row.monthly_sales" :key="mk" v-if="key+1 == mk">
+							<div class="month-td"  v-if="initAmount">{{it.begin}}</div>
+							<div class="month-td" v-if="sale">{{it.sales}}</div>
+							<div class="month-td"  v-if="receive">{{it.money_back}}</div>
+							<div class="month-td"  v-if="balance">{{it.arrears}}</div>
 						</span>
 					</template>
 				</el-table-column>
@@ -185,6 +161,7 @@ export default{
 				conf: [],
 				offset: 0,
 				limit: 10,
+                sortval: 1,
 				initialization: true,
 				type: 1
 			},
@@ -198,7 +175,7 @@ export default{
                 {name: '数据报表', component: Report,moduleName: "Report", needInit: false}
 			],
 			CurrentRow: {},
-			ArrowActiveIndex: false, //展开图标旋转类
+			ActiveId: 0,
 			DomRefresh: true,
             tabVisible: true
 		}
@@ -228,10 +205,10 @@ export default{
 				if ( temp[0] != row.rowkey ) {
 					this.expands.push(row.rowkey);
 					this.activeRow(row);
-					this.ArrowActiveIndex = row.index;
+					this.ActiveId = row.id;
 				}
 				else {
-					this.ArrowActiveIndex = false;
+                    this.ActiveId = 0;
 				}
 
 			}
@@ -377,6 +354,7 @@ export default{
 	width: 100%;
 	height: 100%;
 	position: relative;
+
 	.ar-table
 		width: 100%;
 		height: 100%;

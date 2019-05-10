@@ -78,19 +78,27 @@
 
 												<span  ref="elSelect" v-if="DOMRefresh">
 													<span v-if="condition[ConditionIndex].conf[index].type.name == 'server' && condition[ConditionIndex].conf[index].operator == 0">
-														<el-select
-															v-model="condition[ConditionIndex].conf[index].value"
-
-															filterable
-															remote
-															reserve-keyword
-															placeholder="请输入关键词"
-															:remote-method="remoteMethod"
-															:loading="remoteLoading"
-															class="remote-select"
-														>
-															<el-option v-for="(opt, key) in condition[ConditionIndex].conf[index].remote" :key="key" :label="opt.label" :value="opt.value"></el-option>
-														</el-select>
+														<!--<el-select-->
+															<!--v-model="condition[ConditionIndex].conf[index].value"-->
+															<!--filterable-->
+															<!--remote-->
+															<!--reserve-keyword-->
+															<!--placeholder="请输入关键词"-->
+															<!--:remote-method="remoteMethod"-->
+															<!--:loading="remoteLoading"-->
+															<!--class="remote-select"-->
+														<!--&gt;-->
+															<!--<el-option v-for="(opt, key) in condition[ConditionIndex].conf[index].remote" :key="key" :label="opt.label" :value="opt.value"></el-option>-->
+														<!--</el-select>-->
+                                                        <el-autocomplete
+                                                            v-model="condition[ConditionIndex].conf[index].value"
+                                                            filterable
+                                                            remote
+                                                            reserve-keyword
+                                                            placeholder="请输入关键词"
+                                                            :fetch-suggestions="querySearchAsync"
+                                                        >
+														</el-autocomplete>
 													</span>
 													<span v-if="condition[ConditionIndex].conf[index].type.name == 'server' && condition[ConditionIndex].conf[index].operator > 0">
 														<el-input v-model="condition[ConditionIndex].conf[index].value" placeholder="请输入值"></el-input>
@@ -388,6 +396,18 @@ export default {
 				});
 			}
 		},
+        querySearchAsync(keyword,cb) {
+		    if (keyword.length > 0) {
+		        let key = this.condition[this.ConditionIndex].conf[this.rowIndex].field;
+
+                this.$store.dispatch("queryArrear", {word: keyword, key: key}).then((response) => {
+                    if (response.status == "success") {
+                        cb(response.data[key]);
+                    }
+                });
+            }
+		    cb([]);
+        },
 		submitForm() {
 			this.$refs['Form'].validate((valid) => {
 				if (valid) {
