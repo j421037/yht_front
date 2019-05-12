@@ -5,22 +5,20 @@
 		<v-create-cust-dialog />
 		<v-create-pro-dialog />
 		<v-import-dialog />
-		<keep-alive>
-			<component v-bind:is="Table"></component>
-		</keep-alive>
+		<cooperate></cooperate>
 		<v-sale-order />
 		<v-receivebill />
 		<v-refund />
 		<v-rece-plan />
 		<v-set-cus />
 		<v-potential-pro />
+        <create-initial></create-initial>
 	</div>
 </template>
 <script>
 
 import ActionTool from './action.vue';
 import Cooperate from './cooperate.vue';
-import Target from './target.vue';
 import Filter from './dialog/filter.vue';
 import CreateCust from './dialog/CreateCust.vue';
 import CreatePro from './dialog/CreatePro.vue';
@@ -31,6 +29,7 @@ import Refund from './dialog/CreateRefund.vue';
 import RecePlan from './dialog/CreateRecePlan.vue';
 import SetCustomer from './dialog/SetCustomerStatus.vue';
 import PotentialPro from './dialog/CreatePotentialPro.vue';
+import CreateInitial from "./dialog/CreateInitial";
 
 export default{
 	data() {
@@ -46,11 +45,6 @@ export default{
 		this.$store.dispatch('ARSumUserRole');
 		this.$store.dispatch('InitShrinkStatus', true);
 	},
-	computed: {
-		Table: function() {
-			return this.$store.state.user.ARCurrentTable;
-		}
-	},
 	components: {
 		'v-action': ActionTool,
 		'v-filter-dialog': Filter,
@@ -64,7 +58,7 @@ export default{
 		'v-set-cus': SetCustomer,
 		'v-potential-pro': PotentialPro,
 		Cooperate,
-		Target,
+        CreateInitial
 	}
 }
 </script>

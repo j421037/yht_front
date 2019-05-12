@@ -143,6 +143,7 @@ const state = {
 		RecePlanVisible: false,
 		ChangeCustVisible: false,
 		CreatePotentialProVisible: false,
+        InitialVisible: false,
 		ColumnVisible: {
 			status_name: {name: "状态", value: true},
 			// index: {name:"序号", value: false},
@@ -207,6 +208,14 @@ const state = {
 		},
 		ready: false, //是否已经加载过
 	},//收款计划列表
+    InitialList: {
+        data: [],
+        CurrentRow: {},
+        pagination: {
+            total: 0
+        },
+        ready: false, //是否已经加载过
+    },//收款计划列表
 	CustStatus: {
 		//客户状态更新
 	},

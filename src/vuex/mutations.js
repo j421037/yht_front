@@ -546,6 +546,11 @@ const mutations = {
 			state.ReceiveBillList[i] = response[i];
 		}
 	},
+    [types.SET_INITIAL] (state,response) {
+        for (let i in response) {
+            state.InitialList[i] = response[i];
+        }
+    },
 	[types.GET_RECEIVEBILL_LIST] (state, response) {
 		state.ReceiveBillList.data = response.row;
 		state.ReceiveBillList.pagination.total = response.total;

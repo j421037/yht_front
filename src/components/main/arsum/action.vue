@@ -91,7 +91,7 @@ export default{
 		    this.querySearch();
         },
         sortChange(val) {
-		    console.log(val);
+		    this.querySearch();
         },
 		querySearch() {
 		    // console.log(this.form);return;

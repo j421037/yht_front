@@ -797,6 +797,9 @@ export const GetSaleOrderList = ({commit}, info) => {
 export const SetSaleOrderList = ({commit}, info) => {
 	return commit('SET_SALE_ORDER_LIST', info);
 }
+export const SetInitialList = ({commit}, info) => {
+    return commit('SET_INITIAL', info);
+}
 //收款明细
 export const GetReceiveBillList = ({commit}, info) => {
 	return api.GetReceiveBillList(info).then((response) => {

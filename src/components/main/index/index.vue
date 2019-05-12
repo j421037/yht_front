@@ -274,7 +274,8 @@ export default {
                     }
 
                     http.post(url, data).then(res => {
-                        resolve(JSON.parse(res.data))
+                        resolve(res.data)
+                        console.log(res.data);
                     })
                 })
             }

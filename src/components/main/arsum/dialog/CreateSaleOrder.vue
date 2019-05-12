@@ -14,8 +14,10 @@
 		    	<el-form-item label="项目名称" :label-width="formLabelWidth" >
 					<span class="form-item-names">{{Form.project_name}}</span>
 		    	</el-form-item>
-                <el-form-item label="标签" :label-width="formLabelWidth" >
-                    <el-tag type="success">{{row.tag}} {{Form.id}}</el-tag>
+                <el-form-item label="销售类型" :label-width="formLabelWidth" prop="type">
+                    <el-select v-model="Form.type">
+                        <el-option v-for="(i,k) in Types" :key="k" :label="i.label" :value="i.value"></el-option>
+                    </el-select>
                 </el-form-item>
 		    	<el-form-item label="应收款金额" :label-width="formLabelWidth" prop="amountfor">
 		    		<el-input  v-model.trim="Form.amountfor" placeholder="请输入应收款金额"></el-input>
@@ -34,13 +36,6 @@
 		    	</el-form-item>
 		    	<el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
 		    		<el-input  v-model.trim="Form.remark" placeholder="备注内容"></el-input>
-		    	</el-form-item>
-		    	<el-form-item label="是否期初" :label-width="formLabelWidth" v-if="row.has_init" >
-		    		<el-switch
-					  v-model="Form.is_init"
-					  active-color="#13ce66"
-					  inactive-color="#ff4949">
-					</el-switch>
 		    	</el-form-item>
 
 		  	</el-form>
@@ -64,13 +59,14 @@ export default {
 				customer_name: "",
 				project_name: "",
 				date: '',
-				is_init: true,
+				type: 0,
 				amountfor: '',
 				remark: ''
 			},
+            defaultObj: {},
 			Rules: {
-				pid: [
-					{required: true, message: '请选择项目',trigger: 'blur'}
+				type: [
+					{required: true, message: '请选择类型',trigger: 'blur'}
 				],
 				date: [
 					{required: true, message: '请选择收款日期', trigger: 'blur'}
@@ -84,13 +80,21 @@ export default {
 			error: {
 				status: false,
 				msg: '请选择项目'
-			}
+			},
+            Types: [{label:"终端",value:0},{label:"同行",value:1}]
 		}
 	},
+    created() {
+	    this.defaultObj = JSON.parse(JSON.stringify(this.Form));
+    },
 	methods: {
 		/**关闭**/
 		SaleOrderClose() {
-			this.$store.dispatch('AlterTableConfig', {SaleOrderVisible: false});
+			//this.$store.dispatch('AlterTableConfig', {SaleOrderVisible: false});
+            this.$store.dispatch("SetSaleOrderList", {CurrentRow: this.row, update: false}).then(() => {
+                this.$store.dispatch('AlterTableConfig', {SaleOrderVisible: false});
+                this.Form = Object.assign({},this.defaultObj);
+            });
 		},
 		/**数字验证规则**/
 		onlyNumber(rule, value, callback) {
@@ -104,14 +108,9 @@ export default {
 		},
 		OpenSaleOrder() {
 			//如果是更新
-			if (this.SaleData.update) {
+			if (this.SaleData.update == true) {
 				let row = this.SaleData.CurrentRow;
-
-				this.Form.id = row.id;
-				this.Form.amountfor = row.amountfor;
-				this.Form.remark = row.remark;
-				this.Form.date = row.date;
-				this.Form.is_init = Boolean(row.is_init);
+                this.Form = Object.assign({},row);
 				this.Form.project_name = this.row.project_name;
 				this.Form.customer_name = this.row.customer_name;
 			}
@@ -120,6 +119,7 @@ export default {
 				for (let i in this.Form) {
 					if (typeof(this.row[i]) != 'undefined') {
 						this.Form[i] = this.row[i];
+                        // this.Form = Object.assign({},this.row);
 					}
 				}
 			}

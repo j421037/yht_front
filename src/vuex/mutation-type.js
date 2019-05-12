@@ -167,3 +167,4 @@ export const LOAD_COST_ROLE = "LOAD_COST_ROLE";
 export const MODIFY_OFFER = "MODIFY_OFFER";
 export const LOAD_PRICE_INFO = "LOAD_PRICE_INFO";
 export const QUERY_CUSTOMER = "QUERY_CUSTOMER";
+export const SET_INITIAL = "SET_INITIAL";

@@ -23,6 +23,7 @@
 								<el-button type="info" size="mini" icon="el-icon-sold-out" @click.native="OpenSaleOrderDialog" v-if="Role.hasRole">添加销售</el-button>
 								<el-button type="info" size="mini" icon="el-icon-check" @click.native="OpenReceivebillOrderDialog" v-if="Role.hasRole">添加收款</el-button>
 								<el-button type="info" size="mini" icon="el-icon-sort" @click.native="OpenRefundOrderDialog" v-if="Role.hasRole">添加退货</el-button>
+                                <el-button type="info" size="mini" icon="el-icon-time" @click.native="OpenInitialDialog" v-if="Role.hasRole">设置期初</el-button>
 								<el-button type="info" size="mini" icon="el-icon-star-on" @click.native="OpenRecePlanDialog" v-if="user.id == scope.row.user_id">收款计划</el-button>
 								<el-button type="info" size="mini" icon="el-icon-service" @click.native="OpenChangeCusDialog" v-if="user.id == scope.row.user_id">设置状态</el-button>
 							</el-button-group>
@@ -73,20 +74,15 @@
 					是
 				</template>
 			</el-table-column>
-			<el-table-column prop="user_name" label="业务员"  fixed="left"   width="120" v-if="ColumnVisible.user_name.value">
-			</el-table-column>
-			<el-table-column prop="tag" label="标签"  fixed="left"  width="80" v-if="ColumnVisible.tag.value">
-				<template slot-scope="scope">
-					<el-tag type="success" v-if="scope.row.tag">{{scope.row.tag}}</el-tag>
-				</template>
-			</el-table-column>
-			<el-table-column prop="coop_amount" label="合作金额" fixed="left" width="200" v-if="ColumnVisible.cooperation_amountfor.value" >
-				<template slot-scope="scope">
-					{{scope.row.coop_amount}}
-				</template>
-			</el-table-column>
+			<el-table-column prop="user_name" label="业务员"  fixed="left"   width="120" v-if="ColumnVisible.user_name.value"></el-table-column>
             <el-table-column prop="arrears" label="欠款" fixed="left" width="180"></el-table-column>
-			<el-table-column prop="contract" label="合同"   width="100" v-if="ColumnVisible.agreement.value">
+            <el-table-column prop="overdue" label="逾期"  width="80"></el-table-column>
+            <el-table-column prop="account_period" label="账期"     width="80" v-if="ColumnVisible.payment_days.value">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.account_period">{{scope.row.account_period}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="contract" label="合同"   width="100" v-if="ColumnVisible.agreement.value">
                 <template slot-scope="scope">
                     <a
                         v-if="scope.row.contract"
@@ -94,14 +90,21 @@
                         target="_blank"
                     >查看</a>
                 </template>
-			</el-table-column>
-			<el-table-column prop="tax" label="税率"   width="80" v-if="ColumnVisible.tax.value"></el-table-column>
-			<el-table-column prop="account_period" label="账期"     width="80" v-if="ColumnVisible.payment_days.value">
+            </el-table-column>
+            <el-table-column prop="tax" label="税率"   width="80" v-if="ColumnVisible.tax.value">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.account_period">{{scope.row.account_period}}</span>
+                    <span v-if="scope.row.tax > 0">{{scope.row.tax}}</span>
                 </template>
             </el-table-column>
-
+			<el-table-column prop="coop_amount" label="合作金额"   v-if="ColumnVisible.cooperation_amountfor.value" >
+                <el-table-column label="终端" width="150"></el-table-column>
+                <el-table-column label="同行" width="150"></el-table-column>
+				<el-table-column label="合计" width="150">
+                    <template slot-scope="scope">
+                        {{scope.row.coop_amount}}
+                    </template>
+                </el-table-column>
+			</el-table-column>
 			<el-table-column prop="begin" label="期初" width="180" v-if="ColumnVisible.init_data.value"></el-table-column>
 			<el-table-column prop="id" label="">
 				<template slot-scope="scope">
@@ -148,7 +151,8 @@ import ReceivebillList from './tabs/ReceivebillList.vue';
 import DiscountList from './tabs/DiscountList.vue';
 import RefundList from './tabs/RefundList.vue';
 import RecePlanList from './tabs/RecePlanList.vue';
-import  Report from './tabs/Report';
+import Report from './tabs/Report';
+import InitialList from "./tabs/InitialList";
 
 export default{
 	data() {
@@ -161,7 +165,7 @@ export default{
 				conf: [],
 				offset: 0,
 				limit: 10,
-                sortval: 1,
+                sortval: 0,
 				initialization: true,
 				type: 1
 			},
@@ -169,8 +173,8 @@ export default{
 			Tabs: [
 				{name: '销售明细', component: SaleOrderList,moduleName: "SaleOrderList",needInit: true},
 				{name: '收款明细', component: ReceivebillList, moduleName: "ReceiveBillList",needInit: true},
-				// {name: '优惠明细', component: DiscountList, moduleName: ""},
 				{name: '退货明细', component: RefundList, moduleName: "RefundList",needInit: true},
+                {name: '期初余额', component: InitialList, moduleName: "InitialList",needInit: true},
 				{name: '收款计划', component: RecePlanList,moduleName: "RecePlanList",needInit: true},
                 {name: '数据报表', component: Report,moduleName: "Report", needInit: false}
 			],
@@ -250,6 +254,9 @@ export default{
 		OpenReceivebillOrderDialog() {
 			this.$store.dispatch('AlterTableConfig', { ReceivebillVisible: true});
 		},
+        OpenInitialDialog() {
+            this.$store.dispatch('AlterTableConfig', { InitialVisible: true});
+        },
 		OpenRefundOrderDialog() {
 			this.$store.dispatch('AlterTableConfig', { RefundVisible: true});
 		},

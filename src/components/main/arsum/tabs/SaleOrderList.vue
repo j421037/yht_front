@@ -1,14 +1,10 @@
 <template>
 	<div class="sale-list-wapper" >
-		<el-table :data="tableData" border class="no-table-shadow" stripe  style="transition: all 0.5s" > 
+		<el-table :data="tableData" border class="no-table-shadow" stripe  style="transition: all 0.5s" >
 			<el-table-column type="index"  :index="indexMethod"></el-table-column>
 			<el-table-column prop="amountfor_format" label="金额" width=150></el-table-column>
 			<el-table-column prop="date" label="日期" width="100"></el-table-column>
-			<el-table-column prop="is_init" label="期初" width="50">
-				<template slot-scope="scope">
-					<el-tag type="success" v-if="scope.row.is_init == 1">是</el-tag>
-				</template>
-			</el-table-column>
+			<el-table-column prop="type_name" label="类型" width="50"></el-table-column>
 			<el-table-column prop="remark" label="备注" width="150">
 				<template slot-scope="scope">
 					<el-popover
@@ -43,28 +39,28 @@ export default {
 	},
 	data() {
 		return {
-			 
+
 		}
 	},
 	methods: {
-	 	 
+
 	 	//修改应收信息
 	 	ShowUpdate(row) {
 	 		//设置当前行信息
 	 		this.$store.dispatch(this.setActionName, {CurrentRow:row, update: true}).then(() => {
 	 			this.$store.dispatch('AlterTableConfig', {SaleOrderVisible: true});
 	 		});
-	 		
+
 	 	},
 	 	//删除行
 	 	removeRow(row) {
-	 		 
+
 	 		this.$confirm('删除金额<'+row.amountfor+'>的记录, 是否继续?', '提示', {
 	          	confirmButtonText: '确定',
 	          	cancelButtonText: '取消',
 	          	type: 'warning'
 	        }).then(() => {
-	         		
+
 	         	this.$store.dispatch('DeleteReceivable', {id:row.id}).then(() => {
 	         		let response = this.$store.state.user.AddReceivable;
 
@@ -78,7 +74,7 @@ export default {
 	         	});
 
 	        }).catch(() => {
-	            
+
 	        });
 	 	},
 	 	//表格索引
@@ -86,7 +82,7 @@ export default {
 	 		return ++val;
 	 	}
 	},
-	
+
 	computed: {
 		tableData: function() {
 			//console.log( this.$store.state.user.SaleOrder.list)
@@ -120,5 +116,5 @@ export default {
 		position: absolute;
 		bottom: 0px;
 		width: 100%;
-	
+
 </style>
