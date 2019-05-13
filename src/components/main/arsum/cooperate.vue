@@ -97,8 +97,8 @@
                 </template>
             </el-table-column>
 			<el-table-column prop="coop_amount" label="合作金额"   v-if="ColumnVisible.cooperation_amountfor.value" >
-                <el-table-column label="终端" width="150"></el-table-column>
-                <el-table-column label="同行" width="150"></el-table-column>
+                <el-table-column label="终端" width="150" prop="client_total"></el-table-column>
+                <el-table-column label="同行" width="150" prop="colleague_total"></el-table-column>
 				<el-table-column label="合计" width="150">
                     <template slot-scope="scope">
                         {{scope.row.coop_amount}}
@@ -117,11 +117,11 @@
 			<el-table-column label="明细" >
 				<el-table-column  v-for="(item, key) in month" :key="key" :label="item" width="120">
 					<template slot-scope="scope">
-						<span v-for="(it, mk) in scope.row.monthly_sales" :key="mk" v-if="key+1 == mk">
-							<div class="month-td"  v-if="initAmount">{{it.begin}}</div>
-							<div class="month-td" v-if="sale">{{it.sales}}</div>
-							<div class="month-td"  v-if="receive">{{it.money_back}}</div>
-							<div class="month-td"  v-if="balance">{{it.arrears}}</div>
+						<span v-for="(it, mk) in scope.row.monthly" :key="mk" v-if="key+1 == mk">
+							<div class="month-td"  v-if="initAmount">{{it.initial}}</div>
+							<div class="month-td"  v-if="sale">{{it.sales}}</div>
+							<div class="month-td"  v-if="receive">{{it.backs}}</div>
+							<div class="month-td"  v-if="balance">{{it.balances}}</div>
 						</span>
 					</template>
 				</el-table-column>
