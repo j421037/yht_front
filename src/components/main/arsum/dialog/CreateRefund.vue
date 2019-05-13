@@ -9,16 +9,18 @@
         >
             <el-form :model="Form" :rules="Rules" style="width: 100%" ref="Form">
 		  		<el-form-item label="客户名称" :label-width="formLabelWidth" >
-					<span class="form-item-names">{{Form.name}}</span>
+					<span class="form-item-names">{{Form.customer_name}}</span>
 		    	</el-form-item>
 		    	<el-form-item label="项目名称" :label-width="formLabelWidth" >
-					<span class="form-item-names">{{Form.project}}</span>
+					<span class="form-item-names">{{Form.project_name}}</span>
 		    	</el-form-item>
-                <el-form-item label="标签" :label-width="formLabelWidth" >
-                    <el-tag type="success">{{row.tag}}</el-tag>
+                <el-form-item label="退货类型" :label-width="formLabelWidth" prop="type">
+                    <el-select v-model="Form.type">
+                        <el-option v-for="(i,k) in Types" :key="k" :label="i.label" :value="i.value"></el-option>
+                    </el-select>
                 </el-form-item>
-		    	<el-form-item label="退货金额" :label-width="formLabelWidth" prop="refund">
-		    		<el-input  v-model.trim="Form.refund" placeholder="请输入退款金额"></el-input>
+		    	<el-form-item label="退货金额" :label-width="formLabelWidth" prop="amountfor">
+		    		<el-input  v-model.trim="Form.amountfor" placeholder="请输入退款金额"></el-input>
 		    	</el-form-item>
 
 		    	<el-form-item label="退货日期" :label-width="formLabelWidth" prop="date">
@@ -55,25 +57,28 @@ export default {
             formLabelWidth: '120px',
             Form: {
                 id: "",
-                name: "",
-                project: "",
-                refund: "",
+                customer_name: "",
+                project_name: "",
+                amountfor: "",
                 date: "",
                 remark: "",
-                pid: "",
-				cust_id: "",
+                rid: "",
+                type: 0
             },
             Rules: {
-				pid: [
+				rid: [
 					{required: true, message: '请选择项目',trigger: 'blur'}
 				],
 				date: [
 					{required: true, message: '请选择退货日期', trigger: 'blur'}
 				],
-				refund: [
+				amountfor: [
 					{required: true, message: '请录入金额', trigger: 'blur'},
 					{validator: this.onlyNumber, trigger: 'blur'}
 				],
+                type: [
+                    {required: true, message: "请选择类型",trigger: "blur"}
+                ]
 			},
 			pickerOptions: {
 				disabledDate(time) {
@@ -104,6 +109,8 @@ export default {
 	            	}
 	          	}]
 			},
+            Types: [{label:"终端",value:0},{label:"同行",value:1}],
+            defaultObj: {}
         };
     },
     computed: {
@@ -118,7 +125,7 @@ export default {
 		}
     },
     created() {
-
+        this.defaultObj = JSON.parse(JSON.stringify(this.Form));
     },
     mounted() {
 
@@ -132,17 +139,14 @@ export default {
         },
 
 		Open() {
-			this.Form.name = this.row.name;
-			this.Form.project = this.row.project;
-			this.Form.cust_id = this.row.cust_id;
-			this.Form.pid = this.row.pid;
 
 			if (this.RefundData.update) {
-				this.Form.id = this.RefundData.CurrentRow.id;
-				this.Form.refund = this.RefundData.CurrentRow.refund;
-				this.Form.date = this.RefundData.CurrentRow.date;
-				this.Form.remark = this.RefundData.CurrentRow.remark;
+				this.Form = Object.assign({},this.RefundData.CurrentRow);
 			}
+
+            this.Form.customer_name = this.row.customer_name;
+            this.Form.project_name = this.row.project_name;
+            this.Form.rid = this.row.id;
 		},
         onlyNumber(rule, value, callback) {
 			let patt = /^[0-9\.\-]+$/;
@@ -170,11 +174,9 @@ export default {
                             this.$notify.success('操作成功');
                             this.$refs['Form'].resetFields();
 
-                            this.Form.refund = "";
-                            this.Form.remark = "";
-
                             this.$store.dispatch('GetRefundList',{rid:this.Form.rid});
                             this.$store.dispatch('SetRefundList', {update: false, CurrentRow:{}});
+                            this.Form = Object.assign({}, this.defaultObj);
                         }
                         else {
                             this.$notify.error('操作失败!'+response.errmsg);

@@ -716,6 +716,13 @@ const mutations = {
     },
     [types.QUERY_CUSTOMER] (state, response) {
 	    state.QueryCustomer = response.data;
+    },
+    [types.GET_INITIAL_LIST] (state, response) {
+	    state.InitialList.data = response.data;
+        state.InitialList.total = response.total;
+    },
+    [types.CREATE_INITIAL] (state, response) {
+	    state.CreateInitial = response;
     }
 }
 

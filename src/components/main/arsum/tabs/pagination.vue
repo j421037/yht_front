@@ -38,7 +38,7 @@ export default {
 		// // },
 		//读取分页数据
 		LoadTableData() {
-			this.$store.dispatch(this.actionName, {rid: this.pid,limit: this.limit, offset: this.offset});
+			this.$store.dispatch(this.actionName, {rid: this.rid,limit: this.limit, offset: this.offset});
 		},
 		//当前分页切换
 		handleCurrentChange(val) {
@@ -55,8 +55,8 @@ export default {
 		pagination: function() {
 			return this.$store.state.user.BasePagination;
 		},
-		pid: function() {
-			return this.$store.state.user.ARSumCurrentRow.pid;
+		rid: function() {
+			return this.$store.state.user.ARSumCurrentRow.id;
 		},
 		total: function() {
 			return this.$store.state.user[this.moduleName].pagination.total;

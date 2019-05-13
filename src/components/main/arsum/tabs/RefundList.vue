@@ -2,8 +2,14 @@
 	<div class="refund-list-wapper" >
 		<el-table :data="tableData" border class="no-table-shadow">
 			<el-table-column type="index"  :index="indexMethod"></el-table-column>
-			<el-table-column prop="refund" label="退款金额"></el-table-column>
+			<el-table-column prop="amountfor" label="退款金额"></el-table-column>
 			<el-table-column prop="date" label="业务日期" width=100></el-table-column>
+            <el-table-column prop="type" label="类型" width="80">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.type == 0 ">终端</span>
+                    <span v-if="scope.row.type == 1">同行</span>
+                </template>
+            </el-table-column>
 			<el-table-column prop="remark" label="备注" width=150>
 				<template slot-scope="scope">
 					<el-popover
@@ -89,9 +95,6 @@ export default {
 		},
 		setActionName: function() {
 			return 'Set'+this.moduleName;
-		},
-		pid: function() {
-			return this.$store.state.user.ARSumCurrentRow.pid;
 		},
 	},
 	components: {

@@ -370,6 +370,7 @@ export const getBindAttrFromPath = (info) => {
 }
 
 export const GetSaleOrderList = (info) => {
+    console.log(info)
 	return http.post('receivable/all', info);
 }
 export const DeleteReceivable = (info) => {
@@ -498,4 +499,13 @@ export const QueryCustomer = (info) => {
 }
 export const queryArrear = (info) => {
     return http.post("arrear/search", info);
+}
+export const GetInitialList = (info) => {
+    return http.post("initamount/all", info);
+}
+export const CreateInitial = (info) => {
+    return http.post("initamount/create", info);
+}
+export const UpdateInitial = (info) => {
+    return http.post("initamount/update", info);
 }

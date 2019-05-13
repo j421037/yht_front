@@ -789,7 +789,6 @@ export const ARSumCurrentRow = ({commit}, info) => {
 }
 //销售明细
 export const GetSaleOrderList = ({commit}, info) => {
-    console.log(info)
 	return api.GetSaleOrderList(info).then((response) => {
 		return commit('GET_SALE_ORDER_LIST', response);
 	})
@@ -799,6 +798,12 @@ export const SetSaleOrderList = ({commit}, info) => {
 }
 export const SetInitialList = ({commit}, info) => {
     return commit('SET_INITIAL', info);
+}
+export const GetInitialList = ({commit}, info) => {
+    console.log(info)
+    return api.GetInitialList(info).then(response => {
+       return commit("GET_INITIAL_LIST", response);
+    });
 }
 //收款明细
 export const GetReceiveBillList = ({commit}, info) => {
@@ -994,5 +999,15 @@ export const QueryCustomer = ({commit}, info) => {
 }
 export const queryArrear = ({commit}, info) => {
     return api.queryArrear(info);
+}
+export const CreateInitial = ({commit}, info) => {
+    return api.CreateInitial(info).then(response => {
+       return commit("CREATE_INITIAL", response);
+    });
+}
+export const UpdateInitial = ({commit}, info) => {
+    return api.UpdateInitial(info).then(response => {
+        return commit("CREATE_INITIAL", response);
+    });
 }
 

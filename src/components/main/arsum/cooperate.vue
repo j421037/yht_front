@@ -68,20 +68,26 @@
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="work_scope_name" label="施工范围" fixed="left"  v-if="ColumnVisible.protype.value"></el-table-column>
 			<el-table-column prop="attached" label="挂靠" fixed="left" width="50" v-if="ColumnVisible.affiliate.value">
 				<template slot-scope="scope" v-if="scope.row.attached > 0">
 					是
 				</template>
 			</el-table-column>
 			<el-table-column prop="user_name" label="业务员"  fixed="left"   width="120" v-if="ColumnVisible.user_name.value"></el-table-column>
-            <el-table-column prop="arrears" label="欠款" fixed="left" width="180"></el-table-column>
-            <el-table-column prop="overdue" label="逾期"  width="80"></el-table-column>
-            <el-table-column prop="account_period" label="账期"     width="80" v-if="ColumnVisible.payment_days.value">
+            <el-table-column prop="balance_total" label="欠款" fixed="left" width="180"></el-table-column>
+            <el-table-column prop="overdue" label="逾期"  width="80">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.account_period">{{scope.row.account_period}}</span>
+                    <el-tooltip v-if="scope.row.overdue" effect="dark" :content="'上次回款日期:'+scope.row.lastback_date" placement="top">
+                        <span  :style="overdueStyle">{{scope.row.overdue}}天</span>
+                    </el-tooltip>
                 </template>
             </el-table-column>
+            <el-table-column prop="account_period" label="账期" width="80" v-if="ColumnVisible.payment_days.value">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.account_period">{{scope.row.account_period}}天</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="work_scope_name" label="施工范围"  v-if="ColumnVisible.protype.value"></el-table-column>
             <el-table-column prop="contract" label="合同"   width="100" v-if="ColumnVisible.agreement.value">
                 <template slot-scope="scope">
                     <a
@@ -97,20 +103,21 @@
                 </template>
             </el-table-column>
 			<el-table-column prop="coop_amount" label="合作金额"   v-if="ColumnVisible.cooperation_amountfor.value" >
-                <el-table-column label="终端" width="150" prop="client_total"></el-table-column>
-                <el-table-column label="同行" width="150" prop="colleague_total"></el-table-column>
-				<el-table-column label="合计" width="150">
+                <el-table-column label="期初" width="180" prop="initial_total"></el-table-column>
+                <el-table-column label="终端" width="180" prop="client_total"></el-table-column>
+                <el-table-column label="同行" width="180" prop="colleague_total"></el-table-column>
+				<el-table-column label="合计" width="180">
                     <template slot-scope="scope">
-                        {{scope.row.coop_amount}}
+                        {{scope.row.coop_total}}
                     </template>
                 </el-table-column>
 			</el-table-column>
-			<el-table-column prop="begin" label="期初" width="180" v-if="ColumnVisible.init_data.value"></el-table-column>
-			<el-table-column prop="id" label="">
+			<el-table-column prop="id" label="类型">
 				<template slot-scope="scope">
 					<div class="month-td" v-if="initAmount">期初</div>
 					<div class="month-td" v-if="sale">销售</div>
 					<div class="month-td" v-if="receive">回款</div>
+                    <div class="month-td" v-if="refund">退货</div>
 					<div class="month-td" v-if="balance">欠款</div>
 				</template>
 			</el-table-column>
@@ -121,6 +128,7 @@
 							<div class="month-td"  v-if="initAmount">{{it.initial}}</div>
 							<div class="month-td"  v-if="sale">{{it.sales}}</div>
 							<div class="month-td"  v-if="receive">{{it.backs}}</div>
+                            <div class="month-td"  v-if="refund">{{it.refunds}}</div>
 							<div class="month-td"  v-if="balance">{{it.balances}}</div>
 						</span>
 					</template>
@@ -178,6 +186,7 @@ export default{
 				{name: '收款计划', component: RecePlanList,moduleName: "RecePlanList",needInit: true},
                 {name: '数据报表', component: Report,moduleName: "Report", needInit: false}
 			],
+            overdueStyle: {color: 'red',cursor:'pointer'},
 			CurrentRow: {},
 			ActiveId: 0,
 			DomRefresh: true,
@@ -314,6 +323,9 @@ export default{
 		sale: function() {
 			return this.$store.state.user.ARTableConfig.sale;
 		},
+        refund: function() {
+            return this.$store.state.user.ARTableConfig.refund;
+        },
 		receive: function() {
 			return this.$store.state.user.ARTableConfig.receive;
 		},

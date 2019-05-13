@@ -14,7 +14,7 @@
                 <el-form-item label="项目名称" :label-width="formLabelWidth" >
                     <span class="form-item-names">{{Form.project_name}}</span>
                 </el-form-item>
-                <el-form-item label="销售类型" :label-width="formLabelWidth" prop="type">
+                <el-form-item label="期初类型" :label-width="formLabelWidth" prop="type">
                     <el-select v-model="Form.type">
                         <el-option v-for="(i,k) in Types" :key="k" :label="i.label" :value="i.value"></el-option>
                     </el-select>
@@ -89,31 +89,50 @@
             },
             InitialOpen() {
                 //如果是更新
-                // if (this.SaleData.update == true) {
-                //     let row = this.SaleData.CurrentRow;
-                //     this.Form = Object.assign({},row);
-                //     this.Form.project_name = this.row.project_name;
-                //     this.Form.customer_name = this.row.customer_name;
-                // }
-                // else {
-                //     //新增
-                //     for (let i in this.Form) {
-                //         if (typeof(this.row[i]) != 'undefined') {
-                //             //this.Form[i] = this.row[i];
-                //             this.Form = Object.assign({},this.row);
-                //         }
-                //     }
-                // }
-
-                for (let i in this.Form) {
-                    if (typeof(this.row[i]) != 'undefined') {
-                        this.Form[i] = this.row[i];
+                if (this.InitialList.update == true) {
+                    let row = this.InitialList.CurrentRow;
+                    this.Form = Object.assign({},row);
+                    this.Form.project_name = this.row.project_name;
+                    this.Form.customer_name = this.row.customer_name;
+                }
+                else {
+                    for (let i in this.Form) {
+                        if (typeof (this.row[i]) != 'undefined') {
+                            this.Form[i] = this.row[i];
+                        }
                     }
                 }
                 this.Form.rid = this.row.id;
                 console.log(this.Form);
             },
-            submitForm() {},
+            submitForm() {
+                this.$refs.Form.validate(valid => {
+                    if (!valid)
+                        return false;
+
+                    let action = "CreateInitial";
+
+                    if (this.InitialList.update == true)
+                        action = "UpdateInitial";
+
+                    this.$store.dispatch(action, this.Form).then(() => {
+                        let response = this.$store.state.user.CreateInitial;
+
+                        if (response.status == "success") {
+                            this.$store.dispatch('GetInitialList', {rid: this.Form.rid});
+                            this.Form = Object.assign({}, this.defaultObj);
+                            this.$notify.success("操作成功");
+                            //清空当前选择的行数据
+                            this.$store.dispatch('SetInitialList', {CurrentRow:{}, update: false});
+                            this.$refs.Form.resetFields();
+                            this.InitialClose();
+                        }
+                        else {
+                            this.$notify.error("操作失败,"+response.errmsg);
+                        }
+                    });
+                });
+            },
             onlyNumber(rule, value, callback) {
                 let patt = /^[0-9\.\-]+$/;
 
@@ -131,7 +150,9 @@
             row: function() {
                 return this.$store.state.user.ARSumCurrentRow;
             },
-
+            InitialList: function() {
+                return this.$store.state.user.InitialList;
+            },
             pickerOptions: function () {
                 let row = this.$store.state.user.ARSumCurrentRow;
                 if (row) {

@@ -19,6 +19,7 @@
                         <el-radio :label="0">默认</el-radio>
                         <el-radio :label="1">欠款最多</el-radio>
                         <el-radio :label="2">时间最长</el-radio>
+                        <el-radio :label="3">合作最多</el-radio>
                     </el-radio-group>
                 </div>
 			</div>
@@ -26,9 +27,10 @@
 		<section class="action-tool">
             <div></div>
 			<div class="checkbox-group" v-if="this.tabPosition == 'cooperate'">
-				<el-checkbox v-model="config.sale" @change="checkBoxHandle">销售额</el-checkbox>
+				<el-checkbox v-model="config.sale" @change="checkBoxHandle">销售</el-checkbox>
 				<el-checkbox v-model="config.receive" @change="checkBoxHandle">回款</el-checkbox>
 				<el-checkbox v-model="config.balance" @change="checkBoxHandle">欠款</el-checkbox>
+                <el-checkbox v-model="config.refund" @change="checkBoxHandle">退货</el-checkbox>
 				<el-checkbox v-model="config.init" @change="checkBoxHandle">期初</el-checkbox>
 			</div>
 		</section>
@@ -43,7 +45,8 @@ export default{
 				sale: true,
 				receive: false,
 				balance: false,
-				init: false
+				init: false,
+                refund: false
 			},
 			form: [
 				{

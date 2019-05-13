@@ -132,6 +132,7 @@ const state = {
 		sale: true,
 		receive: false,
 		balance: false,
+        refund: false,
 		init: false,
 		FilterVisible: false,
 		CreateCustVisible: false,
@@ -283,7 +284,8 @@ const state = {
     },
     ModifyOffer: {},
     priceInfo: [],
-    QueryCustomer:[]
+    QueryCustomer:[],
+    CreateInitial: {}
 }
 
 export default {
