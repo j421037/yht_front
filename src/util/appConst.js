@@ -1,4 +1,4 @@
-let BASEURL = "http://dev.miaoyi09.com/back/public/index.php/";
+let BASEURL = "http://k.yhtjc.com/public/index.php/";
 
 if (process.env.NODE_ENV === 'development') {
     //BASEURL= "http://192.168.0.250/yhtsys/public/index.php/";
