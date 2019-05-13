@@ -13,7 +13,7 @@
                 <el-progress
                     :show-text="false"
                     :stroke-width="30"
-                    :percentage="progress.target > 0 ? progress.completed/progress.target*100 : 0"
+                    :percentage="targetPercent"
                 ></el-progress>
                 <div
                     class="txt"
@@ -197,7 +197,7 @@ export default {
             chartData: {},
             curYear: $.getCurYear() + '',
             chartLoading: true,
-            syncing: false
+            syncing: false,
         }
     },
     created() {
@@ -215,14 +215,11 @@ export default {
             this.updateChart()
         })
 
-
-
-
-
     },
     methods: {
         onPersonChange(e) {
             this.updateChart()
+            console.log(e)
         },
         onYearChange(e) {
             this.curYear = e.getFullYear() + ''
@@ -242,19 +239,22 @@ export default {
             let url = "index/user"
             http.post(url).then(res => {
                 // $.log('hi')
-                // $.log(res)
-                let tem = []
-                Object.keys(res).forEach(n => {
-                    $.log(n, res[n])
-                    let item = {
-                        value: n,
-                        label: res[n]
-                    }
-                    tem.push(item)
-                })
-                $.log(tem)
-                this.options = tem
-                this.curPerson = this.options[0].value
+
+                // let tem = []
+                // Object.keys(res).forEach(n => {
+                //    // $.log(n, res[n])
+                //     let item = {
+                //         value: n,
+                //         label: res[n]
+                //     }
+                //     tem.push(item)
+                // })
+                // console.log(tem)
+                //this.options = tem
+                //this.curPerson = this.options[0].value;
+                this.options = res.data;
+
+                this.curPerson = this.$store.state.user.userInfo.id;
 
                 back()
             })
@@ -275,7 +275,7 @@ export default {
 
                     http.post(url, data).then(res => {
                         resolve(res.data)
-                        console.log(res.data);
+                        //console.log(res);
                     })
                 })
             }
@@ -283,32 +283,44 @@ export default {
 
 
                 const sales = await asyncAwaitFn('sales');
-                const received = await asyncAwaitFn('received')
+                //const received = await asyncAwaitFn('received')
                 // 欠款额
-                const debt = await asyncAwaitFn('debt')
+                //const debt = await asyncAwaitFn('debt')
 
                 //直接打印
                 console.log(sales)
-                console.log(received)
-                console.log(debt)
+                //console.log(received)
+                //console.log(debt)
                 let chartData = {
-                    columns: ['日期', '销售', '回款', '累计欠款'],
+                    columns: ['日期',"期初" ,'销售', '回款', "退货" ,'累计欠款'],
                     rows: []
                 }
 
-                sales.forEach((n, i) => {
-                    let m = i + 1
-
+                // let i = 1;
+                // sales.forEach((n) => {
+                //     console.log(n)
+                //     // let ele = {
+                //     //     '日期': i + '月',
+                //     //     '销售': n.sales,
+                //     //     '回款': n.received,
+                //     //     "退货": n.refunds,
+                //     //     '累计欠款': n.debt
+                //     // }
+                //     // chartData.rows.push(ele)
+                //     // ++i;
+                // })
+                Object.keys(sales).forEach(i => {
                     let ele = {
-                        '日期': m + '月',
-                        '销售': n,
-                        '回款': received[i],
-                        '累计欠款': debt[i]
-                    }
+                        '日期': i + '月',
+                        "期初": sales[i].initial,
+                        '销售': sales[i].sales,
+                        '回款': sales[i].received,
+                        "退货": sales[i].refunds,
+                        '累计欠款': sales[i].debt
+                    };
+
                     chartData.rows.push(ele)
-
                 })
-
 
                 this.chartData = chartData
 
@@ -332,8 +344,16 @@ export default {
             });
         }
     },
-    components: {
+    computed: {
+        targetPercent: function () {
+            let percent = 0, progress = this.progress;
 
+            if (progress.target > 0) {
+                percent = progress.completed / progress.target * 100;
+            }
+
+            return percent > 100 ? 100 : percent;
+        }
     }
 }
 </script>

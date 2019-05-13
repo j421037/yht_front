@@ -14,9 +14,6 @@
 		    	<el-form-item label="项目名称" :label-width="formLabelWidth" >
 					<span class="form-item-names">{{Form.project_name}}</span>
 		    	</el-form-item>
-                <el-form-item label="标签" :label-width="formLabelWidth" >
-                    <el-tag type="success">{{row.tag}}</el-tag>
-                </el-form-item>
 		    	<el-form-item label="收款金额" :label-width="formLabelWidth" prop="amountfor">
 		    		<el-input  v-model.trim="Form.amountfor" placeholder="请输入收款金额"></el-input>
 		    	</el-form-item>
