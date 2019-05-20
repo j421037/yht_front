@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="56e14c13-0f34-472d-aba8-00e6d30e4d25" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/main/arsum/dialog/CreateReceivebill.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/main/arsum/dialog/CreateReceivebill.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/main/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/main/index/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/util/appConst.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/appConst.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -22,76 +19,37 @@
         <entry file="file://$PROJECT_DIR$/src/util/appConst.js">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="33" selection-start-column="33" selection-end-column="33" />
+              <caret column="20" selection-start-column="20" selection-end-column="20" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/main/arsum/dialog/CreateReceivebill.vue">
+        <entry file="file://$PROJECT_DIR$/src/components/main/arsum/cooperate.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vuex/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="8" column="12" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="12" />
+            <state relative-caret-position="2640">
+              <caret line="110" column="46" selection-start-line="110" selection-start-column="36" selection-end-line="110" selection-end-column="46" />
               <folding>
-                <element signature="e#0#39#0" expanded="true" />
+                <element signature="n#style#0;n#el-tab-pane#0;n#el-tabs#0;n#div#0;n#template#0;n#el-table-column#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/main/index/index.vue">
+        <entry file="file://$PROJECT_DIR$/src/components/main/arsum/tabs/RefundList.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="613">
-              <caret line="314" column="47" selection-start-line="314" selection-start-column="47" selection-end-line="314" selection-end-column="47" />
+            <state relative-caret-position="1440">
+              <caret line="60" column="10" selection-start-line="55" selection-start-column="8" selection-end-line="60" selection-end-column="10" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/main/arsum/action.vue">
+        <entry file="file://$PROJECT_DIR$/src/components/main/arsum/dialog/CreateRefund.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2328">
-              <caret line="100" column="48" selection-start-line="100" selection-start-column="48" selection-end-line="100" selection-end-column="48" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/main/arsum/action.styl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vuex/mutations.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="12384">
-              <caret line="516" column="26" selection-start-line="516" selection-start-column="26" selection-end-line="516" selection-end-column="26" />
-              <folding>
-                <element signature="e#0#44#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/vuex/mutation-type.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2688">
-              <caret line="112" column="37" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
+            <state relative-caret-position="4272">
+              <caret line="178" column="73" selection-start-line="178" selection-start-column="73" selection-end-line="178" selection-end-column="73" />
             </state>
           </provider>
         </entry>
@@ -99,8 +57,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/vuex/actions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18720">
-              <caret line="780" column="30" selection-start-line="780" selection-start-column="13" selection-end-line="780" selection-end-column="30" />
+            <state relative-caret-position="19152">
+              <caret line="798" column="27" selection-start-line="798" selection-start-column="13" selection-end-line="798" selection-end-column="27" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -109,10 +67,49 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/vuex/mutation-type.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4104">
+              <caret line="171" column="47" selection-start-line="171" selection-start-column="47" selection-end-line="171" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/api/user.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9528">
-              <caret line="397" column="40" selection-start-line="397" selection-start-column="40" selection-end-line="397" selection-end-column="40" />
+            <state relative-caret-position="12144">
+              <caret line="506" column="39" selection-start-line="506" selection-start-column="22" selection-end-line="506" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/main/arsum/action.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/main/arsum/action.styl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="264">
+              <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/vuex/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3216">
+              <caret line="134" column="22" selection-start-line="134" selection-start-column="22" selection-end-line="134" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -175,8 +172,8 @@
     <option name="ADD_SUFFIX_TO_CHERRY_PICKS_OF_PUBLISHED_COMMITS" value="false" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/components/m/customer/my/index.vue" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/components/main/customer/myCustomer.vue" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/components/m/customer/my/index.vue" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -241,8 +238,7 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-16" />
+  <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1920" />
     <option name="height" value="977" />
@@ -255,7 +251,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -391,6 +386,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -484,7 +480,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="452061000" />
+    <option name="totallyTimeSpent" value="452065000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="977" extended-state="6" />
@@ -722,8 +718,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/main/arsum/tabs/RefundList.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="41" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
+        <state relative-caret-position="1440">
+          <caret line="60" column="10" selection-start-line="55" selection-start-column="8" selection-end-line="60" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -773,32 +769,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/main/arsum/cooperate.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="106" column="77" selection-start-line="106" selection-start-column="77" selection-end-line="106" selection-end-column="77" />
+        <state relative-caret-position="2640">
+          <caret line="110" column="46" selection-start-line="110" selection-start-column="36" selection-end-line="110" selection-end-column="46" />
           <folding>
-            <element signature="e#7949#7991#0" expanded="true" />
+            <element signature="n#style#0;n#el-tab-pane#0;n#el-tabs#0;n#div#0;n#template#0;n#el-table-column#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/main/arsum/dialog/CreateRefund.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="22" column="56" selection-start-line="22" selection-start-column="56" selection-end-line="22" selection-end-column="56" />
+        <state relative-caret-position="4272">
+          <caret line="178" column="73" selection-start-line="178" selection-start-column="73" selection-end-line="178" selection-end-column="73" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/main/arsum/action.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2328">
-          <caret line="100" column="48" selection-start-line="100" selection-start-column="48" selection-end-line="100" selection-end-column="48" />
+        <state relative-caret-position="504">
+          <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/main/arsum/action.styl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="264">
+          <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -814,15 +810,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/vuex/mutation-type.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2688">
-          <caret line="112" column="37" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
+        <state relative-caret-position="4104">
+          <caret line="171" column="47" selection-start-line="171" selection-start-column="47" selection-end-line="171" selection-end-column="47" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/vuex/actions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18720">
-          <caret line="780" column="30" selection-start-line="780" selection-start-column="13" selection-end-line="780" selection-end-column="30" />
+        <state relative-caret-position="19152">
+          <caret line="798" column="27" selection-start-line="798" selection-start-column="13" selection-end-line="798" selection-end-column="27" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
@@ -831,8 +827,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/user.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9528">
-          <caret line="397" column="40" selection-start-line="397" selection-start-column="40" selection-end-line="397" selection-end-column="40" />
+        <state relative-caret-position="12144">
+          <caret line="506" column="39" selection-start-line="506" selection-start-column="22" selection-end-line="506" selection-end-column="39" />
         </state>
       </provider>
     </entry>
@@ -845,8 +841,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/vuex/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="8" column="12" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="12" />
+        <state relative-caret-position="3216">
+          <caret line="134" column="22" selection-start-line="134" selection-start-column="22" selection-end-line="134" selection-end-column="22" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
@@ -863,7 +859,7 @@
     <entry file="file://$PROJECT_DIR$/src/util/appConst.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="33" selection-start-column="33" selection-end-column="33" />
+          <caret column="20" selection-start-column="20" selection-end-column="20" />
         </state>
       </provider>
     </entry>
