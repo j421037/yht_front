@@ -408,7 +408,6 @@
                 <div class="wrap" style="padding:0 40px;">
                     <el-form :model="projectF" ref="projectF" label-position="left" label-width="80px" v-if="dialogVisibleProject" >
                         <el-form-item label="项目名称" prop="name" :rules="{required:true,trigger:'blur',message:'请选择项目名称'}">
-                            <!-- <el-input v-model="projectF.name" @change="projectTips"></el-input> -->
                             <el-autocomplete
                                 class="inline-input"
                                 v-model="projectF.name"
@@ -658,12 +657,7 @@ let initProjectData = () => {
 
 
 export default {
-    props: {
-        mobile: {
-            type: Boolean,
-            default: false
-        }
-    },
+
     data() {
         return {
             machineOptions:[],

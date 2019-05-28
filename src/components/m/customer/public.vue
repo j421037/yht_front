@@ -46,7 +46,7 @@
 		  	</van-tab>
 		</van-tabs>
 	</div>
-</template>	
+</template>
 <script type="text/javascript">
 import { Toast } from 'vant';
 // import { Dialog } from 'vant';
@@ -57,11 +57,11 @@ export default {
 		return {
 			tabActive: 0,
 			tabList: [{name:'公共',type: 0}, {name:'部门', type:1}],
-			
+
 		    loading: false,
 		    text: 'List',
 		    limit: 3,// 每页显示的数量
-		    pageNow: 1,  
+		    pageNow: 1,
 		    currentId: 0,
 		    list: [],
 		    loadAll: false,
@@ -75,7 +75,7 @@ export default {
 		returnLast() {
 			this.$router.go(-1);
 		},
-	   
+
 	    load () {
 	      this.loading = true;
 	      // setTimeout(() => {
@@ -109,8 +109,8 @@ export default {
 	    		for (let i in data) {
 
 	    			this.list.push(data[i]);
-	    		} 
-	    		
+	    		}
+
 	    		Toast.clear();
 	    	});
 	    },
@@ -126,12 +126,12 @@ export default {
     				message: '认领客户 <'+item.name+'>'
     			}
     		).then(() => {
-			 
+
 			  	this.receive(item.id);
 
 			}).catch(() => {
-			
-				this.btnDisable = false; 
+
+				this.btnDisable = false;
 				this.btnRubber = false;
 			});
 
@@ -141,7 +141,7 @@ export default {
 
           		if (this.$store.state.user.receiveStatus.status == 'success') {
 
-          				Toast.success('操作成功');          			
+          				Toast.success('操作成功');
 
           		} else {
 
@@ -162,7 +162,7 @@ export default {
 
 	    		if (this.tabList[i].name == title) {
 	    			this.customerType = this.tabList[i].type;
-	    		}	
+	    		}
 	    	}
 
 	    	this.list = [];
@@ -177,12 +177,12 @@ export default {
 
 		// if (this.$route.query.component != 'public') {
 
-		// 	window.history.pushState(null, null, document.URL); 
+		// 	window.history.pushState(null, null, document.URL);
 		// }
 	},
 	/**keep-alive模式下 activated 会在每次激活中触发**/
 	activated() {
-		window.history.pushState(null, null, document.URL); 
+		window.history.pushState(null, null, document.URL);
 	},
 	computed: {
 		offset: function () {
@@ -244,7 +244,7 @@ export default {
 				background: #fff;
 				width: 100%;
 				border-top: 1px solid #e5e5e5;
-				border-bottom: 1px solid #e5e5e5;	
+				border-bottom: 1px solid #e5e5e5;
 				.item-title
 					padding-bottom: 15px
 					border-bottom: 1px solid #e5e5e5;
@@ -286,7 +286,7 @@ export default {
 						button
 							border-color: #2196f3;
 						.btn-text
-							padding: 0px 5px;	
+							padding: 0px 5px;
 							font-size: 14px;
 							color: #2196f3;
 							i
@@ -294,7 +294,7 @@ export default {
 								padding-right: 5px;
 					.item-action.rubber
 						animation: rubberBand 0.7s ease;
-			.no-data	
-				padding: 10px;	
+			.no-data
+				padding: 10px;
 				text-align: center;
 </style>

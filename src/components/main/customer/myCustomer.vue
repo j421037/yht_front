@@ -1,494 +1,251 @@
 <template>
-	<div class="wapper">
+    <div class="mycustomer">
+        <el-radio-group v-model="CustomerType" @change="CustomerChange">
+            <el-radio-button label="未验收"></el-radio-button>
+            <el-radio-button label="已验收"></el-radio-button>
+        </el-radio-group>
+        <el-table
+            :data="customers"
+            v-loading="loading"
+            border
+            strip
+            style="margin-top: 15px;"
+        >
+            <el-table-column type="index"></el-table-column>
+            <el-table-column label="客户" prop="name" width="120"></el-table-column>
+            <el-table-column label="联系方式">
+                <el-table-column label="电话" prop="phone"></el-table-column>
+                <el-table-column label="微信" prop="wechat"></el-table-column>
+                <el-table-column label="QQ" prop="qq"></el-table-column>
+            </el-table-column>
+            <el-table-column label="项目名" prop="project_name"></el-table-column>
+            <el-table-column label="地区" width="200" v-if="false">
+                <template slot-scope="scope">
+                    <span>{{scope.row.province}}</span> -
+                    <span>{{scope.row.city}}</span> -
+                    <span>{{scope.row.area}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="需求" width="250">
+                <template slot-scope="scope">
+                    <el-popover
+                        placement="top-start"
+                        title="需求"
+                        width="200"
+                        trigger="hover"
+                        :content="scope.row.demand">
+                        <a href="javascript:void(0)" slot="reference" v-if="scope.row.demand">{{scope.row.demand.substring(0,20)}}...</a>
+                    </el-popover>
 
-		<mu-container ref="container" class="loadmore-content" >
-		   
-	      	<mu-list textline="three-line">
-	      		<mu-sub-header>
-	      			<div class="customer-mu-sub-header">
-	      				<p>已领取客户: <span style="color:#f44336">{{ReceiveNum}}</span> 个</p>
-	      				<p>已验收客户: <span style="color:#f44336">{{AcceptNum}}</span> 个</p>
-	      				<p style="font-size: 12px;">带星号表示已验收</p>
-	      			</div>
-	      		</mu-sub-header>
-		        <template v-for="item in list" >
-		          	<mu-list-item>
-				      <mu-list-item-content>
-				        <mu-list-item-title>
-				        	{{item.name}}
-				        	<span v-show="item.accept == 1"><mu-icon value="grade" color="success" size="18"></mu-icon></span>
-				        </mu-list-item-title>
-				        <mu-list-item-sub-title>
-				          <span style="color: rgba(0, 0, 0, .87);">{{item.province}} {{item.city}} {{item.area}}</span><br/>
-				          <span>{{parseTimeStamp(item.created_at)}}</span>
-				          <span v-show="mobile ? false : true">需求：{{item.demand}}  </span>
-				          <span v-show="mobile ? false : true">备注: {{item.description}}</span>
-				        </mu-list-item-sub-title>
-				      </mu-list-item-content>
-				      <mu-list-item-action :style="{position: 'relative','overflow':'hidden'}">
-			        	<mu-button small full-width color="primary" @click="openDetail(item)">
-					    	详情
-					    </mu-button>
-					    
-					    <mu-button small full-width color="success" @click="track(item)" v-show="item.accept == 1">
-					    	跟进
-					    </mu-button>
-
-					    <mu-menu cover :open="currentClickIndex == item.id" v-show="item.accept == 0">
-					    	<mu-button color="orange" small full-width @click="showMenu(item.id)" style="width: 95px;padding-left: 5px;">操作</mu-button>
-						  	<mu-list slot="content">
-						    	<mu-list-item button @click="track(item)">
-						      		<mu-list-item-title color="orange" >跟进</mu-list-item-title>
-						    	</mu-list-item>
-						    	<mu-list-item button @click="accept(item)" v-show="item.accept == 0">
-						      		<mu-list-item-title>验收客户</mu-list-item-title>
-						    	</mu-list-item>
-						    	<mu-list-item button @click="free(item)"  v-show="item.accept == 0">
-						      		<mu-list-item-title>释放客户</mu-list-item-title>
-						    	</mu-list-item>
-						  	</mu-list>
-						</mu-menu>
-				      </mu-list-item-action>
-				    </mu-list-item>
-		          	<mu-divider></mu-divider>
-		    	</template>
-	      	</mu-list>		   
-		</mu-container>
-
-		<el-dialog
-		  	title="客户信息"
-		  	:visible.sync="showCustomAction"
-		  	width="30%"
-		  	class="customer-dialog"
-		  	center>
-		  	<mu-list class="customer-list">
-
-	      		<mu-list-item>
-	      			<mu-list-item-title>称呼</mu-list-item-title>
-	        		<mu-list-item-action>
-	          			{{currentItem.name}}
-	        		</mu-list-item-action>
-	      		</mu-list-item>
-	      		<mu-list-item>
-	      			<mu-list-item-content>
-		      			<mu-list-item-title>联系方式</mu-list-item-title>
-		        	</mu-list-item-content>
-		        	<mu-list-item-action>
-		          		<a :href="'tel:'+currentItem.phone" >{{currentItem.phone}}</a>
-		        	</mu-list-item-action>
-	      		</mu-list-item>
-	      		<mu-list-item>
-	      			<mu-list-item-content>
-		      			<mu-list-item-title>创建时间</mu-list-item-title>
-		        	</mu-list-item-content>
-		        	<mu-list-item-action>
-		          		{{parseTimeStamp(currentItem.created_at)}}
-		        	</mu-list-item-action>
-	      		</mu-list-item>
-	      		<mu-list-item>
-	      			<mu-list-item-title>微信号</mu-list-item-title>
-	        		<mu-list-item-action>
-	          			<a href="javascript:void(0)">{{currentItem.wechat}}</a>
-	        		</mu-list-item-action>
-	      		</mu-list-item>
-	      		<mu-list-item>
-	      			<mu-list-item-title>QQ号</mu-list-item-title>
-	        		<mu-list-item-action>
-	          			<a href="javascript:void(0)">{{currentItem.qq}}</a>
-	        		</mu-list-item-action>
-	      		</mu-list-item>
-	      		<mu-list-item>
-	      			<mu-list-item-title>咨询品牌</mu-list-item-title>
-	        		<mu-list-item-action>
-	          			{{currentItem.brand_name}}
-	        		</mu-list-item-action>
-	      		</mu-list-item>
-	      		<mu-list-item>
-	      			<mu-list-item-title :style="{'flex': 1}">所属地区</mu-list-item-title>
-	        		<mu-list-item-action :style="{'flex': 2}">
-	          			{{currentItem.province}} {{currentItem.city}} {{currentItem.area}}
-	        		</mu-list-item-action>
-	      		</mu-list-item>
-	      		<mu-list-item>
-	      			<mu-list-item-title>项目名称</mu-list-item-title>
-	        		<mu-list-item-action>
-	          			{{currentItem.project_name}}
-	        		</mu-list-item-action>
-	      		</mu-list-item>
-	      		<mu-list-item :style="{'margin-top': '20px'}">
-	      			<mu-list-item-title>产品需求</mu-list-item-title>
-	        		<mu-list-item-action>
-	          			{{currentItem.demand}}
-	        		</mu-list-item-action>
-	      		</mu-list-item>
-	      		<mu-list-item :style="{'margin-top': '20px'}">
-	      			<mu-list-item-title>备注信息</mu-list-item-title>
-	        		<mu-list-item-action>
-	          			{{currentItem.description}}
-	        		</mu-list-item-action>
-	      		</mu-list-item>
-		    </mu-list>
-		</el-dialog>
-
-		<el-dialog title="客户跟进记录" :visible.sync="outerVisible" class="comment-dialog">
-			<div class="track-container" v-loading="trackLoading">
-				<div class="item" v-for="comment in comments">
-					<div class="headimg">
-						<img :src=" comment.headimg == null ? 'http://e.yhtjc.com/v2/public/img/default.png' : comment.headimg ">
-					</div>
-					<div class="content">
-						<div class="user-name">{{comment.user_name}} <span>发表于 {{comment.updated}}</span></div>
-						<div class="text">{{comment.content}}</div>
-					</div>
-				</div>
-			</div>
-
-		    <el-dialog
-		      width="30%"
-		      title="客户回访"
-		      :visible.sync="innerVisible"
-		      append-to-body>
-		      	<div class="newTrack" style="text-align: center;">
-		      		<el-input
-					  type="textarea"
-					  :autosize="{ minRows: 4, maxRows: 30}"
-					  placeholder="请输入内容"
-					  v-model.trim="trackComment">
-					</el-input>
-		      		<el-button type="primary" @click="submitFllowForm" style="margin-top: 15px;margin-bottom: : -5px;">提交</el-button>
-		      	</div>	
-		    </el-dialog>
-		    <div slot="footer" class="dialog-footer">
-		      <el-button @click="outerVisible = false">关 闭</el-button>
-		      <el-button type="primary" @click="innerVisible = true">新增记录</el-button>
-		    </div>
-		 </el-dialog>
-		
-	</div>
+                </template>
+            </el-table-column>
+            <el-table-column label="状态">
+                <template slot-scope="scope">
+                    <template v-if="!scope.row.status">
+                        <span v-if="scope.row.accept == 0">
+                            <el-tag type="warning">未验收</el-tag>
+                        </span>
+                            <span v-else>
+                            <el-tag type="success">已验收</el-tag>
+                        </span>
+                    </template>
+                    <template v-else>
+                        <span>{{scope.row.status}}</span>
+                    </template>
+                </template>
+            </el-table-column>
+            <el-table-column label="更新日期" prop="action_date"></el-table-column>
+            <el-table-column label="操作" width="150">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.accept == 0">
+                        <el-button-group>
+                            <el-button type="success" size="mini" @click.native="accept(scope.row)">验收</el-button>
+                            <el-button type="info" size="mini" @click.native="free(scope.row)">释放</el-button>
+                        </el-button-group>
+                    </template>
+                    <template v-if="scope.row.accept == 1 && !scope.row.status">
+                        <el-button type="success" size="mini" @click.native="upgrade(scope.row)">升级客户</el-button>
+                    </template>
+                </template>
+            </el-table-column>
+        </el-table>
+        <project :visible="pdVisible" :customer="customer" @close="pdVisible = false" @refresh="refresh"></project>
+        <pagination :total="total" :handle="query" :refresh="manual"></pagination>
+    </div>
 </template>
 <script type="text/javascript">
 
-export default {
-	props: {
-		mobile: {
-			type: Boolean,
-			default: false
-		}
-	},
-	data () {
-	    return {
-	      
-	      	loading: false,
-	      	limit: 10,// 每页显示的数量
-	      	pageNow: 1,
-	      	list: [],
-	      	loadAll: false,
-	      	showCustomAction: false,
-	    	trackLoading: true,
-	      	outerVisible: false,
-	      	innerVisible: false,
-	      	currentItem: '',
-	      	popShow: false,
-	      	menuOpen: false,
-	      	trackComment: '',
-	      	currentClickIndex: 0,
-	      	currentCustomer: [],
-	      	lastClickIndex: 0,
-	      	isAccept: false,
-	    }
-	},
-	methods: {
-	    refresh () {
-	     
-	    },
-	    load () {
-	      this.loading = true;
-	      ++this.pageNow;
-	      this.initList();
-	    },
+    export default {
 
-	    /**获取数据**/
-	    initList() {
+        data() {
+            return {
+                CustomerType: "未验收",
+                total: 0,
+                loading: true,
+                pdVisible: false,
+                customer: {},
+                manual: 0,
+            }
+        },
+        created() {
+            // this.query();
+        },
+        methods: {
+            refresh() {
+                ++this.manual;
+            },
+            /**获取数据**/
+            query(param) {
+                this.loading = true;
+                param.accept = this.CustomerType == "未验收" ? 0 : 1;
 
-	    	this.$store.dispatch('getPersonalCustomer',{limit: this.limit, offset: this.offset}).then(() => {
-	    		// console.log(this.$store.state.user.customerList);
-	    		this.loading = false;
+                this.$store.dispatch('getPersonalCustomer', param)
+                    .then(() => {
+                        this.loading = false;
+                        console.log(this.customers);
+                });
+            },
+            CustomerChange() {
+                ++this.manual;
+            },
+            /**验收客户**/
+            accept(item) {
 
-	    		let data = this.$store.state.user.personal_customer_list.data;
+                this.currentClickIndex = 0;
 
-	    		this.loadAll = this.$store.state.user.personal_customer_list.loadAll;
+                if (this.mobile == true) {
+                    this.$dialog.confirm(
+                        {
 
-	    		for (let i in data) {
+                            message: '验收客户 <' + item.name + '>, 该客户将纳入你的名下,确定进行该操作 ?'
 
-	    			this.list.push(data[i]);
-	    		}
+                        }
+                    ).then(() => {
 
-	    	});
-	    },
-	    openDetail(item) {
-	    	this.currentItem = item;
-	    	this.showCustomAction = true;
-	    },
-	    track(item) {
-	    	this.currentItem = item;
-	    	this.outerVisible = true;
-	    	this.initComments(item.id);
-	    },
-	    parseTimeStamp(times) {
-	    	let date =  new Date(parseInt(times)*1000);
+                        this.submitAccept(item);
 
-	    	return date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
-	    },
-	   
-	    /**关闭的时候必须重置当前index 不然重复点击两次会打不开**/
-	    showMenu(id) {
-
-	    	this.currentClickIndex = id;
-	    },
-
-	    /**验收客户**/
-	    accept(item) {
-
-	    	this.currentClickIndex = 0;
-
-	    	if (this.mobile == true) {
-	    		this.$dialog.confirm(
-	    			{
-
-						message: '验收客户 <'+item.name+'>, 该客户将纳入你的名下,确定进行该操作 ?'
-
-					}
-				).then(() => {
-
-				  	this.submitAccept(item);
-
-				}).catch(() => {
+                    }).catch(() => {
 
 
-				});
+                    });
 
-	    	} else {
+                } else {
 
-	    		this.$confirm('验收客户 <'+item.name+'>, 该客户将纳入你的名下,确定进行该操作 ?', '提示', {
-		        	confirmButtonText: '确定',
-		          	cancelButtonText: '取消',
-		          	type: 'success'
-		        }).then(() => {
+                    this.$confirm('验收客户 <' + item.name + '>, 该客户将纳入你的名下,确定进行该操作 ?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'success'
+                    }).then(() => {
 
-		          	this.submitAccept(item);
+                        this.submitAccept(item);
 
-		        }).catch(() => {
+                    }).catch(() => {
 
-		        });
-	    	}
-	    },
-	    /**验收客户 提交**/
-	    submitAccept(item) {
+                    });
+                }
+            },
+            /**验收客户 提交**/
+            submitAccept(item) {
 
-	    	this.$store.dispatch('acceptCustomer', {id: item.id}).then(() => {
+                this.$store.dispatch('acceptCustomer', {id: item.id}).then(() => {
 
-	    		if (this.$store.state.user.acceptCustomer.status == 'success') {
+                    if (this.$store.state.user.acceptCustomer.status == 'success') {
+                        this.$notify.success({title: '操作成功', message: '客户<' + item.name + '> 已验收'});
+                    } else {
+                        this.$notify.error({title: '操作失败', message: this.$store.state.user.acceptCustomer.error});
+                    }
+                })
+            },
+            /**释放客户**/
+            free(item) {
+                this.$prompt('请输入释放理由', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPattern: /^[\w|\u4e00-\u9fa5]{5,}.*$/,
+                    inputErrorMessage: '内容不能少于5个字符'
+                }).then(({ value }) => {
+                    this.submitFree({id:item.id, reason: value, name: item.name});
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
+            /**释放客户 提交**/
+            submitFree(item) {
+                this.$store.dispatch('freeCustomer', item)
+                    .then(() => {
+                        if (this.$store.state.user.freeCustomer.status == 'success') {
+                            this.$notify.success({title: '操作成功', message: '客户<' + item.name + '>已经释放'});
+                        } else {
+                            this.$notify.error({title: '操作失败', mesage: this.$store.state.user.freeCustomer.error});
+                        }
+                    })
+            },
 
-	    			if (this.mobile) {
+            /**初始化客户跟进列表**/
+            initComments(id) {
+                this.$store.dispatch('getComments', {id: id, offset: 0, limit: 15}).then(() => {
+                    this.trackLoading = false;
+                });
 
-	    				Toast.success('操作成功');
+            },
+            /**提交跟进记录**/
+            submitFllowForm() {
 
-	    			} else {
+                if (this.trackComment == '') {
 
-	    				this.$notify.success({title:'操作成功', message:'客户<'+item.name+'> 已验收'});
-	    			}
-	    			this.list = [];
-	    			this.initList();
+                    return false;
+                }
 
-	    		} else {
-	    			if (this.mobile) {
+                this.$store.dispatch('appendComments', {
+                    content: this.trackComment,
+                    'customer_id': this.currentItem.id
+                }).then(() => {
 
-	    				Toast.error('操作失败');
+                    if (this.$store.state.user.append_comments.status == 'success') {
 
-	    			} else {
+                        this.$notify.success({title: '操作成功', message: '记录已添加'});
+                        this.trackComment = '';
+                        this.initComments(this.currentItem.id);
 
-	    				this.$notify.error({title:'操作失败', message: this.$store.state.user.acceptCustomer.error});
-	    			}
-	    		}
-	    	})
-	    },
-	    /**释放客户**/
-	    free(item) {
+                    } else {
 
-	    	this.currentClickIndex = 0;
+                        this.$notify.error({title: '操作失败', message: this.$store.state.user.append_comments.error});
 
-	    	if (this.mobile) {
+                    }
+                });
+            },
+            upgrade(row) {
+                this.pdVisible = true;
+                this.customer = row;
+            }
+        },
 
-	    		this.$dialog.confirm({
-					message: '释放客户 <'+item.name+'>后，其他同事可以再次跟进此客户, 确定进行该操作 ?'
-				}).then(() => {
-				  	
-				  	this.submitFree(item);	
+        computed: {
 
-				}).catch(() => {
-				  
-				});
- 
-	    	} else {
-
-	    		this.$confirm('释放客户 <'+item.name+'>后，其他同事可以再次跟进此客户, 确定进行该操作 ?', '提示', 
-	    			{
-			        	confirmButtonText: '确定',
-			        	cancelButtonText: '取消',
-			        	type: 'warning'
-		        	}
-		        ).then(() => {
-		        	this.submitFree(item);
-		        }).catch(() => {
-		          	        
-		        });
-	    	}
-
-	    	
-	    },
-	    /**释放客户 提交**/
-	    submitFree(item) {
-	    	this.$store.dispatch('freeCustomer', {id: item.id})
-			  	.then( () => {
-
-			  		if (this.$store.state.user.freeCustomer.status == 'success') {
-
-			  			if (this.mobile) {
-
-			  				Toast.success('操作成功');
-
-			  			} else {
-
-			  				this.$notify.success({title: '操作成功', message: '客户<'+item.name+'>已经释放'});
-			  			}
-
-			  			this.list = [];
-			  			this.initList();
-
-			  		} else {
-
-			  			if (this.mobile) {
-
-			  				Toast.error('操作失败');
-
-			  			} else {
-			  				
-			  				this.$notify.error({title: '操作失败', mesage: this.$store.state.user.freeCustomer.error});
-			  			}
-			  		}
-
-			  		
-			  	})
-
-	    },
-	   
-	    /**初始化客户跟进列表**/
-	    initComments(id) {
-
-	   		this.trackLoading  = true;
-		  	
-	    	this.$store.dispatch('getComments',{id: id,offset: 0,limit: 15}).then(() => {
-	    		this.trackLoading  = false;
-	    	});
-
-	    },
-	     /**提交跟进记录**/
-	    submitFllowForm() {
-
-	    	if (this.trackComment == '') {
-
-	    		return false;
-	    	}
-
-	    	this.$store.dispatch('appendComments', {content: this.trackComment,'customer_id': this.currentItem.id}).then(() => {
-
-				if (this.$store.state.user.append_comments.status == 'success') {
-
-					this.$notify.success({title:'操作成功', message: '记录已添加'});
-					this.trackComment = '';
-					this.initComments(this.currentItem.id);
-					
-				} else {
-
-					this.$notify.error({title:'操作失败', message: this.$store.state.user.append_comments.error});
-					 
-				}
-			});
-	    },
-	},
-
-	created() {
-		this.initList();
-
-	},
-	computed: {
-		offset: function () {
-
-			return (this.pageNow - 1)*this.limit;
-		},
-		comments: function() {
-			return this.$store.state.user.comments.data;
-		},
-		ReceiveNum: function () {
-			return this.$store.state.user.personal_customer_list.count;
-		},
-		AcceptNum: function () {
-			return this.$store.state.user.personal_customer_list.accept;
-		}
-	}
-}
+            customers: function() {
+                let res = this.$store.state.user.personal_customer_list
+                this.total = res.total;
+                return res.data;
+            },
+            comments: function () {
+                return this.$store.state.user.comments.data;
+            },
+            ReceiveNum: function () {
+                return this.$store.state.user.personal_customer_list.count;
+            },
+            AcceptNum: function () {
+                return this.$store.state.user.personal_customer_list.accept;
+            }
+        },
+        components: {
+            "project": () => import("./createProject.vue"),
+            "pagination": () => import("./pagination.vue")
+        }
+    }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped="scoped">
-.wapper
-	width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	// position: absolute;
-	.loadmore-content
-		flex: 1;
-		overflow: auto;
-		margin-top: 20px;
-		-webkit-overflow-scrolling: touch;
-		.mu-button-wrapper
-			width: 50px;
-		.mu-item-content
-			flex: 1;
-		.mu-item-action
-			flex-basis: 100px;
-			padding-left: 5px;
-	.comment-dialog
-		.item
-			width: 100%;
-			height: 100%;
-			display: flex;
-			position: relative;
-			padding: 10px;
-			.headimg
-				display: flex;
-				align-items: center;
-				height: 80px;
-				flex-basis: 100px;
-				position: relative;
-				img
-					width: 50px;
-					height: 50px;;
-					border-radius: 50px;
-			.content
-				flex: 1;
-				.user-name
-					text-align: left;
-					font-size: 14px;
-					font-weight: bold;
-					margin-bottom: 8px;
-					span
-						font-size: 10px;
-						margin-left: 5px;
-						font-weight: 400;
-				.text
-					text-align: left;
-					display: flex;
-					justify-content: space-between;
-					word-break:break-all;
-					text-indent: 20px;
+
 </style>
