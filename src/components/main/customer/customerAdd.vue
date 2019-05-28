@@ -5,57 +5,60 @@
             <div class="tool">
                 <el-button type="success" @click.native="openDialog" icon="el-icon-plus">添加客户</el-button>
             </div>
-            <div class="search">
-                <el-form :model="query" class="demo-form-inline">
-                    <el-form-item label="发布状态">
-                        <el-select v-model="query.isPublic" placeholder="请选择">
-                            <el-option
-                                v-for="item in isPublicOptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="验收状态">
-                        <el-select v-model="query.received" placeholder="请选择">
-                            <el-option
-                                v-for="item in receivedOptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="领取人　">
-                        <el-select v-model="query.user" placeholder="请选择">
-                            <el-option
-                                v-for="item in users"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="添加日期">
-                        <el-date-picker
-                            v-model="query.date"
-                            type="daterange"
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期">
-                        </el-date-picker>
-                    </el-form-item>
+            <!--<div class="search">-->
+                <!--<el-form :model="query" class="demo-form-inline">-->
+                    <!--<el-form-item label="发布状态">-->
+                        <!--<el-select v-model="query.isPublic" placeholder="请选择">-->
+                            <!--<el-option-->
+                                <!--v-for="item in isPublicOptions"-->
+                                <!--:key="item.value"-->
+                                <!--:label="item.label"-->
+                                <!--:value="item.value">-->
+                            <!--</el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="验收状态">-->
+                        <!--<el-select v-model="query.received" placeholder="请选择">-->
+                            <!--<el-option-->
+                                <!--v-for="item in receivedOptions"-->
+                                <!--:key="item.value"-->
+                                <!--:label="item.label"-->
+                                <!--:value="item.value">-->
+                            <!--</el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="领取人　">-->
+                        <!--<el-select v-model="query.user" placeholder="请选择">-->
+                            <!--<el-option-->
+                                <!--v-for="item in users"-->
+                                <!--:key="item.value"-->
+                                <!--:label="item.label"-->
+                                <!--:value="item.value">-->
+                            <!--</el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="添加日期">-->
+                        <!--<el-date-picker-->
+                            <!--v-model="query.date"-->
+                            <!--type="daterange"-->
+                            <!--range-separator="至"-->
+                            <!--start-placeholder="开始日期"-->
+                            <!--end-placeholder="结束日期">-->
+                        <!--</el-date-picker>-->
+                    <!--</el-form-item>-->
 
-                    <el-form-item>
-                        <el-button type="primary" @click="onSearch" icon="el-icon-search" :loading="searching">立即查询
-                        </el-button>
-                    </el-form-item>
-                </el-form>
+                    <!--<el-form-item>-->
+                        <!--<el-button type="primary" @click="onSearch" icon="el-icon-search" :loading="searching">立即查询-->
+                        <!--</el-button>-->
+                    <!--</el-form-item>-->
+                <!--</el-form>-->
 
 
-            </div>
+            <!--</div>-->
             <div class="table-tool">
+                <el-radio-group v-model="CustomerType" @change="CustomerChange">
+                    <el-radio-button v-for="(item, key) in CustomerOption" :key="key" :label="item.label"></el-radio-button>
+                </el-radio-group>
                 <el-popover
                     placement="right"
                     width="400"
@@ -110,12 +113,12 @@
                     </template>
                     <el-button slot="reference" icon="">显示/隐藏列</el-button>
                 </el-popover>
+
             </div>
             <el-table
 
                 :data="tableData"
-                max-height="350"
-
+                height="500"
                 v-loading="tableLoading"
                 style="max-width: 100%;">
                 <el-table-column
@@ -281,7 +284,9 @@
                     :page-size="pageSize"
                     background
                     layout="total, sizes, prev, pager, next"
-                    :total="pageTotal">
+                    :total="pageTotal"
+                    style="text-align: center"
+                >
                 </el-pagination>
             </div>
         </div>
@@ -376,6 +381,7 @@
                     user: 0,
                     offset: 0,
                     limit: 5,
+                    status: 0
                 },
                 form: {
                     id: '',
@@ -496,12 +502,20 @@
                     type: 0
                 },
                 update: false,
+                CustomerType: "全部",
+                CustomerOption: [{label : "全部",value: 0},{label:"已领取",value: 1},{label: "未领取",value: 2}]
             }
         },
         methods: {
             openDialog() {
                 this.showDialog = true;
                 this.update = false;
+            },
+            CustomerChange(val) {
+                let item = this.CustomerOption.filter(it => {return it.label == val;});
+
+                this.query.status = item[0].value;
+                this.initTable(this.query);
             },
             onSubmit(formName) {
 
@@ -755,7 +769,8 @@
             .table-tool
                 padding: 5px 0px;
                 text-align: left !important;
-
+                display flex;
+                justify-content space-between;
             .search
                 // border: 1px solid #ddd;
                 // border-radius: 5px;
