@@ -867,20 +867,20 @@ export default {
                        {
                            this.getAllData(1);
                            this.$message({
-                               message: '添加成功',
+                               message: '操作成功',
                                type: 'success',
                                center: true
                            });
                        }
                        else {
                            this.$message({
-                               message: '添加失败: '+res.errmsg,
+                               message: '操作失败: '+res.errmsg,
                                type: 'error',
                                center: true
                            });
                        }
                        console.log(data);
-                        console.log(res)
+                       console.log(res)
                    })
                }
             });
