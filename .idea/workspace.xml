@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="56e14c13-0f34-472d-aba8-00e6d30e4d25" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/main/customer/customerAdd.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/main/customer/customerAdd.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/main/customer/customerPub.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/main/customer/customerPub.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/main/projectManagement/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/main/projectManagement/index.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -26,7 +25,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/main/customer/customerAdd.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="320">
@@ -83,15 +82,16 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/main/projectManagement/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="471">
-              <caret line="966" column="20" selection-start-line="966" selection-start-column="20" selection-end-line="966" selection-end-column="20" />
+            <state relative-caret-position="671">
+              <caret line="105" column="142" selection-start-line="105" selection-start-column="142" selection-end-line="105" selection-end-column="142" />
               <folding>
                 <element signature="n#style#0;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#el-button#0;n#template#0;n#el-table-column#9;n#el-table#0;n#div#1;n#div#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#el-button#0;n#template#0;n#el-table-column#10;n#el-table#0;n#div#1;n#div#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#el-dialog#0;n#div#7;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="e#31226#31262#0" expanded="true" />
               </folding>
@@ -117,7 +117,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/main/customer/pagination.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="711">
-              <caret line="55" column="13" lean-forward="true" selection-start-line="55" selection-start-column="13" selection-end-line="55" selection-end-column="13" />
+              <caret line="55" column="13" selection-start-line="55" selection-start-column="13" selection-end-line="55" selection-end-column="13" />
               <folding>
                 <element signature="n#style#0;n#el-pagination#0;n#div#0;n#template#0;n#!!top" expanded="true" />
               </folding>
@@ -142,10 +142,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>filterQuery</find>
-      <find>UPDATE_FILTER_QUERY</find>
-      <find>sales</find>
-      <find>curPerson</find>
       <find>percentage</find>
       <find>p</find>
       <find>customers</find>
@@ -168,10 +164,14 @@
       <find>open</find>
       <find>customerList</find>
       <find>received</find>
-      <find>fil</find>
       <find>submitAddC</find>
       <find>forE</find>
       <find>created</find>
+      <find>fil</find>
+      <find>概括</find>
+      <find>remark</find>
+      <find>项目概括</find>
+      <find>备注</find>
     </findStrings>
     <replaceStrings>
       <replace>el-table-column</replace>
@@ -241,10 +241,10 @@
         <option value="$PROJECT_DIR$/src/components/main/customer/createProject.vue" />
         <option value="$PROJECT_DIR$/src/components/main/customer/pagination.vue" />
         <option value="$PROJECT_DIR$/src/components/main/customer/myCustomer.vue" />
-        <option value="$PROJECT_DIR$/src/components/main/projectManagement/index.vue" />
         <option value="$PROJECT_DIR$/src/components/m/customer/public.vue" />
         <option value="$PROJECT_DIR$/src/components/main/customer/customerPub.vue" />
         <option value="$PROJECT_DIR$/src/components/main/customer/customerAdd.vue" />
+        <option value="$PROJECT_DIR$/src/components/main/projectManagement/index.vue" />
       </list>
     </option>
   </component>
@@ -543,12 +543,12 @@
       <workItem from="1558662031793" duration="978000" />
       <workItem from="1558663133747" duration="3580000" />
       <workItem from="1558753353777" duration="5962000" />
-      <workItem from="1558920044544" duration="22029000" />
+      <workItem from="1558920044544" duration="23170000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="487400000" />
+    <option name="totallyTimeSpent" value="488541000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="977" extended-state="6" />
@@ -887,7 +887,7 @@
     <entry file="file://$PROJECT_DIR$/src/components/main/customer/pagination.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="711">
-          <caret line="55" column="13" lean-forward="true" selection-start-line="55" selection-start-column="13" selection-end-line="55" selection-end-column="13" />
+          <caret line="55" column="13" selection-start-line="55" selection-start-column="13" selection-end-line="55" selection-end-column="13" />
           <folding>
             <element signature="n#style#0;n#el-pagination#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
@@ -900,20 +900,6 @@
           <caret line="107" column="12" selection-start-line="107" selection-start-column="12" selection-end-line="107" selection-end-column="12" />
           <folding>
             <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/main/projectManagement/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="966" column="20" selection-start-line="966" selection-start-column="20" selection-end-line="966" selection-end-column="20" />
-          <folding>
-            <element signature="n#style#0;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#el-button#0;n#template#0;n#el-table-column#9;n#el-table#0;n#div#1;n#div#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#el-button#0;n#template#0;n#el-table-column#10;n#el-table#0;n#div#1;n#div#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#el-dialog#0;n#div#7;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#31226#31262#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -953,6 +939,21 @@
           <caret line="124" column="31" selection-start-line="124" selection-start-column="31" selection-end-line="124" selection-end-column="31" />
           <folding>
             <element signature="n#style#0;n#el-pagination#0;n#div#2;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/main/projectManagement/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="671">
+          <caret line="105" column="142" selection-start-line="105" selection-start-column="142" selection-end-line="105" selection-end-column="142" />
+          <folding>
+            <element signature="n#style#0;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#el-button#0;n#template#0;n#el-table-column#9;n#el-table#0;n#div#1;n#div#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#el-button#0;n#template#0;n#el-table-column#10;n#el-table#0;n#div#1;n#div#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#el-dialog#0;n#div#7;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#31226#31262#0" expanded="true" />
           </folding>
         </state>
       </provider>

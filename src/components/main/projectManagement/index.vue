@@ -93,7 +93,20 @@
                                     <tr>
                                         <td style="width:100px;"></td>
                                         <td>备注：</td>
-                                        <td>{{props.row.projectInfo.remark}}</td>
+                                        <!--<td>{{props.row.projectInfo.remark}}</td>-->
+                                        <td>
+                                            <span v-if="props.row.projectInfo.remark">
+                                                <el-popover
+                                                    placement="top-start"
+                                                    title="概括"
+                                                    width="400"
+                                                    trigger="hover"
+                                                    :content="props.row.projectInfo.remark"
+                                                >
+                                                    <a href="javascript:void(0)" slot="reference">{{props.row.projectInfo.remark.substring(0,80)}}...</a>
+                                                </el-popover>
+                                            </span>
+                                        </td>
                                         <td style="width:100px;"></td>
                                         <td></td>
                                     </tr>
@@ -179,7 +192,21 @@
                 </el-table-column>
                 <el-table-column prop="start_at" label="开工日期"></el-table-column>
                 <el-table-column prop="finish_at" label="完工日期"></el-table-column>
-                <el-table-column prop="remark" label="项目概括"></el-table-column>
+                <el-table-column prop="remark" label="项目概括" width="250">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.remark">
+                            <el-popover
+                                placement="top-start"
+                                title="概括"
+                                width="250"
+                                trigger="hover"
+                                :content="scope.row.remark"
+                            >
+                                <a href="javascript:void(0)" slot="reference">{{scope.row.remark.substring(0,20)}}...</a>
+                            </el-popover>
+                        </span>
+                    </template>
+                </el-table-column>
             </el-table>
             <div style="margin-top:20px; text-align:center">
                 <el-pagination background layout="prev, pager, next" @current-change="onPageChange" :page-size="limit" v-if="totalNumber>limit" :total="totalNumber"></el-pagination>
