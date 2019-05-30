@@ -964,12 +964,14 @@ export default {
 
             http.post(url, data).then(res => {
 
-                res.row.forEach((n, i) => {
-                    n.isExpanded = false
-                })
-                this.tableData = res.row
-                this.totalNumber = res.total
-
+                if (res.row.length > 0) {
+                    res.row.forEach((n, i) => {
+                        n.isExpanded = false
+                    })
+                    this.tableData = res.row
+                    this.totalNumber = res.total
+                }
+                console.log(res);
             })
         },
         //获取项目详细信息
@@ -1023,7 +1025,6 @@ export default {
 
             http.post(url, data).then(res => {
                 this.cusAttached = res
-                $.log(res)
             })
         },
 
