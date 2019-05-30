@@ -151,6 +151,7 @@
 
                     if (this.$store.state.user.acceptCustomer.status == 'success') {
                         this.$notify.success({title: '操作成功', message: '客户<' + item.name + '> 已验收'});
+                        ++this.manual;
                     } else {
                         this.$notify.error({title: '操作失败', message: this.$store.state.user.acceptCustomer.error});
                     }
