@@ -2,6 +2,86 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="56e14c13-0f34-472d-aba8-00e6d30e4d25" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/dist/static/css/app.56e45b99cc005b87324bcaaaaafe2a15.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/fonts/Rubik.3492b2c.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/fonts/element-icons.6f0a763.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/fonts/fontawesome-webfont.674f50d.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/fonts/fontawesome-webfont.af7ae50.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/fonts/fontawesome-webfont.b06871f.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/fonts/fontawesome-webfont.fee66e7.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/bg.f3d1146.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/fontawesome-webfont.912ec66.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/login-background.21f7ca7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/logo-small.9d749e3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/logo.1aa235b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/rocket.46e26b8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/sw1.3322319.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/sw2.97f9e3a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/img/sw3.6b88776.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/0.2935f58dc0ba0489ed1b.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/1.933e8ab4050ab800437e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/10.92fc22bd9db930d3e5ee.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/11.8494ea4ab05d7ff8724e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/12.1685878dcf5528caf225.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/13.851c18c6381f9a65d81f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/14.f4b5a168ba00730a00f1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/15.da8e730d5242aa1dd8c7.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/16.c61b7d18ab06fdbaf288.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/17.208fc3f50b1dfe989202.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/18.51f5d0a8fd2a4cd31643.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/19.49b564efd8844180c9f6.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/2.6caa842c67008c6bfea6.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/20.c602fb8eec09a6dfd54a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/21.6283404b98123b0a32a4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/22.3a8335eaa27bf7edaed6.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/23.60a4efdc6f1031739941.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/24.f2a65570e42646dec528.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/25.8343758e9552f136961e.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/26.84bc87609f31bb98e0dd.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/27.f2a3832831f0a5efd951.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/28.3d294a11c3e6ea3db783.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/29.7eef7cec410758112fab.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/3.5cbadfe1e476b7adb5fb.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/30.5e0b46c3e4f28f62e0c6.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/31.5ce53885d7cc435d27a7.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/32.9ca5fb15fc8c3dcfd4b2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/33.4d99a26ea6030cf364f3.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/34.2279cf50e3a60e36e05a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/35.8c8b8cf2b648ac274da2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/36.b87622a6ac8f22fd87a0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/37.a83f134131877e360fc5.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/38.b55f2db9a2f709bc50ae.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/39.8d2471e279255c31a22f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/4.c51a1c30c452aa87535a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/40.4eb9a1bfbb91d379ba60.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/41.a3b924434f2d21b42fec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/42.c96671ce64fc7455784c.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/43.0b279e63f11957aebdd9.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/44.0ef4cdf8d3124c6c3c25.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/45.7de8fbd10be95fe0912b.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/46.f1e36eb9cd9f87c34e9d.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/47.f948558a340d0138a389.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/48.796e063d261a124390b4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/49.1da484aa04b97951e44d.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/5.fffa533c7ec63af6401f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/50.4a903451af6bc8e5940c.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/53.fd5de694693ccf4a7cbf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/54.bd734a787d40670de8c7.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/55.5163f411e4dc30a7df55.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/56.88c268d3fe39a8761f5f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/57.10daf75b5953512cc498.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/58.e0d8152e8fda6037a674.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/59.b03cb50d52a2b55e5cbe.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/6.d14709e6ebb2fda8ff7a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/60.beff9c821f0b294d71b2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/61.22608c2a629e5db164e7.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/62.0623e75858c54ccd4a59.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/7.f0a3f1154c3dc287aa0f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/8.aefaedcc62b18cc26e29.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/9.101b3a244a58138be852.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/app.e283a9e02cd22207b1da.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/manifest.0129ab5a9822f8512e15.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/static/js/vendor.beab104bd365813f6ada.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/main/projectManagement/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/main/projectManagement/index.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -84,8 +164,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/main/projectManagement/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="615">
-              <caret line="972" column="17" selection-start-line="972" selection-start-column="17" selection-end-line="972" selection-end-column="17" />
+            <state relative-caret-position="471">
+              <caret line="966" column="49" selection-start-line="966" selection-start-column="49" selection-end-line="966" selection-end-column="49" />
               <folding>
                 <element signature="n#style#0;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#el-button#0;n#template#0;n#el-table-column#9;n#el-table#0;n#div#1;n#div#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -537,12 +617,12 @@
       <workItem from="1558662031793" duration="978000" />
       <workItem from="1558663133747" duration="3580000" />
       <workItem from="1558753353777" duration="5962000" />
-      <workItem from="1558920044544" duration="19397000" />
+      <workItem from="1558920044544" duration="19608000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="484768000" />
+    <option name="totallyTimeSpent" value="484979000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="977" extended-state="6" />
@@ -938,8 +1018,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/main/projectManagement/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="972" column="17" selection-start-line="972" selection-start-column="17" selection-end-line="972" selection-end-column="17" />
+        <state relative-caret-position="471">
+          <caret line="966" column="49" selection-start-line="966" selection-start-column="49" selection-end-line="966" selection-end-column="49" />
           <folding>
             <element signature="n#style#0;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#el-button#0;n#template#0;n#el-table-column#9;n#el-table#0;n#div#1;n#div#0;n#template#0;n#el-table-column#1;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
