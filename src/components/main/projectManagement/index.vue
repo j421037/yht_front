@@ -964,7 +964,7 @@ export default {
 
             http.post(url, data).then(res => {
                 console.log(res);
-                if (typoef(res.row) != "undefined" && res.row.length > 0) {
+                if (res.row.length > 0) {
                     res.row.forEach((n, i) => {
                         n.isExpanded = false
                     })

@@ -122,10 +122,8 @@
                 v-loading="tableLoading"
                 style="max-width: 100%;">
                 <el-table-column
-                    v-if="tableColumn.id"
-                    prop="id"
-                    width="50"
-                    label="序号">
+                    type="index"
+                >
                 </el-table-column>
                 <el-table-column
                     v-if="tableColumn.name"

@@ -1,5 +1,8 @@
 <template>
     <div class="public-customer">
+        <el-radio-group v-model="CustomerType" style="margin-bottom: 15px;" @change="CustomerTypeChange">
+            <el-radio-button v-for="(item, key) in CustomerTypes" :key="key" :label="item.label"></el-radio-button>
+        </el-radio-group>
         <el-table
             :data="customers"
             v-loading="loading"
@@ -49,6 +52,11 @@
                 loading: false,
                 btnDisable: false,
                 manual: 0,
+                CustomerTypes: [
+                    {label: "公共",value: 0},
+                    {label: "部门", value: 1}
+                ],
+                CustomerType: "公共"
             }
         },
 
@@ -56,10 +64,15 @@
             /**获取数据**/
             query(param) {
                 this.loading = true;
+                param.type = this.CustomerTypes.filter(item => {return item.label == this.CustomerType;})[0].value;
+                console.log(param);
                 this.$store.dispatch('getCustomer', param)
                     .then(() => {
                         this.loading = false;
                     });
+            },
+            CustomerTypeChange() {
+                ++this.manual;
             },
             /**领取一个客户**/
             receiveCustomer(row) {
