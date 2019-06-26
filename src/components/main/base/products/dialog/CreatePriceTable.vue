@@ -122,7 +122,11 @@
                 });
             },
             LoadPriceTable(id) {
-                this.$store.dispatch("LoadProductPriceTable",{category:id});
+                // this.$store.dispatch("LoadProductPriceTable",{category:id}).then(() => {
+                //     console.log("77777")
+                // });
+                this.$store.dispatch("LoadProductCategory");
+
             },
             handleChange(val) {
                 this.CategoryList.some((item) => {
@@ -141,7 +145,7 @@
                            if (response.status == "success")
                            {
                                this.$notify.success("操作成功");
-                               this.LoadPriceTable();
+                               //this.LoadPriceTable();
                                this.handleClose();
                                this.$refs["form"].resetFields();
                                this.LoadPriceTable(this.CurrentCategoryId);

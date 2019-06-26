@@ -2,10 +2,13 @@
 <template>
     <div class="projectManagementBox">
         <div class="top fx">
-            <el-button type="primary" @click="showDialog('Project')">
-                +
-                添加项目
-            </el-button>
+            <el-button-group>
+                <el-button type="primary" @click="showDialog('Project')">
+                    添加项目
+                </el-button>
+                <el-button type="primary">导入项目</el-button>
+            </el-button-group>
+
             <div class="fast-query">
                 <el-input
                     placeholder="快速查询你需要的内容"
@@ -969,7 +972,7 @@ export default {
                 this.gridDataBqRecord = res.record
 
                 let tempRecord = []
-
+                console.log(res);
                 res.record.forEach((n) => {
                     n.groups = n.groups + '组'
                     tempRecord.push(n)

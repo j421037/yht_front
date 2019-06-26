@@ -120,7 +120,7 @@ export default {
             {
                 this.CurrentCategory = data[0].id;
             }
-
+            console.log(data);
             return data;
         },
         users: function() {
@@ -138,7 +138,7 @@ export default {
         "v-makeoffer": () => import("./cost/dialog/MakeOffer"),
         "v-history": () => import("./cost/dialog/History")
     }
-}	
+}
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
     .btn-tool

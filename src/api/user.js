@@ -452,6 +452,11 @@ export const ArticleCategoryDelete = (info)=> {
 export const ProductCategoryStore = (info) => {
     return http.post("products/store", info);
 }
+
+export const ProductCategoryUpdate = (info) => {
+    return http.post("products/update", info);
+}
+
 export const LoadProductCategory = () => {
     return http.post("products/list");
 }
@@ -509,3 +514,18 @@ export const CreateInitial = (info) => {
 export const UpdateInitial = (info) => {
     return http.post("initamount/update", info);
 }
+export const ResetPwdFromManagement = (info) => {
+    return http.post("user/management/reset", info);
+}
+export const LoadHistoryPrices = (info) => {
+    return http.post("products/prices/history", info);
+}
+export  const updateTarget = (info) => {
+    return http.post("index/update/target", info);
+}
+export const LoadTarget = () => {
+
+    return http.post("index/target");
+}
+
+

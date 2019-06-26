@@ -5,7 +5,7 @@
             :visible.sync="visible"
             @open="handleOpen"
             :before-close="handleClose"
-            width="35%"
+            width="48%"
         >
             <el-form :model="Form" ref="form" label-width="80px" class="price-form">
                 <div class="form-add-item">
@@ -26,6 +26,15 @@
                         <el-select v-model="Form.brand" @change="HandleBrandChange">
                             <el-option v-for="(item,key) in brands" :key="key" :label="item.label" :value="item.value"></el-option>
                         </el-select>
+                    </el-form-item>
+                </div>
+                <div class="form-add-item-freight">
+                    <el-form-item
+                        label="运费"
+                    >
+                        <el-input v-model="Form.freight" placeholder="运费，如包运费请输入0">
+                            <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                 </div>
                 <div class="form-add-item">
@@ -69,7 +78,8 @@
                         <div slot="tip" class="el-upload__tip">只能上传图片、PDF、和office文件</div>
                     </el-upload>
                 <p style="height:1px;border-top:1px solid #ebebeb;"></p>
-                <div class="form-add-item"
+                <div class="form-add-price-list">
+                    <div class="form-add-price-item"
                     v-for="(items ,k) in Form.rows"
                      :key="k"
                 >
@@ -94,6 +104,7 @@
                             @click.native="RemoveItem(k)"
                         ></el-button>
                     </span>
+                </div>
                 </div>
                 <p style="margin:0;text-align: center">
                     <el-button type="info" @click.native="AddItem" :disabled="AddItemStatus">增加规格</el-button>
@@ -120,7 +131,8 @@
                     version_str: "",
                     rows:[],
                     fileid: [],
-                    remark: ""
+                    remark: "",
+                    freight: 0
                 },
                 submiting: false,
                 FieldMap: {},
@@ -157,6 +169,7 @@
              * **/
             HandleBrandChange(id) {
                 let mapping = [];
+                this.defaultField = {};
                 this.brands.forEach((item) => {
                     if (item.value == id)
                         mapping = item.mapping;
@@ -171,6 +184,7 @@
                 this.defaultField.price = "";
                 this.FieldMap.price = "价格";
                 this.Form.rows.push(JSON.parse(JSON.stringify(this.defaultField)));
+                console.log(mapping);
             },
             /**
              * 价格表上传成功
@@ -293,10 +307,5 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-.price-form
-    .form-add-item
-        display: flex;
-        justify-content: space-between;
-        .delete-btn
-            margin-left: 5px;
+@import "Maintenance.styl"
 </style>

@@ -75,7 +75,7 @@
 			</el-table-column>
 			<el-table-column prop="user_name" label="业务员"  fixed="left"   width="120" v-if="ColumnVisible.user_name.value"></el-table-column>
             <el-table-column prop="balance_total" label="欠款" fixed="left" width="180"></el-table-column>
-            <el-table-column prop="overdue" label="逾期"  width="80">
+            <el-table-column prop="overdue" label="逾期"  width="80" v-if="ColumnVisible.overdue.value">
                 <template slot-scope="scope">
                     <el-tooltip v-if="scope.row.overdue" effect="dark" :content="'上次回款日期:'+scope.row.lastback_date" placement="top">
                         <span  :style="overdueStyle">{{scope.row.overdue}}天</span>

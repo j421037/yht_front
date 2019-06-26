@@ -1,10 +1,11 @@
 <template>
     <div class="category-create_dialog">
         <el-dialog
-            title="新增产品分类"
+            :title="title"
             :visible.sync="CreateVisible"
             width="30%"
             :before-close="handleClose"
+            @open="handleOpen"
         >
             <el-form ref="form" :model="Form" :rules="Rules" label-width="120px" >
                 <el-form-item label="产品分类名称" prop="name" >
@@ -21,9 +22,20 @@
 
 <script>
     export default {
+        props: {
+            CategoryId: {
+                type: Number,
+                default: 0
+            },
+            update: {
+                type: Boolean,
+                default: false
+            }
+        },
         data() {
             return {
                 Form : {
+                    id: "",
                     name: "",
                 },
                 Rules: {
@@ -35,6 +47,14 @@
             };
         },
         methods: {
+            handleOpen() {
+                if (this.update) {
+                    let list = this.$store.state.user.ProductCategoryList;
+                    let category = list.find(item => {return item.id == this.CategoryId;});
+                    this.Form.name = category.name;
+                    this.Form.id = category.id;
+                }
+            },
             handleClose() {
                 this.$store.dispatch('SetBaseProductConfig',{field: 'Category.CreateCategoryDialog.visible',value: false});
             },
@@ -45,8 +65,14 @@
                 this.$refs["form"].validate((valid) => {
                     if (valid)
                     {
+                        let action = "ProductCategoryStore"
+
+                        if (this.update) {
+                            action = "ProductCategoryUpdate";
+                        }
+
                         this.submiting = true;
-                        this.$store.dispatch("ProductCategoryStore", this.Form).then(() => {
+                        this.$store.dispatch(action, this.Form).then(() => {
                             let response = this.$store.state.user.ProductCategoryStore;
 
                             if (response.status == 'success')
@@ -69,7 +95,13 @@
             CreateVisible: function() {
                 return this.$store.state.user.BaseProduct.Category.CreateCategoryDialog.visible;
             },
+            title: function() {
+                if (this.update && this.CategoryId > 0) {
+                    return "修改产品分类";
+                }
 
+                return "新增产品分类";
+            }
         }
 
     }

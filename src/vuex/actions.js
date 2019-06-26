@@ -218,6 +218,7 @@ export const customerUpdate = ({commit},info) => {
 /**客户资源后台管理列表**/
 export const customerManagerList = ({commit}, info) => {
 	return api.customerManagerList(info).then((response) => {
+	    //console.log(response)
 		commit('CUSTOMER_MANAGER_LIST', response);
 	})
 }
@@ -684,6 +685,7 @@ export const SearchProject = ({commit}, info) => {
 /**初始化权限**/
 export const ARSumUserRole = ({commit}) => {
 	return api.ARSumUserRole().then((response) => {
+	    console.log(response)
 		return commit('ARSUM_USER_ROLE', response);
 	})
 }
@@ -917,6 +919,12 @@ export  const ProductCategoryStore = ({commit}, info) => {
         return commit("PRODUCT_CATEGORY_STORE", response);
     })
 }
+export const ProductCategoryUpdate = ({commit}, info) => {
+    return api.ProductCategoryUpdate(info).then(response => {
+        return commit("PRODUCT_CATEGORY_STORE", response);
+    })
+}
+
 export const LoadProductCategory = ({commit}) => {
     return api.LoadProductCategory().then((response) => {
         return commit("PRODUCT_CATEGORY_LIST", response);
@@ -1009,5 +1017,23 @@ export const UpdateInitial = ({commit}, info) => {
     return api.UpdateInitial(info).then(response => {
         return commit("CREATE_INITIAL", response);
     });
+}
+export const ResetPwdFromManagement = ({commit}, info) => {
+    return api.ResetPwdFromManagement(info).then(response => {
+        return commit("RESET_PWD_FROMMANAGEMENT", response);
+    }) ;
+}
+export  const LoadHistoryPrices = ({commit}, info) => {
+    return api.LoadHistoryPrices(info).then(response => {
+        return commit("LOAD_HISTORY_PRICES", response);
+    })
+}
+export const updateTarget = ({commit}, info) => {
+    return api.updateTarget(info).then(response => {
+        return commit("UPDATE_TARGET", response);
+    });
+}
+export const LoadTarget = ({commit}) => {
+    return api.LoadTarget();
 }
 

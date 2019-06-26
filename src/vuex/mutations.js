@@ -469,6 +469,7 @@ const mutations = {
 		state.AddProject = response;
 	},
 	[types.ARSUM_USER_ROLE] (state, response) {
+
 		state.ARSumUserRole = response;
 	},
 	[types.BASE_PAGINATION] (state, response) {
@@ -650,6 +651,7 @@ const mutations = {
 	},
     [types.SET_BASEPRODUCTCONFIG] (state, params)
     {
+
         eval('state.BaseProduct.' + params.field +'='+params.value);
         //state.BaseProduct.Category.CreateDialog.visible = true;
     },
@@ -723,6 +725,18 @@ const mutations = {
     },
     [types.CREATE_INITIAL] (state, response) {
 	    state.CreateInitial = response;
+    },
+    [types.RESET_PWD_FROMMANAGEMENT] (state, response) {
+	    state.ResetPwdFromManagement = response;
+    },
+    [types.LOAD_HISTORY_PRICES] (state, response) {
+
+	    state.LoadHistoryPrices.notice = response.notice;
+	    state.LoadHistoryPrices.rows = response.data.rows;
+	    state.LoadHistoryPrices.column = response.data.column;
+    },
+    [types.UPDATE_TARGET] (state, response) {
+	    state.updateTarget = response;
     }
 }
 

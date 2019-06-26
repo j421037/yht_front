@@ -4,7 +4,7 @@
             <div class="products-box_category">
                 <div class="category_header">
                     <el-button type="text" @click.native="OpenCreateCategoryDialog">新增分类</el-button>
-                    <el-button type="text">编辑分类</el-button>
+                    <el-button type="text" @click.native="OpenEditCategoryDialog">编辑分类</el-button>
                     <el-button type="text">删除分类</el-button>
                     <el-button type="text" @click.native="OpenCreatePriceDialog">创建价格表</el-button>
                 </div>
@@ -38,7 +38,7 @@
                 </p>
             </div>
         </div>
-        <createcategory-dialog></createcategory-dialog>
+        <createcategory-dialog :CategoryId="CurrentCid" :update="CategoryUpdate"></createcategory-dialog>
         <createprice-dialog :CurrentCategoryId="CurrentCid"></createprice-dialog>
     </div>
 </template>
@@ -52,7 +52,8 @@
                 CurrentCid: 0,
                 DelBtnDisable: true,
                 DelBtnLoading: false,
-                TableIds: []
+                TableIds: [],
+                CategoryUpdate: false
             };
         },
         created() {
@@ -79,15 +80,20 @@
                 }
             },
             OpenCreateCategoryDialog() {
+                this.CategoryUpdate = false;
                 this.$store.dispatch('SetBaseProductConfig',{field: 'Category.CreateCategoryDialog.visible',value: true});
             },
             OpenCreatePriceDialog() {
                 this.$store.dispatch('SetBaseProductConfig',{field: 'Category.CreatePriceDialog.visible',value: true});
             },
+            OpenEditCategoryDialog() {
 
+                this.CategoryUpdate = true;
+                this.$store.dispatch('SetBaseProductConfig',{field: 'Category.CreateCategoryDialog.visible',value: true});
+            },
             /**读取当前分类下的价格表**/
             LoadProductPriceTable(id) {
-                this.$store.dispatch("LoadProductPriceTable",{category:id});
+               // this.$store.dispatch("LoadProductPriceTable",{category:id});
             },
 
             /**删除价格表**/
@@ -104,7 +110,7 @@
                         if (response.status == "success")
                         {
                             this.$notify.success("删除成功");
-                            this.LoadProductPriceTable(this.CurrentCid);
+                            this.$store.dispatch("LoadProductCategory");
                         }
                         else {
                             this.$notify.error("删除失败,"+response.errmsg);

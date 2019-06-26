@@ -51,8 +51,15 @@
 				      label="注册时间">
 				    </el-table-column>
 
-				    <el-table-column label="操作" width="250">
+				    <el-table-column label="操作" width="350">
 				    	<template slot-scope="scope">
+                            <el-tooltip class="item" effect="dark" content="重置密码" placement="top">
+                                <el-button
+                                    size="mini"
+                                    type="info"
+                                    @click="handleResetPwd(scope.row)"><i class="iconfont icon-mima"></i>
+                                </el-button>
+                            </el-tooltip>
 				    		<el-tooltip class="item" effect="dark" content="设置角色" placement="top">
 					    		<el-button
 						          size="mini"
@@ -60,7 +67,7 @@
 						          @click="handleEditRole(scope.row)"><i class="el-icon-edit-outline"></i>
 						      	</el-button>
 						    </el-tooltip>
-						  	
+
 						    <el-tooltip class="item" effect="dark" content="加入企业微信" placement="top" >
 						        <el-button
 						          size="mini"
@@ -136,6 +143,22 @@
                         <el-button @click="ImportResultVisible = false">关闭</el-button>
                     </div>
                 </el-dialog>
+
+                <el-dialog title="重置密码" :visible.sync="ResetPwdVisible" center width="20%" >
+                    <el-form :model="ResetPwdForm" ref="ResetPwdForm"  :rules="ResetPwdRules" label-width="80px">
+                        <el-form-item label="密码" prop="passwd" >
+                            <el-input v-model="ResetPwdForm.passwd" placehoder="密码"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="确认密码" prop="passwd1"  >
+                            <el-input v-model="ResetPwdForm.passwd1" placehoder="确认密码"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="ResetPwdVisible = false">关闭</el-button>
+                        <el-button type="primary" @click="ResetPwdSubmit">提交</el-button>
+                    </div>
+                </el-dialog>
 			</div>
 		</div>
 	</div>
@@ -156,6 +179,20 @@ export default {
 			fileList: [],
 			Uploading: false,
 			ImportResultVisible: false,
+            ResetPwdVisible: false,
+            ResetPwdForm: {
+			    uid: "",
+			    passwd: "",
+                passwd1: "",
+            },
+            ResetPwdRules: {
+                passwd: [
+                    {required: true,trigger: "blur", message: "请输入密码"}
+                ],
+                passwd1: [
+                    {required: true,trigger: "blur", message: "请输入密码"}
+                ],
+            }
 		}
 	},
 	methods: {
@@ -169,7 +206,7 @@ export default {
 	        }).then(() => {
 	        	this.$store.dispatch('updateUserAuthorize', {id:row.id}).then(() => {
 	        		// this.initable();
-	        		
+
 	        		if (this.$store.state.user.updateUserAuthorize.status == 'success') {
 
 	        			this.$notify.success({title: '操作成功', message: '用户已授权'});
@@ -191,7 +228,7 @@ export default {
 			this.$store.dispatch('getUserRole', row.id).then(() => {
 				this.setRoleVisible = true;
 			})
-		
+
 		},
 		/**
 		* 设置用户角色--保存
@@ -232,7 +269,7 @@ export default {
 		* 禁用一个用户
 		*/
 		handleDisable(row) {
-			
+
 			this.$confirm('禁用 <'+row.username+'> ?','提示', {
 	        	confirmButtonText: '确定',
 	        	cancelButtonText: '取消',
@@ -292,7 +329,7 @@ export default {
 			this.tableLoading = true;
 
 			this.$store.dispatch('getUserList').then(() => {
-				
+
 				this.tableLoading = false;
 			});
 		},
@@ -319,7 +356,7 @@ export default {
 	        }).then(() => {
 	          this.joinWorkWx(row);
 	        }).catch(() => {
-	               
+
 	        });
 		},
 		joinWorkWx(row) {
@@ -370,7 +407,29 @@ export default {
 				    this.$notify.error('操作失败'+ response.errmsg);
 				}
 		    });
-		}
+		},
+         handleResetPwd(row) {
+            this.ResetPwdForm.uid = row.id;
+            this.ResetPwdVisible = true;
+         },
+         ResetPwdSubmit() {
+            this.$refs["ResetPwdForm"].validate(valid => {
+               if (valid && this.ResetPwdForm.passwd == this.ResetPwdForm.passwd1) {
+                   this.$store.dispatch("ResetPwdFromManagement", this.ResetPwdForm).then(() => {
+                       let response = this.$store.state.user.ResetPwdFromManagement;
+                       console.log(response)
+
+                       if (response.status == "success") {
+                           this.$message.success("修改成功");
+                           this.ResetPwdVisible = false;
+                           this.$refs["ResetPwdForm"].resetFields();
+                       }
+                       else
+                           this.$message.error("修改失败");
+                   });
+               }
+            });
+         }
 	},
 	computed: {
 		tableData: function() {
@@ -390,7 +449,8 @@ export default {
 		},
 		ImportFailData: function() {
 		    return this.$store.state.user.UserImport.result;
-		}
+		},
+
 	},
 
 	created() {

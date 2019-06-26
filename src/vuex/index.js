@@ -149,7 +149,7 @@ const state = {
 			status_name: {name: "状态", value: true},
 			// index: {name:"序号", value: false},
 			department: {name: "部门", value: false},
-			//name: {name:"客户名称",value:true},
+            overdue: {name:"逾期",value:true},
 			//project: {name:"旗下项目", value: true},
 			protype: {name: "施工范围", value: true},
 			affiliate: {name: "挂靠", value: true},
@@ -239,11 +239,13 @@ const state = {
     BaseProduct: {
 	    Category: {
             CreateCategoryDialog: {
-                visible: false
+                visible: false,
+
             },
             CreatePriceDialog: {
                 visible: false
             },
+
         },
         Price: {
 	        PriceMaintenance: {
@@ -285,7 +287,14 @@ const state = {
     ModifyOffer: {},
     priceInfo: [],
     QueryCustomer:[],
-    CreateInitial: {}
+    CreateInitial: {},
+    ResetPwdFromManagement: {},
+    LoadHistoryPrices: {
+	    rows: [],
+        column: [],
+        notice: ""
+    },
+    updateTarget: {}
 }
 
 export default {
