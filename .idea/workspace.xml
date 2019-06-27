@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="56e14c13-0f34-472d-aba8-00e6d30e4d25" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/main/offer/cost.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/main/offer/cost.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/main/offer/cost/dialog/FastMaintenance.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/main/offer/cost/dialog/FastMaintenance.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/main/offer/cost/dialog/History.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/main/offer/cost/dialog/History.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/main/offer/cost/dialog/Maintenance.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/main/offer/cost/dialog/Maintenance.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vuex/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/vuex/actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vuex/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/vuex/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vuex/mutation-type.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/vuex/mutation-type.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vuex/mutations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/vuex/mutations.js" afterDir="false" />
-    </list>
+    <list default="true" id="56e14c13-0f34-472d-aba8-00e6d30e4d25" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -28,7 +17,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/main/offer/cost.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="290">
-              <caret line="116" column="66" lean-forward="true" selection-start-line="116" selection-start-column="12" selection-end-line="116" selection-end-column="66" />
+              <caret line="116" column="66" selection-start-line="116" selection-start-column="12" selection-end-line="116" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -37,15 +26,15 @@
         <entry file="file://$PROJECT_DIR$/src/components/main/offer/cost/dialog/FastMaintenance.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="733">
-              <caret line="215" column="14" lean-forward="true" selection-start-line="200" selection-start-column="12" selection-end-line="215" selection-end-column="14" />
+              <caret line="215" column="14" selection-start-line="200" selection-start-column="12" selection-end-line="215" selection-end-column="14" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/main/offer/cost/dialog/History.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
+            <state relative-caret-position="202">
               <caret line="107" column="64" selection-start-line="107" selection-start-column="64" selection-end-line="107" selection-end-column="64" />
               <folding>
                 <element signature="n#style#0;n#el-button#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -108,11 +97,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/vuex/mutations.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="482">
-              <caret line="744" column="35" selection-start-line="744" selection-start-column="18" selection-end-line="744" selection-end-column="35" />
+            <state relative-caret-position="602">
+              <caret line="749" column="42" selection-start-line="749" selection-start-column="42" selection-end-line="749" selection-end-column="42" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
               </folding>
@@ -234,8 +223,8 @@
         <option value="$PROJECT_DIR$/src/vuex/mutation-type.js" />
         <option value="$PROJECT_DIR$/src/api/user.js" />
         <option value="$PROJECT_DIR$/src/vuex/index.js" />
-        <option value="$PROJECT_DIR$/src/vuex/mutations.js" />
         <option value="$PROJECT_DIR$/src/components/main/offer/cost/dialog/History.vue" />
+        <option value="$PROJECT_DIR$/src/vuex/mutations.js" />
       </list>
     </option>
   </component>
@@ -558,12 +547,12 @@
       <workItem from="1560242513782" duration="571000" />
       <workItem from="1560309982545" duration="981000" />
       <workItem from="1561339198107" duration="24546000" />
-      <workItem from="1561597197990" duration="6755000" />
+      <workItem from="1561597197990" duration="7035000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="526452000" />
+    <option name="totallyTimeSpent" value="526732000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1" y="23" width="1920" height="977" extended-state="6" />
@@ -864,14 +853,14 @@
     <entry file="file://$PROJECT_DIR$/src/components/main/offer/cost.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="290">
-          <caret line="116" column="66" lean-forward="true" selection-start-line="116" selection-start-column="12" selection-end-line="116" selection-end-column="66" />
+          <caret line="116" column="66" selection-start-line="116" selection-start-column="12" selection-end-line="116" selection-end-column="66" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/main/offer/cost/dialog/FastMaintenance.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="733">
-          <caret line="215" column="14" lean-forward="true" selection-start-line="200" selection-start-column="12" selection-end-line="215" selection-end-column="14" />
+          <caret line="215" column="14" selection-start-line="200" selection-start-column="12" selection-end-line="215" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -916,25 +905,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/vuex/mutations.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="482">
-          <caret line="744" column="35" selection-start-line="744" selection-start-column="18" selection-end-line="744" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/main/offer/cost/dialog/History.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
+        <state relative-caret-position="202">
           <caret line="107" column="64" selection-start-line="107" selection-start-column="64" selection-end-line="107" selection-end-column="64" />
           <folding>
             <element signature="n#style#0;n#el-button#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#section#1;n#div#0;n#el-card#0;n#el-timeline-item#0;n#el-timeline#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-table#0;n#el-dialog#1;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-table#0;n#el-dialog#2;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vuex/mutations.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="602">
+          <caret line="749" column="42" selection-start-line="749" selection-start-column="42" selection-end-line="749" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
           </folding>
         </state>
       </provider>

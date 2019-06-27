@@ -747,7 +747,7 @@ const mutations = {
             state.LoadStandardPrice.column = response.data.column;
         }
         else {
-            state.LoadStandardPrice.errmsg = response.errmsg;
+            state.LoadStandardPrice.notice = response.errmsg;
         }
 
     }
