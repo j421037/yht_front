@@ -31,6 +31,8 @@
                 <div class="form-add-item-freight">
                     <el-form-item
                         label="运费"
+                        prop="freight"
+                        :rules="{required:true, trigger:'blur', message: '请输入运费，默认0'}"
                     >
                         <el-input v-model="Form.freight" placeholder="运费，如包运费请输入0">
                             <template slot="append">元</template>
@@ -57,7 +59,7 @@
                         label="版本号"
                         label-width="80px"
                         prop="version_str"
-                        :rules="{validator: validateVersion,trigger:'blur'}"
+                        :rules="[{validator: validateVersion,trigger:'blur'},{required: true, trigger:'blur',message: '请输入价格版本'}]"
                     >
                         <el-input v-model="Form.version_str" placeholder="价格版本"></el-input>
                     </el-form-item>
@@ -222,6 +224,7 @@
                             {
                                 this.$notify.success("操作成功");
                                 this.$store.dispatch("ProductSurfacePriceList",{id:this.Form.brand});
+                                this.handleClose();
                             }
                             else {
                                 this.$notify.error("操作失败");
@@ -247,7 +250,7 @@
                 if (/^[A-Za-z0-9_\.]*$/.test(value))
                     callback();
                 else
-                    callback(new Error("只允许输入字母、数字、破折号（ - ）以及下划线（ _ ）"));
+                    callback(new Error("只允许输入字母、数字、下划线（ _ ）"));
             },
             /**
              * 添加一行表单

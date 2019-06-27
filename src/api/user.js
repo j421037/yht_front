@@ -499,6 +499,7 @@ export const ModifyOffer = (info) => {
 export const LoadPriceInfo = (info) => {
     return http.post("products/prices/info", info);
 }
+
 export const QueryCustomer = (info) => {
     return http.post("realcustomer/searchcust",info);
 }
@@ -519,6 +520,9 @@ export const ResetPwdFromManagement = (info) => {
 }
 export const LoadHistoryPrices = (info) => {
     return http.post("products/prices/history", info);
+}
+export const LoadStandardPrice = (info) => {
+    return http.post("products/prices/standard", info);
 }
 export  const updateTarget = (info) => {
     return http.post("index/update/target", info);

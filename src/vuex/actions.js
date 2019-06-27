@@ -1028,6 +1028,13 @@ export  const LoadHistoryPrices = ({commit}, info) => {
         return commit("LOAD_HISTORY_PRICES", response);
     })
 }
+
+export const LoadStandardPrice = ({commit}, info) => {
+    return api.LoadStandardPrice(info).then(response => {
+        return commit("LOAD_STANDARD_PRICE", response);
+    })
+}
+
 export const updateTarget = ({commit}, info) => {
     return api.updateTarget(info).then(response => {
         return commit("UPDATE_TARGET", response);

@@ -737,6 +737,19 @@ const mutations = {
     },
     [types.UPDATE_TARGET] (state, response) {
 	    state.updateTarget = response;
+    },
+    [types.LOAD_STANDARD_PRICE] (state, response) {
+        state.LoadStandardPrice.status = response.status;
+
+        if (response.status == "success") {
+            state.LoadStandardPrice.notice = response.notice;
+            state.LoadStandardPrice.rows = response.data.rows;
+            state.LoadStandardPrice.column = response.data.column;
+        }
+        else {
+            state.LoadStandardPrice.errmsg = response.errmsg;
+        }
+
     }
 }
 

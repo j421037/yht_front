@@ -10,12 +10,27 @@
         >
             <el-form :model="Form" label-width="80px" inline>
                 <el-form-item label="产品分类">
-                    <el-select v-model="Form.category"></el-select>
+                    <el-select v-model="Form.category">
+                        <el-option
+                            v-for="(item, key) in categorys"
+                            :key="key"
+                            :label="item.label"
+                            :value="item.value"
+                        ></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="品牌">
-                    <el-select v-model="Form.product_brand"></el-select>
+                    <el-select v-model="Form.product_brand" @change="handleProductChange">
+                        <el-option
+                            v-for="(item, key) in product_brands"
+                            :key="key"
+                            :label="item.label"
+                            :value="item.value"
+                        ></el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
+            <el-button type="success" :disabled="viewPriceBtnDisable" style="margin: 0px 0px 10px 80px;" @click.native="ViewStandardPrice">查看基准面价</el-button>
             <el-timeline
                 v-for="(item,key) in priceInfo"
                 :key="key"
@@ -81,6 +96,35 @@
                 ></el-table-column>
             </el-table>
         </el-dialog>
+
+        <el-dialog
+            title="基准面价"
+            :visible.sync="standardPriceVisible"
+            @open="HanleViewStandardOpen"
+            width="70%"
+            class="cost-price-history_dialog"
+        >
+            <el-alert
+                :title="this.$store.state.user.LoadStandardPrice.notice"
+                :closable="false"
+                type="success"
+            >
+
+            </el-alert>
+            <el-table
+                :data="standardTabData"
+                border
+                height="350"
+                style="margin-top: 8px"
+            >
+                <el-table-column
+                    v-for="(item, key) in standardTabColumn"
+                    :key="key"
+                    :label="item.label"
+                    :prop="item.value"
+                ></el-table-column>
+            </el-table>
+        </el-dialog>
     </div>
 </template>
 
@@ -93,7 +137,10 @@
                     product_brand: ""
                 },
                 historyVisible: false,
-                historyLoading: true
+                historyLoading: true,
+                viewPriceBtnDisable: true,
+                standardPriceVisible: false,
+                standardLoading: true,
             }
         },
         methods: {
@@ -109,6 +156,14 @@
             LoadPriceInfo() {
                 this.$store.dispatch("LoadPriceInfo",this.Form);
             },
+            handleProductChange(val) {
+                this.LoadPriceInfo();
+
+                if (val)
+                    this.viewPriceBtnDisable = false;
+                else
+                    this.viewPriceBtnDisable = true;
+            },
             ViewPriceFile(id) {
                 window.open(this.$appConst.BASEURL+"attr/preview?token="+this.$store.state.user.token+"&id="+id, "newwindow","height=500,width=700");
             },
@@ -117,6 +172,15 @@
                 //读取历史数据
                 this.historyLoading = true;
                 this.$store.dispatch("LoadHistoryPrices", {vid: id}).then(() => this.historyLoading = false);
+            },
+            ViewStandardPrice() {
+                this.standardPriceVisible = true;
+            },
+            HanleViewStandardOpen() {
+                this.standardLoading = true;
+                this.$store.dispatch("LoadStandardPrice", this.Form).then(() => {
+                    this.standardLoading = false;
+                });
             }
         },
         computed: {
@@ -133,7 +197,40 @@
             },
             historyTabData: function (){
                 return this.$store.state.user.LoadHistoryPrices.rows;
-            }
+            },
+            standardTabColumn: function() {
+                return this.$store.state.user.LoadStandardPrice.column;
+            },
+            standardTabData: function (){
+                return this.$store.state.user.LoadStandardPrice.rows;
+            },
+            categorys: function() {
+                let data = [], rows = this.$store.state.user.ProductCategoryList;
+                rows.forEach((item) => {
+                    data.push({label:item.name,value:item.id});
+                });
+
+                return data;
+            },
+            product_brands: function() {
+                let data = [],
+                    row = [],
+                    rows = this.$store.state.user.ProductCategoryList;
+
+                rows.forEach((item) => {
+                    if (item.id == this.Form.category)
+                        row = item.children;
+                });
+
+                row.forEach((item) => {
+                    data.push({label:item.name,value:item.id});
+                });
+
+                if (data.length > 0)
+                    data.push({label:"全部", value: null});
+
+                return data;
+            },
         }
     }
 </script>

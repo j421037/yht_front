@@ -120,7 +120,7 @@ export default {
             {
                 this.CurrentCategory = data[0].id;
             }
-            console.log(data);
+
             return data;
         },
         users: function() {

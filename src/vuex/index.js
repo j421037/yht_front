@@ -294,6 +294,13 @@ const state = {
         column: [],
         notice: ""
     },
+    LoadStandardPrice: {
+	    rows: [],
+        column: [],
+        notice: "",
+        status: "",
+        errmsg: ""
+    },
     updateTarget: {}
 }
 
