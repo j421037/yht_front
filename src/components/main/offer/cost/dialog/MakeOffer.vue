@@ -5,7 +5,7 @@
             :visible.sync="visible"
             @open="handleOpen"
             :before-close="handleClose"
-            width="30%"
+            width="40%"
         >
             <el-form
                 :model="Form"
@@ -57,22 +57,18 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="价格版本" prop="version_id">
-                    <el-select v-model="Form.version_id">
+                    <el-select v-model="Form.version_id" @change="PriceVersuibChange">
                         <el-option v-for="(item, key) in versions" :key="key" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="计算公式" prop="operate">
-                    <div style="display: flex;">
-                        <el-input :value="'价格'" :disabled="true" placeholder="请输入数字" style="flex:1"></el-input>
-                        <el-select v-model="Form.operate" style="margin: 0 5px;flex:1">
-                            <el-option v-for="(item, key) in operates" :key="key" :label="item.label" :value="item.value"></el-option>
+                <el-form-item label="计算公式" prop="formula_id">
+                    <div class="operate" style="display: flex">
+                        <el-select v-model="Form.formula_id">
+                            <el-option v-for="(item, key) in FormulaOptions" :key="key" :label="item.label" :value="item.value" />
                         </el-select>
-                        <el-form-item prop="operate_val" style="margin: 0;flex:2">
-                            <el-input v-model="Form.operate_val" placeholder="请输入数字">
-                                <template slot="append" v-if="mode == 1">元</template>
-                                <template slot="append" v-if="mode == 0">百分点</template>
-                            </el-input>
-                        </el-form-item>
+                        <div style="margin-left: 5px">
+                            <el-button type="success" size="mini" :disabled="!Form.product_brand_id" @click.native="AppendFormulaDialog = true">添加公式</el-button>
+                        </div>
                     </div>
                 </el-form-item>
                 <el-form-item label="选择规格" prop="products" v-if="visible">
@@ -91,6 +87,36 @@
                 <el-button type="primary" @click.native="submit" :loading="submiting">提 交</el-button>
             </span>
         </el-dialog>
+        <el-dialog
+            title="设计公式"
+            :visible.sync="AppendFormulaDialog"
+            width="40%"
+        >
+            <div class="AppendFormulaDialog_body">
+
+                <div class="formula-container">
+                    <div class="add-param">
+                        <el-button size="mini" type="info" @click.native="FormulaAddField('field')">增加操作符或字段</el-button>
+                        <el-button size="mini" type="info" :disabled="CanAppendNumeric" @click.native="FormulaAddField('numeric')">增加数值</el-button>
+                    </div>
+                    <p v-if="refreshStatus">{{AppendFormulaFormTostring}}</p>
+                    <p class="errmsg" style="font-size:12px;color:red">{{errmsg}}</p>
+                    <el-form :inline="true" class="FormulaForm">
+                        <el-form-item v-for="(item, key) in AppendFormulaForm" :key="key">
+                            <el-select v-if="item.type == 'field'" v-model="item.value" @change="FormulaFormParamChanged">
+                                <el-option v-for="(it,k) in FormmulaParams" :key="k" :label="it.label" :value="it.value" />
+                            </el-select>
+                            <el-input v-else v-model="item.value" />
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="FormulaClearAll">清 空</el-button>
+                <el-button @click="RemoveLast">撤销上一步</el-button>
+                <el-button type="primary" @click.native="SaveFormula" >保 存</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -107,8 +133,7 @@
                     product_brand_id: "",
                     operate: 1,
                     serviceor_id: "",
-                    operate_val: "",
-                    version_id: ""
+                    formula_id: null
                 },
                 Rules: {
                     customer_id: [
@@ -134,6 +159,9 @@
                     ],
                     version_id: [
                         {required: true,trigger:'blur',message: "请选择价格版本"}
+                    ],
+                    formula_id: [
+                        {required: true, trigger: "blur", message: "请选择计算公式"}
                     ]
                 },
                 operates: [{label: "x",value:1},{label: "÷",value: 2},{label:"+",value:3},{label:"-",value:4}],
@@ -142,7 +170,12 @@
                 defaultField: {},
                 FieldMap: {},
                 AuthorizeMsg: "",
-                mode: 0
+                mode: 0,
+                AppendFormulaDialog: false,
+                AppendFormulaForm: [],
+                errmsg: null,
+                refreshStatus: true,
+                FormulaAppendSuccessRows: []
             }
         },
         created() {
@@ -161,19 +194,7 @@
 
             },
             handleCheck(data, checked) {
-                if (checked.checkedKeys.length > 0) {
-                    let checks = checked.checkedKeys;
-
-                    if (checks[0] == "0")
-                        checks.splice(0,1);
-
-                    for (let i in checks)
-                    {
-                        checks[i] =  eval("("+checks[i]+")");
-                    }
-
-                    this.Form.products = checks;
-                }
+                this.Form.products = checked.checkedKeys;
             },
             /**
              * 远程搜索客户
@@ -194,6 +215,7 @@
                 this.$refs["form"].validate((valid) => {
                     if (valid)
                     {
+                        console.log(this.Form)
                         this.$store.dispatch("CreateOffer",this.Form).then(() => {
                             let response = this.$store.state.user.CreateOffer;
 
@@ -240,9 +262,180 @@
                         //     this.AuthorizeMsg = "";
                     }
                 });
+            },
+            FormulaAddField(type) {
+                this.AppendFormulaForm.push({type: type, value: ""});
+            },
+            FormulaFormParamChanged() {
+                this.errmsg = null;
+            },
+            FormulaClearAll() {
+                this.AppendFormulaForm = [];
+                this.errmsg = null;
+            },
+            RemoveLast() {
+
+                this.AppendFormulaForm.pop();
+            },
+            PriceVersuibChange(val) {
+                this.$store.dispatch("LoadProductsFromVersion", {id:val});
+            },
+            SaveFormula() {
+
+                let items = [];
+                let lastItem = [];
+                let bracketStack = 0;
+                let params = [];
+                let FormmulaParams = this.FormmulaParams;
+
+                this.AppendFormulaForm.forEach(item => {
+                    params.push(Object.assign({}, item));
+                })
+
+                params.map(item => {
+                    let row = FormmulaParams.find(it => {return it.value == item.value;});
+
+                    if (row)
+                        item.type = row.type;
+                    return item;
+                });
+
+                let result = params.every(item => {
+                    //括号栈
+                    if (item.value == "(") //压入
+                        ++bracketStack
+                    if (item.value == ")") //弹出
+                        --bracketStack;
+
+                    if (Object.getOwnPropertyNames(lastItem).length > 0) {
+
+                        if (lastItem.type == "operator" && item.type == "operator") {
+                            this.errmsg = "不能连续使用两个运算符";
+                            lastItem = item;
+                            return false;
+                        }
+
+                        if (lastItem.type == "field" && item.type == "field") {
+                            this.errmsg = "不能连续使用两个字段"
+                            lastItem = item;
+                            return false;
+                        }
+
+                        if (lastItem.type == "operator" && item.valud == ")")
+                        {
+                            this.errmsg = '运算符后面不能接括号 ")"';
+                            lastItem = item;
+                            return false;
+                        }
+
+                        if (lastItem.value == "(" && item.type == "operator") {
+                            this.errmsg = "运算符前面不能使用括号";
+                            lastItem = item;
+                            return false;
+                        }
+
+                        if ((lastItem.value == "(" && item.value == ")") ) {
+                            this.errmsg = "不能连续使用两个括号";
+                            lastItem = item;
+                            return false;
+                        }
+
+                        if ((lastItem.value == ")" && item.type == "field") ) {
+                            this.errmsg = "右括号后不可以连接字段";
+                            lastItem = item;
+                            return false;
+                        }
+                    }
+                    else {
+                        if (item.type == "operator") {
+                            this.errmsg = "请检查符号的合法性";
+                            lastItem = item;
+                            return false;
+                        }
+                    }
+
+                    if (item.type == "numeric") {
+                        //前面不能是字段
+                        if (item.value == "") {
+                            this.errmsg = "输入框内容不能为空"
+                            return false;
+                        }
+
+                        if (Object.getOwnPropertyNames(lastItem).length > 0 && (lastItem.type == "field" || lastItem.value == ")")) {
+                            this.errmsg = "输入内容之前不能是字段和右括号";
+                            return false
+                        }
+
+
+                    }
+
+                    lastItem = item;
+                    return true;
+                });
+
+                if (bracketStack != 0 && result == true) {
+                    this.errmsg = "请检查括号的合法性"
+                    result = false;
+                }
+                console.log(params);
+                //公式没有问题
+                if (result) {
+                    this.$store.dispatch("AppendFormula", {params :params, tableId:this.Form.product_brand_id}).then(response => {
+
+                        console.log(response)
+                        if (response.status == "success") {
+                            let item = {label: response.formula, value: response.id};
+                            this.FormulaAppendSuccessRows.push(item);
+                            this.AppendFormulaDialog = false;
+                            this.Form.formula_id = response.id;
+                        }
+                        else {
+                            this.errmsg = response.errmsg;
+                        }
+                    })
+                }
             }
         },
         computed: {
+
+            FormulaOptions: function() {
+                let options = [];
+
+                let row = this.brands.find(item => {return item.value == this.Form.product_brand_id;});
+
+                if (typeof (row) != "undefined") {
+                    if (row.formulas.length > 0)
+                        options = row.formulas;
+                }
+
+
+                if (this.FormulaAppendSuccessRows.length > 0) {
+                    this.FormulaAppendSuccessRows.forEach(item => {
+                       options.unshift(item); //插入元素
+                    });
+                }
+
+                return options;
+            },
+            CanAppendNumeric: function() {
+                if (this.AppendFormulaForm.length > 0) {
+                    let row = this.AppendFormulaForm[this.AppendFormulaForm.length - 1];
+                    if (row.type == "numeric")
+                        return true
+                    return false;
+                }
+
+                return false;
+            },
+            AppendFormulaFormTostring() {
+                let tmp = "";
+
+                for (let i in this.AppendFormulaForm) {
+                    tmp += " " + this.AppendFormulaForm[i].value;
+                }
+
+                return tmp;
+            },
             visible: function() {
                 return this.$store.state.user.BaseProduct.Price.MakeOffer.visible;
             },
@@ -272,44 +465,23 @@
                     if (item.value == this.Form.category)
                         rows = item.childrens;
                 });
+                console.log(rows)
                 return rows;
             },
+
             /**
              * 生成所有产品规格
              * **/
             treeData: function () {
-                if (this.brands && this.Form.product_brand_id)
-                {
-                    let products = [], data = [{label:"全部",id:"0",children: []}], fieldMap = {};
+                let rows = [{label: "全部",id: 0, children: []}];
 
-                    this.brands.forEach((item) => {
-                        if (item.value == this.Form.product_brand_id)
-                        {
-                            products = item.products;
-                            fieldMap = item.field_map;
-                        }
-                    });
+                let spec = this.$store.state.user.LoadProductsFromVersion;
 
-                    if (products) {
-                        products.forEach((item) => {
-                            let t = {label:[],id:"{"};
-                            for (let k in item) {
-                                t.label.push(fieldMap[k] + "(" + item[k] + ")");
-                                t.id += k+":"+item[k]+",";
-                            }
-                            t.label = t.label.join("、");
-                            t.id = t.id.substring(0,t.id.length - 1);
-                            t.id += "}";
+                spec.forEach(item => {
+                   rows[0].children.push({label: item.label, id:item.value, childred:[]});
+                });
 
-                            data[0].children.push(t);
-                        });
-
-                        if (data[0].children.length > 0)
-                            return data;
-                        else
-                            return [];
-                    }
-                }
+                return rows;
             },
 
             /**
@@ -331,10 +503,18 @@
                 });
                 return rows;
             },
+            FormmulaParams: function() {
+                if (this.brands.length > 0 && this.Form.product_brand_id) {
+                    let row = this.brands.find(it => {return it.value == this.Form.product_brand_id;});
+                    return row.formula_param;
+                }
+
+                return [];
+            }
         }
     }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+@import "MakeOffer.styl"
 </style>

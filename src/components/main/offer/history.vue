@@ -92,16 +92,7 @@
                     <el-table-column prop="tax" label="价格版本"></el-table-column>
                     <el-table-column prop="manager.method.label" label="类别"></el-table-column>
                     <el-table-column prop="opval" label="折扣"></el-table-column>
-                    <el-table-column prop="operate.label" label="计算方式" width="150">
-                        <template slot-scope="scope">
-                            <div v-if="scope.row.manager.method.value == 0">
-                                面价 {{scope.row.operate.label}} {{scope.row.opval}}%
-                            </div>
-                            <div v-else>
-                                面价 {{scope.row.operate.label}} {{scope.row.opval}}元
-                            </div>
-                        </template>
-                    </el-table-column>
+                    <el-table-column prop="formula" label="计算公式" width="150"></el-table-column>
                     <el-table-column prop="file" label="下载报价" width="250">
                         <template slot-scope="scope">
                             <el-button size="mini" type="success" @click.native="DownloadPDF(scope.row.id)">下载</el-button>
@@ -112,7 +103,7 @@
                 </el-table>
             </section>
         </div>
-        <v-modifyOffer :row="CurrentRow" @Reload="ReloadData"></v-modifyOffer>
+        <v-modifyOffer :tableId="tableId" :formulaId="formulaId" :update="true" @Reload="ReloadData"></v-modifyOffer>
     </div>
 </template>
 
@@ -132,7 +123,8 @@ export default {
             },
 			ProgramListIndex: 0,
             ProgramActive: false,
-            CurrentRow: {}
+            tableId: 0,
+            formulaId: 0
         };
     },
     created() {
@@ -210,8 +202,10 @@ export default {
          * 修改报价
          * **/
         EditRow(row) {
-            this.CurrentRow = row;
-            this.$store.dispatch("SetBaseProductConfig",{field: "Price.ModifyOffer.visible",value: true});
+            // this.CurrentRow = row;
+            this.tableId = row.manager.tableId;
+            this.formulaId = row.formula_id;
+            this.$store.dispatch("DialogVisible",{designFormula: true});
         }
     },
     computed: {
@@ -237,11 +231,12 @@ export default {
             else return "展开";
         },
         TableData: function() {
+            console.log(this.$store.state.user.ProductOffers)
             return this.$store.state.user.ProductOffers;
         }
     },
     components: {
-        "v-modifyOffer": () => import("./history/ModifyOffer.vue"),
+        "v-modifyOffer": () => import("./cost/dialog/DesignFormula.vue"),
     },
 };
 </script>

@@ -30,32 +30,6 @@
                         <template slot="prepend">{{prefix}}</template>
                     </el-input>
                 </el-form-item>
-                <section>
-                    <p class="title">产品属性</p>
-                </section>
-                <div
-                    class="horizontal-item"
-                    v-for="(item,k) in Form.attribute"
-                >
-                    <el-form-item
-                        label="描述"
-                        label-width="80px"
-                        :rules="{required: true,trigger:'blur',message: '请输入描述'}"
-                    >
-                        <el-input v-model="item.description"></el-input>
-                    </el-form-item>
-                    <el-form-item
-                        label="字段名"
-                        label-width="100px"
-                        :rules="{required: true,trigger:'blur',message: '请输入字段名'}"
-                    >
-                        <el-input v-model="item.field"></el-input>
-                    </el-form-item>
-                    <el-button type="info" @click.native="removeAttribute(item)" style="width: 32px;height: 32px;margin-left: 10px;display: flex;justify-content: center" icon="el-icon-delete" title="删除"></el-button>
-                </div>
-                <p style="text-align: center">
-                    <el-button type="success" size="mini" @click.native="addAttribute">增加属性</el-button>
-                </p>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="handleClose">取 消</el-button>

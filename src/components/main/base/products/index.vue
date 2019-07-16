@@ -32,6 +32,11 @@
                     </el-table-column>
                     <el-table-column prop="table" label="对应的数据表"></el-table-column>
                     <el-table-column prop="fields.description" label="字段信息"></el-table-column>
+                    <el-table-column label="操作" width="200">
+                        <template slot-scope="scope">
+                            <el-button type="warning" size="mini" @click.native="ManagementField(scope.row.id)">字段管理</el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
                 <p>
                     <el-button type="info" :disabled="DelBtnDisable" :loading="DelBtnLoading" @click.native="RemoveTables">删除</el-button>
@@ -40,12 +45,17 @@
         </div>
         <createcategory-dialog :CategoryId="CurrentCid" :update="CategoryUpdate"></createcategory-dialog>
         <createprice-dialog :CurrentCategoryId="CurrentCid"></createprice-dialog>
+        <managedn-dialog :tableId="tableId" :category="categoryName" :brand="brandName"></managedn-dialog>
+        <managefield-dialog :tableId="tableId" :category="categoryName" :brand="brandName" :tables="TableList"></managefield-dialog>
+
     </div>
 </template>
 
 <script>
     import CreateCategoryDialog from './dialog/CreateCategory';
     import CreatePriceDialog from './dialog/CreatePriceTable';
+    import ManageDnDialog from "./dialog/ManagementDn";
+    import ManagerFieldDialog from "./dialog/ManageField";
     export default {
         data() {
             return {
@@ -53,14 +63,20 @@
                 DelBtnDisable: true,
                 DelBtnLoading: false,
                 TableIds: [],
-                CategoryUpdate: false
+                CategoryUpdate: false,
+                DnDialogVisible: false,
+                tableId: null,
+                brandName: "",
+                mangementVisible: false
             };
         },
         created() {
             this.$store.dispatch("brandList");
             this.$store.dispatch("LoadProductCategory");
+            this.$store.dispatch("LoadProductTableFieldType");
         },
         methods: {
+
             CategoryRowStyle: function({row, rowIndex}) {
                 let style = {cursor:'pointer'};
 
@@ -133,6 +149,21 @@
                 else {
                     this.DelBtnDisable = true;
                 }
+            },
+            ManagementDN(id) {
+                this.prepareDialogShow(id);
+                this.$store.dispatch("DialogVisible",{managementDn: true});
+            },
+            ManagementField(id) {
+                this.prepareDialogShow(id);
+                this.$store.dispatch("DialogVisible",{managementField: true});
+            },
+
+            prepareDialogShow(id) {
+                this.tableId = id;
+                let item = this.TableList.find(it => {return id == it.id});
+                this.brandName = item.name;
+
             }
         },
         computed: {
@@ -147,17 +178,17 @@
             },
             TableList: function() {
                 let data = this.$store.state.user.ProductCategoryList, rows = [];
-
                 if (data.length > 0)
                 {
                     data.forEach((item) => {
                         if (item.id == this.CurrentCid)
                             rows = item.children;
                     });
-
+                    console.log(rows);
                     return rows;
                 }
 
+                return [];
             },
             brand: function() {
                 let data = [];
@@ -165,14 +196,21 @@
                     if (item.cid == this.CurrentCid)
                         data.push(item);
                 });
-
                 return data;
             },
-
+            categoryName: function() {
+                if (this.CurrentCid > 0) {
+                    let item = this.category.find(it => {return it.id == this.CurrentCid});
+                    return item.name;
+                }
+            }
         },
         components: {
             'createcategory-dialog': CreateCategoryDialog,
-            'createprice-dialog': CreatePriceDialog
+            'createprice-dialog': CreatePriceDialog,
+            "managedn-dialog": ManageDnDialog,
+            "managefield-dialog": ManagerFieldDialog,
+
         }
     }
 </script>

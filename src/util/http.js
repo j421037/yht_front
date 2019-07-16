@@ -10,8 +10,8 @@ export const post = (url, query) => {
 	const token = 'Bearer ' + tool.getter('token');
 	let _url = `${appConst.BACKEND_DOMAIN}${url}`;
 	// console.log(token);
-	return Axios.post( _url, query, 
-			{ 
+	return Axios.post( _url, query,
+			{
 				headers: { authorization: token ,'X-Requested-With': 'XMLHttpRequest'}
 			}
 		   )
@@ -30,16 +30,65 @@ export const post = (url, query) => {
 			});
 }
 
+export const deletes = (url) =>{
+    const token = 'Bearer ' + tool.getter('token');
+    let _url = `${appConst.BACKEND_DOMAIN}${url}`;
+
+    return Axios.delete( _url,
+        {
+            headers: { authorization: token }
+        }
+    )
+        .then( (response) => {
+            if (response.status >= 200 && response.status < 300) {
+                if (response.headers.authorization !== '' && typeof(response.headers.authorization) != 'undefined') {
+                    tool.setter('token', response.headers.authorization);
+                }
+                return response.data;
+            }
+        })
+        .catch( (err) => {
+
+            errorProcess(err);
+
+            return Promise.reject(err);
+        });
+}
+
+export const put = (url, param) => {
+    const token = 'Bearer ' + tool.getter('token');
+    let _url = `${appConst.BACKEND_DOMAIN}${url}`;
+    // console.log(token);
+    return Axios.put( _url, param,
+        {
+            headers: { authorization: token ,'X-Requested-With': 'XMLHttpRequest'}
+        }
+    )
+        .then( (response) => {
+            if (response.status >= 200 && response.status < 300) {
+                if (response.headers.authorization !== '' && typeof(response.headers.authorization) != 'undefined') {
+                    tool.setter('token', response.headers.authorization);
+                }
+
+                return response.data;
+            }
+        })
+        .catch( (err) => {
+            errorProcess(err);
+            return Promise.reject(err);
+        });
+}
+
 export const get = (url, query) => {
 	const token = 'Bearer ' + tool.getter('token');
 	let _url = `${appConst.BACKEND_DOMAIN}${url}`;
-	
+
 	if (query) {
 		_url = `${appConst.BACKEND_DOMAIN}${url}?${query}`;
 	}
-	
-	return Axios.get( _url, 
-			{ 
+
+	return Axios.get( _url,
+			{
 				headers: { authorization: token }
 			}
 		   )

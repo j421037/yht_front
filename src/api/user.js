@@ -1,5 +1,15 @@
 import * as http from '../util/http.js';
 
+const buildUrlFromObject = (params) => {
+    let param = "";
+
+    for(let i in params) {
+        param += `/${i}/${params[i]}`;
+    }
+
+    return param;
+}
+
 export const login = (userInfo) => {
 	// console.log(userInfo);
 	return http.post('auth/login', userInfo);
@@ -531,5 +541,75 @@ export const LoadTarget = () => {
 
     return http.post("index/target");
 }
+export const ProductSpecAdd = (info) => {
+    return http.post("products/spec", info);
+}
+export const ProductSpecAll = (info) => {
+
+    return http.get("products/spec"+buildUrlFromObject(info));
+}
+
+export const ProductSpecDelete = (info) => {
+    return http.deletes("products/spec"+buildUrlFromObject(info));
+}
+
+export const LoadSinglePriceTable = (info) => {
+    return http.get("products/table"+buildUrlFromObject(info));
+}
+
+export const AppendTableField = (info) => {
+    return http.post("products/table/field", info);
+}
+
+export const ModifyTableField = (info) => {
+    return http.put("products/table/field", info);
+}
+export const DeleteTableField = (info) => {
+   return http.deletes("products/table/field"+buildUrlFromObject(info));
+}
+
+export const LoadProductTableFieldType = () => {
+    return http.get("product/fieldtype");
+}
+
+export const AppendProductTableSelectItem = (info) => {
+    return http.post("product/table/select/item", info);
+}
+export const LoadProductTableSelectItem = (info) => {
+
+    return http.get("product/table/select/item"+buildUrlFromObject(info));
+}
+export const DeleteProductTableSelectItem = (info) => {
+    return http.deletes("product/table/select/item"+buildUrlFromObject(info));
+}
+
+export const ProductTableSort = (info) => {
+    return http.put("product/table/sort", info);
+}
+
+export const AllcationField = (info) => {
+    return http.put("allcation/field", info);
+}
+
+export const AppendFormula = (info) => {
+    return http.post("makeoffer/formula", info);
+}
+
+export const LoadProductsFromVersion = (info) => {
+    return http.get("load/products/from/version"+buildUrlFromObject(info));
+}
+export const ChangeFieldIndex = (info) => {
+    return http.put("product/table/field/index", info);
+}
+export const LoadSignTableParam = (info) => {
+    return http.get("offer/load/param"+buildUrlFromObject(info));
+}
+export const LoadFormula = (info) => {
+    return http.get("makeoffer/formula"+buildUrlFromObject(info));
+}
+export const UpdateFormula = (info) => {
+    return http.put("makeoffer/formula/id/"+info.tableId, info);
+}
+
 
 

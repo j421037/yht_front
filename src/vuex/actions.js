@@ -1043,4 +1043,86 @@ export const updateTarget = ({commit}, info) => {
 export const LoadTarget = ({commit}) => {
     return api.LoadTarget();
 }
+export const DialogVisible =({commit}, info) => {
+    return commit("DIALOG_VISIBLE", info);
+}
+export const ProductSpecAdd = ({commit}, info) => {
+    return api.ProductSpecAdd(info);
+}
+export const ProductSpecAll = ({commit}, info) => {
+    return api.ProductSpecAll(info).then(response => {
+        return commit("PRODUCT_SPECS", response);
+    });
+}
+
+export const ProductSpecDelete = ({commit}, info) => {
+    return api.ProductSpecDelete(info);
+}
+
+export const LoadSinglePriceTable = ({commit}, info) => {
+    return api.LoadSinglePriceTable(info).then(response => {
+        return commit("LOAD_SINGLE_PRICE_TABLE", response);
+    })
+}
+
+export const AppendTableField = ({commit}, info) => {
+    return api.AppendTableField(info);
+}
+
+export const ModifyTableField = ({commit}, info) => {
+    return api.ModifyTableField(info);
+}
+
+export const DeleteTableField = ({commit}, info) => {
+    return api.DeleteTableField(info);
+}
+
+
+export const LoadProductTableFieldType = ({commit}) => {
+    return api.LoadProductTableFieldType().then(response => {
+       return commit("LOAD_PRODUCT_TABLE_FIELD_TYPE", response);
+    });
+}
+export const AppendProductTableSelectItem = ({commit},info) => {
+    return api.AppendProductTableSelectItem(info);
+}
+export const LoadProductTableSelectItem = ({commit},info) => {
+    return api.LoadProductTableSelectItem(info);
+}
+export const DeleteProductTableSelectItem = ({commit}, info) => {
+    return api.DeleteProductTableSelectItem(info);
+}
+export const ProductTableSort = ({commit}, info) => {
+    return api.ProductTableSort(info);
+}
+
+export const AllcationField = ({commit}, info) => {
+    return api.AllcationField(info);
+}
+export const AppendFormula = ({commit}, info) => {
+    return api.AppendFormula(info);
+}
+export const LoadProductsFromVersion = ({commit}, info) => {
+    return api.LoadProductsFromVersion(info).then(response => {
+        return commit("LOAD_PRODUCTS_FROM_VERSION", response);
+    });
+}
+export const ChangeFieldIndex = ({commit}, info) => {
+    return api.ChangeFieldIndex(info);
+}
+
+export const LoadSignTableParam = ({commit}, info) => {
+    return api.LoadSignTableParam(info).then(response => {
+        return commit("LOAD_SIGN_TABLE_PARAM", response);
+    })
+}
+
+export const LoadFormula = ({commit}, info) => {
+    return api.LoadFormula(info);
+}
+export const UpdateFormula = ({commit}, info) => {
+    return api.UpdateFormula(info);
+}
+
+
 

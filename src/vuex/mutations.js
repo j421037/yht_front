@@ -750,7 +750,38 @@ const mutations = {
             state.LoadStandardPrice.notice = response.errmsg;
         }
 
+    },
+    [types.DIALOG_VISIBLE] (state, response) {
+	    for (let i in response) {
+	        state.DialogVisible[i] = response[i];
+        }
+
+    },
+    [types.PRODUCT_SPECS] (state, response) {
+	    state.ProductSpecs = response.data;
+    },
+    [types.LOAD_SINGLE_PRICE_TABLE] (state, response) {
+        state.SinglePriceTable = response.data;
+
+    },
+    [types.LOAD_PRODUCT_TABLE_FIELD_TYPE] (state, response) {
+	    if (response.status == "success")
+	        state.ProductTableFieldType = response.data;
+
+    },
+    [types.LOAD_PRODUCTS_FROM_VERSION] (state, response) {
+
+	    if (response.status == "success") {
+	        state.LoadProductsFromVersion = response.data;
+        }
+    },
+    [types.LOAD_SIGN_TABLE_PARAM] (state, response) {
+	    if (response.status == "success")
+	        state.SignTableParam = response.data;
+	    console.log(response)
     }
+
+
 }
 
 export default mutations;

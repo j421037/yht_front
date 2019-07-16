@@ -82,19 +82,21 @@
                 <p style="height:1px;border-top:1px solid #ebebeb;"></p>
                 <div class="form-add-price-list">
                     <div class="form-add-price-item"
-                    v-for="(items ,k) in Form.rows"
-                     :key="k"
-                >
-                    <span style="height:32px;display: flex;align-items: center">{{k + 1}}、</span>
-                    <el-form-item
-                        v-for="(item,kk) in items"
-                        :key="kk"
-                        :label="FieldMap[kk]"
-                        required
-                        :prop="'rows['+k+'].'+ kk.toString()"
-                        :rules="{validator: validateField,trigger:'blur'}"
+                        v-for="(items ,k) in Form.rows"
+                        :key="k"
                     >
-                        <el-input v-model.trim="Form.rows[k][kk]"></el-input>
+
+                    <span style="height:32px;display: flex;align-items: center">{{k + 1}}、</span>
+
+                    <el-form-item
+                        v-for="(mp , mk) in Mappings"
+                        :key="mk"
+                        :label="mp.value"
+                    >
+                        <el-input v-if="mp.type != 'select' " v-model="Form.rows[k][mp.key]" />
+                        <el-select v-else v-model="Form.rows[k][mp.key]">
+                            <el-option v-for="(option, ikey) in mp.options" :key="ikey" :label="option.label" :value="option.value"></el-option>
+                        </el-select>
                     </el-form-item>
                     <span class="delete-btn">
                         <el-button
@@ -113,7 +115,7 @@
                 </p>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="handleClose">取 消</el-button>
+                <el-button @click="resetForm">重 置</el-button>
                 <el-button type="primary" @click.native="submit" :loading="submiting">确 定</el-button>
             </span>
         </el-dialog>
@@ -134,26 +136,34 @@
                     rows:[],
                     fileid: [],
                     remark: "",
-                    freight: 0
+                    freight: 0,
                 },
                 submiting: false,
                 FieldMap: {},
                 defaultField: {},
-                fileList: []
+                fileList: [],
+                defaultForm: {},
+                Mappings: [],
+                RowRules:[]
             }
         },
+        created() {
+            this.defaultForm = Object.assign({}, this.Form);
 
+        },
         methods: {
+
             /**
              * dialog 关闭事件的回调
              * **/
             handleClose() {
                 this.$store.dispatch("SetBaseProductConfig",{field: "Price.PriceMaintenance.visible",value: false});
-                this.Form.rows = [];
-                this.fileList = [];
-                this.$refs["form"].resetFields();
             },
-
+            resetForm() {
+                this.Form = JSON.parse(JSON.stringify(this.defaultForm));
+                this.fileList = [];
+                this.$refs["form"].clearValidate();
+            },
             /**
              * dialog 显示事件的回调
              * **/
@@ -177,16 +187,25 @@
                         mapping = item.mapping;
                 })
 
+
                 mapping.forEach((item) => {
-                    this.defaultField[item.key] = "";
-                    this.FieldMap[item.key] = item.value;
+                     this.defaultField[item.key] = "";
                 });
 
                 this.Form.rows = [];
-                this.defaultField.price = "";
-                this.FieldMap.price = "价格";
                 this.Form.rows.push(JSON.parse(JSON.stringify(this.defaultField)));
-                console.log(mapping);
+                this.Mappings = mapping;
+
+                let rule = this.makeRule();
+                mapping.forEach(item => {
+                    let o = {};
+                    o[item.key] = rule;
+                    this.RowRules.push(o);
+                });
+
+            },
+            makeRule() {
+                return [{required: true, trigger:"blur", message:"请选择或输入内容"}];
             },
             /**
              * 价格表上传成功
@@ -214,6 +233,7 @@
              * 表单提交
              * **/
             submit() {
+
                 this.$refs["form"].validate((valid) => {
                     if (valid)
                     {
@@ -237,9 +257,10 @@
 
             /**
              * 表单字段验证
-             * @所有价格相关的字段都只能是数字,整数或者小数
+             * @价格的字段都只能是数字,整数或者小数
              * **/
             validateField(rule, value, callback) {
+                console.log(rule);
                 if (/^[1-9]+(\.?\d+){0,1}$/.test(value))
                     callback();
                 else
@@ -251,6 +272,16 @@
                     callback();
                 else
                     callback(new Error("只允许输入字母、数字、下划线（ _ ）"));
+            },
+            /**不能为空**/
+            validateNotNull(rule, value, callback) {
+                console.log(value)
+                if (value != null && value != "") {
+                    callback();
+                }
+                else {
+                    callback(new Error("请选择或输入内容"));
+                }
             },
             /**
              * 添加一行表单
@@ -288,11 +319,12 @@
                 let data = [],
                     row = [],
                     rows = this.$store.state.user.ProductCategoryList;
-
                 rows.forEach((item) => {
                    if (item.id == this.Form.category)
                        row = item.children;
                 });
+
+                console.log(row);
 
                 row.forEach((item) => {
                    data.push({label:item.name,value:item.id,mapping: item.fields.mapping});
@@ -304,7 +336,8 @@
                 if (this.Form.rows.length > 0)
                     return false;
                 return true;
-            }
+            },
+
         }
     }
 </script>

@@ -301,7 +301,18 @@ const state = {
         status: "",
         errmsg: ""
     },
-    updateTarget: {}
+    DialogVisible: {
+        managementDn: false,
+        managementField: false,
+        managementType: false,
+        designFormula:false
+    },
+    updateTarget: {},
+    ProductSpecs: [],
+    SinglePriceTable: [],
+    ProductTableFieldType: [],
+    LoadProductsFromVersion: [],
+    SignTableParam:[]
 }
 
 export default {

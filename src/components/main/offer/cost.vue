@@ -47,7 +47,7 @@ export default {
             refreshVisible: true,
             btnDisable: true,
             tabName: "",
-            str: "守得云开见月明"
+
         };
     },
     created() {

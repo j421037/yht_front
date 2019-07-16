@@ -66,6 +66,8 @@
                        }
                     });
 
+                    console.log(field);
+
                     return field;
                 }
             }
